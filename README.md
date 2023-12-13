@@ -1,0 +1,1 @@
+Piekielna Rezolucja 3

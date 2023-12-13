@@ -8,7 +8,7 @@ class Status(Enum):
     CLICKED = 2
 
 class Button():
-    def __init__(self, position, size, on_click_event, idle_color, hower_color, click_color, ):
+    def __init__(self, position, size, on_click_event, idle_color, hower_color, click_color):
         self.position = position
         self.size = size
         self.idle_color = idle_color
@@ -41,7 +41,7 @@ class Button():
 
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 if self.status == Status.CLICKED:
-                    self.trigger_event(args)
+                    self.trigger_event(*args)
 
                 if self.cursor_over_button(mouse):
                     self.status = Status.HOWER
@@ -57,4 +57,4 @@ class Button():
             self.status = Status.HOWER
 
     def trigger_event(self, *args):
-        self.on_click_event(args)
+        self.on_click_event(*args)

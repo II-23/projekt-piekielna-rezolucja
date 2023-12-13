@@ -14,7 +14,7 @@ def test(args):
     print(69)
 
 def test2(args):
-    print(args[0][0])
+    print(args)
 
 button = Button((100, 100), (200, 100), test, (0, 0, 0), (70, 70, 70), (200, 200, 200))
 button2 = Button((100, 300), (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200))

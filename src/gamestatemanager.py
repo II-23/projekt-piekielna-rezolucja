@@ -1,6 +1,3 @@
-import pygame
-pygame.init()
-
 class BaseScene:
     def __init__(self, display, gameStateManager):
         self.display = display
@@ -23,27 +20,5 @@ class GameStateManager:
         self.currentState=currentState
     def get_state(self):
         return self.currentState
-    def set_stat(self, state):
+    def set_state(self, state):
         self.currentState=state
-
-# Set up display
-width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("My Pygame Window")
-
-running = True
-clock = pygame.time.Clock()
-
-while running:
-    events = pygame.event.get()
-    for event in events:
-        if event.type == pygame.QUIT:
-            running = False
-    screen.fill((255, 255, 255))
-
-
-    pygame.display.flip()
-
-    clock.tick(60)
-
-pygame.quit()

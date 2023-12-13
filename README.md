@@ -1,1 +1,0 @@
-Piekielna rezolucja 3

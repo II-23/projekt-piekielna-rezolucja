@@ -4,6 +4,7 @@ from enum import Enum
 from main_window import RESOLUTION
 
 pygame.font.init()
+pygame.display.init()
 
 BAR_COLOR = (196, 196, 196)
 SLIDER_SIZE = (236.16 * RESOLUTION[0]/1920.0, 70.2 * RESOLUTION[1]/1080.0)
@@ -20,8 +21,9 @@ class Status(Enum):
 class Slider_Bar(pygame.sprite.Sprite):
     def __init__(self, size):
         self.size = self.width, self.height = size
-        self._surface = pygame.Surface(size)
-        self.get_surface().fill(BAR_COLOR)
+        loaded_bar = pygame.image.load("./assets/slider_bar.png").convert_alpha()
+        self._surface = pygame.transform.scale(loaded_bar, size)
+        #self.get_surface().fill(BAR_COLOR)
         self.sliders = []
         self.variable_dict = {}
         self.LEFT_MARGIN = SLIDER_SIZE[0]/10

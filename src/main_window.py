@@ -4,15 +4,16 @@ import numpy
 import math
 from Slider import *
 
-RESOLUTION = (1920, 1080)
+RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
 SLIDER_SIZE = (220, 70)
 
 class Main_Window:
     def __init__(self, resolution):
-        self.running = True
-        self._display_surface = None
         self.size = self.width, self.height = resolution
+        pygame.init()
+        self._display_surface = pygame.display.set_mode(self.size)
+        self.running = True
         self.FramesPerSec = pygame.time.Clock()
         self.FPS = 60
         self.paper_sheet = pygame.image.load("./assets/papersheet.jpg")
@@ -24,9 +25,11 @@ class Main_Window:
         self.slider_bar.add_slider("dupa")
         self.slider_bar.add_slider("dupa")
         self.slider_bar.add_slider("dupa")
+        self.slider_bar.add_slider("dupa")
+        self.slider_bar.add_slider("dupa")
+        self.slider_bar.add_slider("dupa")
+        self.slider_bar.add_slider("dupa")
     def on_init(self):
-        pygame.init()
-        self._display_surface = pygame.display.set_mode(self.size)
         self._display_surface.fill(GRAY_COLOR)
         self._display_surface.blit(self.paper_sheet, (self.width * 0.5 - 0.5 * self.paper_sheet.get_width(), 0))
         self.slider_bar_rect = self._display_surface.blit(self.slider_bar.get_surface(), (self.width - self.slider_bar.get_surface().get_width(), 0))

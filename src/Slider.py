@@ -6,13 +6,13 @@ from main_window import RESOLUTION
 pygame.font.init()
 pygame.display.init()
 
-BAR_COLOR = (196, 196, 196)
 SLIDER_SIZE = (236.16 * RESOLUTION[0]/1920.0, 70.2 * RESOLUTION[1]/1080.0)
 SLIDER_COLOR_OFF = (70, 75, 80)
 SLIDER_COLOR_OFF_HOVER = (100, 105, 110)
 SLIDER_COLOR_ON = (200, 0, 0)
 SLIDER_COLOR_ON_HOVER = (230, 0, 0)
 TRUE_FALSE_COLOR = (255, 255, 255)
+VARIABLE_COLOR = (255, 255, 255)
 
 class Status(Enum):
     IDLE = 0
@@ -23,7 +23,6 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.size = self.width, self.height = size
         loaded_bar = pygame.image.load("./assets/slider_bar.png").convert_alpha()
         self._surface = pygame.transform.scale(loaded_bar, size)
-        #self.get_surface().fill(BAR_COLOR)
         self.sliders = []
         self.variable_dict = {}
         self.LEFT_MARGIN = SLIDER_SIZE[0]/10
@@ -31,12 +30,15 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.TOP_MARGIN = SLIDER_SIZE[1]/2
         self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2
         self.parent_rect = None
+        self.variable_font = pygame.font.Font(None, round(55 * RESOLUTION[0]/1280))
     def get_surface(self):
         return self._surface
     def set_parent_rect(self, parent_rect):
         self.parent_rect = parent_rect
     def add_slider(self, variable):
         new_slider = Slider(SLIDER_SIZE)
+        variable_text = self.variable_font.render(variable, True, VARIABLE_COLOR)
+        self.get_surface().blit(variable_text, (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN + 5 * RESOLUTION[0]/1280))
         slider_rect = self.get_surface().blit(new_slider.get_surface(), (self.LEFT_MARGIN + self.SLIDER_OFFSET, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN))
         new_slider.set_parent_rect(slider_rect)
         self.variable_dict[variable] = len(self.sliders)

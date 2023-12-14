@@ -4,6 +4,7 @@ import numpy
 import math
 from Slider import *
 
+RESOLUTION = (1920, 1080)
 GRAY_COLOR = (65, 65, 67)
 SLIDER_SIZE = (220, 70)
 
@@ -18,7 +19,7 @@ class Main_Window:
         self.paper_sheet = pygame.transform.rotate(self.paper_sheet, 90)
         paper_height = self.paper_sheet.get_height()
         self.paper_sheet = pygame.transform.scale_by(self.paper_sheet, self.height/paper_height)
-        self.slider_bar = Slider_Bar((0.2 * self.width, 0.65 * self.height))
+        self.slider_bar = Slider_Bar((0.18 * self.width, self.height))
         self.slider_bar.add_slider("dupa")
         self.slider_bar.add_slider("dupa")
         self.slider_bar.add_slider("dupa")
@@ -56,5 +57,5 @@ class Main_Window:
         self.on_cleanup()
 
 if __name__ == "__main__":
-    app = Main_Window((1920, 1080))
+    app = Main_Window(RESOLUTION)
     app.on_execute()

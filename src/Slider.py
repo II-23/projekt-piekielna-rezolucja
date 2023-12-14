@@ -1,11 +1,12 @@
 import pygame
 import numpy as np
 from enum import Enum
+from main_window import RESOLUTION
 
 pygame.font.init()
 
 BAR_COLOR = (196, 196, 196)
-SLIDER_SIZE = (220, 70)
+SLIDER_SIZE = (236.16 * RESOLUTION[0]/1920.0, 70.2 * RESOLUTION[1]/1080.0)
 SLIDER_COLOR_OFF = (70, 75, 80)
 SLIDER_COLOR_OFF_HOVER = (100, 105, 110)
 SLIDER_COLOR_ON = (200, 0, 0)
@@ -23,17 +24,18 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.get_surface().fill(BAR_COLOR)
         self.sliders = []
         self.variable_dict = {}
-        self.LEFT_MARGIN = 0.1 * self.width
-        self.INTERLINE = 0.05 * self.height
-        self.TOP_MARGIN = 0.1 * self.height
+        self.LEFT_MARGIN = SLIDER_SIZE[0]/10
+        self.INTERLINE = SLIDER_SIZE[1]/4
+        self.TOP_MARGIN = SLIDER_SIZE[1]/2
+        self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2
         self.parent_rect = None
     def get_surface(self):
         return self._surface
     def set_parent_rect(self, parent_rect):
         self.parent_rect = parent_rect
     def add_slider(self, variable):
-        new_slider = Slider((0.82 * self.width, 0.1 * self.height))
-        slider_rect = self.get_surface().blit(new_slider.get_surface(), (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN))
+        new_slider = Slider(SLIDER_SIZE)
+        slider_rect = self.get_surface().blit(new_slider.get_surface(), (self.LEFT_MARGIN + self.SLIDER_OFFSET, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN))
         new_slider.set_parent_rect(slider_rect)
         self.variable_dict[variable] = len(self.sliders)
         self.sliders.append(new_slider)
@@ -44,7 +46,7 @@ class Slider_Bar(pygame.sprite.Sprite):
         i = 0
         for slider in self.sliders:
             slider.render()
-            self.get_surface().blit(slider.get_surface(), (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * i + self.TOP_MARGIN))
+            self.get_surface().blit(slider.get_surface(), (self.LEFT_MARGIN + self.SLIDER_OFFSET, (SLIDER_SIZE[1] + self.INTERLINE) * i + self.TOP_MARGIN))
             i += 1
     def process_input(self, events, mouse):
         for slider in self.sliders:
@@ -78,7 +80,6 @@ class Slider(pygame.sprite.Sprite):
         return self._surface
     def cursor_over_button(self, pos):
         x, y = (pos[0] - self.parent_rect[0], pos[1] - self.parent_rect[1])
-        #return self.state_positions[self.current_frame].collidepoint(rel_coord)
         return 0 <= x < self.width and 0 <= y < self.height
     def process_input(self, events, pos):
         for event in events:

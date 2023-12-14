@@ -39,8 +39,8 @@ while running:
     screen.fill((255, 255, 255))
 
     states[gameStateManager.get_state()].process_input(events, pygame.mouse)
-    states[gameStateManager.get_state()].render(screen)
     states[gameStateManager.get_state()].update(pygame.mouse)
+    states[gameStateManager.get_state()].render(screen)
     
     pygame.display.flip()
 

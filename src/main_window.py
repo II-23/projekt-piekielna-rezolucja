@@ -18,7 +18,7 @@ class Main_Window:
         self.paper_sheet = pygame.transform.rotate(self.paper_sheet, 90)
         paper_height = self.paper_sheet.get_height()
         self.paper_sheet = pygame.transform.scale_by(self.paper_sheet, self.height/paper_height)
-        self.slider_bar = Slider_Bar((0.14 * self.width, 0.65 * self.height))
+        self.slider_bar = Slider_Bar((0.2 * self.width, 0.65 * self.height))
         self.slider_bar.add_slider("dupa")
         self.slider_bar.add_slider("dupa")
         self.slider_bar.add_slider("dupa")

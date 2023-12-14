@@ -2,12 +2,15 @@ import pygame
 import numpy as np
 from enum import Enum
 
+pygame.font.init()
+
 BAR_COLOR = (196, 196, 196)
 SLIDER_SIZE = (220, 70)
 SLIDER_COLOR_OFF = (70, 75, 80)
 SLIDER_COLOR_OFF_HOVER = (100, 105, 110)
 SLIDER_COLOR_ON = (200, 0, 0)
 SLIDER_COLOR_ON_HOVER = (230, 0, 0)
+TRUE_FALSE_COLOR = (255, 255, 255)
 
 class Status(Enum):
     IDLE = 0
@@ -19,6 +22,7 @@ class Slider_Bar(pygame.sprite.Sprite):
         self._surface = pygame.Surface(size)
         self.get_surface().fill(BAR_COLOR)
         self.sliders = []
+        self.variable_dict = {}
         self.LEFT_MARGIN = 0.1 * self.width
         self.INTERLINE = 0.05 * self.height
         self.TOP_MARGIN = 0.1 * self.height
@@ -31,6 +35,7 @@ class Slider_Bar(pygame.sprite.Sprite):
         new_slider = Slider((0.82 * self.width, 0.1 * self.height))
         slider_rect = self.get_surface().blit(new_slider.get_surface(), (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN))
         new_slider.set_parent_rect(slider_rect)
+        self.variable_dict[variable] = len(self.sliders)
         self.sliders.append(new_slider)
     def update(self):
         for slider in self.sliders:
@@ -55,12 +60,16 @@ class Slider(pygame.sprite.Sprite):
         self.size = self.width, self.height = size
         self._surface = pygame.Surface(size)
         self.state = False
-        self.state_positions = [pygame.Rect(0, 0, 0.4 * self.width, self.height), pygame.Rect(0.6 * self.width, 0, 0.4 * self.width, self.height)]
-        self.state_positions = [pygame.Rect(i * self.width, 0, 0.4 *self.width, self.height) for i in np.arange(0, 0.61, 0.1)]
+        self.state_positions = [pygame.Rect(i * self.width, 0, 0.4 *self.width, self.height) for i in np.append(np.arange(0, 0.6, 0.1), np.array([0.61]))]
+        self.true_position = pygame.Rect(0.2 * self.width, 0.1 * self.height, 0.4*self.width, self.height)
+        self.false_position = pygame.Rect(0.6 * self.width, 0.1 * self.height, 0.4*self.width, self.height)
         self.prev_frame = 0
         self.current_frame = 0
         self.status = Status.IDLE
         self.parent_rect = None
+        self.true_false_font = pygame.font.Font(None, round(1.3* self.height))
+        self.true_sign = self.true_false_font.render("T", True, TRUE_FALSE_COLOR)
+        self.false_sign = self.true_false_font.render("F", True, TRUE_FALSE_COLOR)
     def set_parent_rect(self, parent_rect):
         self.parent_rect = parent_rect
     def change_state(self):
@@ -97,5 +106,11 @@ class Slider(pygame.sprite.Sprite):
                 color = SLIDER_COLOR_OFF_HOVER
             else:
                 color = SLIDER_COLOR_ON_HOVER
+        if (self.state):
+            pygame.draw.rect(self.get_surface(), (0, 0, 0), self.false_position)
+            self.get_surface().blit(self.true_sign, self.true_position)
+        else:
+            pygame.draw.rect(self.get_surface(), (0, 0, 0), self.true_position)
+            self.get_surface().blit(self.false_sign, self.false_position)
         pygame.draw.rect(self.get_surface(), (0, 0, 0), self.state_positions[self.prev_frame])
         pygame.draw.rect(self.get_surface(), color, self.state_positions[self.current_frame])

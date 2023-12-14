@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 from enum import Enum
 
 BAR_COLOR = (196, 196, 196)
@@ -55,10 +56,11 @@ class Slider(pygame.sprite.Sprite):
         self._surface = pygame.Surface(size)
         self.state = False
         self.state_positions = [pygame.Rect(0, 0, 0.4 * self.width, self.height), pygame.Rect(0.6 * self.width, 0, 0.4 * self.width, self.height)]
-        self.cur_pos = self.state_positions[0]
+        self.state_positions = [pygame.Rect(i * self.width, 0, 0.4 *self.width, self.height) for i in np.arange(0, 0.61, 0.1)]
+        self.prev_frame = 0
+        self.current_frame = 0
         self.status = Status.IDLE
         self.parent_rect = None
-        pygame.draw.rect(self.get_surface(), (70, 75, 80), self.cur_pos)
     def set_parent_rect(self, parent_rect):
         self.parent_rect = parent_rect
     def change_state(self):
@@ -66,11 +68,9 @@ class Slider(pygame.sprite.Sprite):
     def get_surface(self):
         return self._surface
     def cursor_over_button(self, pos):
-        rel_coord = (pos[0] - self.parent_rect[0], pos[1] - self.parent_rect[1])
-        if self.state:
-            return self.state_positions[1].collidepoint(rel_coord)
-        else:
-            return self.state_positions[0].collidepoint(rel_coord)
+        x, y = (pos[0] - self.parent_rect[0], pos[1] - self.parent_rect[1])
+        #return self.state_positions[self.current_frame].collidepoint(rel_coord)
+        return 0 <= x < self.width and 0 <= y < self.height
     def process_input(self, events, pos):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -81,6 +81,11 @@ class Slider(pygame.sprite.Sprite):
             self.status = Status.HOWER
         else:
             self.status = Status.IDLE
+        self.prev_frame = self.current_frame
+        if (self.state and self.current_frame < len(self.state_positions) - 1):
+            self.current_frame += 1
+        elif (not self.state and self.current_frame > 0):
+            self.current_frame -= 1
     def render(self):
         if (self.status == Status.IDLE):
             if not self.state:
@@ -92,9 +97,5 @@ class Slider(pygame.sprite.Sprite):
                 color = SLIDER_COLOR_OFF_HOVER
             else:
                 color = SLIDER_COLOR_ON_HOVER
-        if (self.state):
-            pygame.draw.rect(self.get_surface(), (0, 0, 0), self.state_positions[0])
-            pygame.draw.rect(self.get_surface(), color, self.state_positions[1])
-        else:
-            pygame.draw.rect(self.get_surface(), (0, 0, 0), self.state_positions[1])
-            pygame.draw.rect(self.get_surface(), color, self.state_positions[0])
+        pygame.draw.rect(self.get_surface(), (0, 0, 0), self.state_positions[self.prev_frame])
+        pygame.draw.rect(self.get_surface(), color, self.state_positions[self.current_frame])

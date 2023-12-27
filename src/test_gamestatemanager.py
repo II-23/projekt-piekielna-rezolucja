@@ -1,6 +1,7 @@
 import pygame
 from gamestatemanager import *
 from Button import Button
+from BaseScene import *
 pygame.init()
 
 # Set up display

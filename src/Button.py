@@ -9,7 +9,6 @@ class Status(Enum):
 
 class Button():
     def __init__(self, position, size, on_click_event, idle_color, hower_color, click_color):
-
         self.position = position
         self.size = size
         self.idle_color = idle_color

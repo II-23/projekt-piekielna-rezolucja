@@ -10,18 +10,17 @@ GRAY_COLOR = (65, 65, 67)
 width, height = 1280, 720
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("My Pygame Window")
+running = True
+clock = pygame.time.Clock()
+# This is example of preprocessing a background image,
+# you should do this in your Scene class, in __init__(), in order to not 
+# pollute main_window.py 
 paper_sheet = pygame.image.load("./assets/papersheet.jpg")
 paper_sheet = pygame.transform.rotate(paper_sheet, 90)
 paper_height = paper_sheet.get_height()
 paper_sheet = pygame.transform.scale_by(paper_sheet, height/paper_height)
 
 piwo_img = pygame.image.load("./assets/piwo.png")
-
-screen.fill(GRAY_COLOR)
-screen.blit(paper_sheet, (width * 0.5 - 0.5 * paper_sheet.get_width(), 0))
-
-running = True
-clock = pygame.time.Clock()
 
 # creating scenes and scene manager
 gameStateManager = GameStateManager('start')

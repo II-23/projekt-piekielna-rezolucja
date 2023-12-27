@@ -9,7 +9,7 @@ class BaseScene:
     def __init__(self, display, gameStateManager, background_color=WHITE):
         self.display = display
         self.gameStateManager = gameStateManager
-        self.ui_elements = []
+        self.ui_elements = [] # list of all elements of our ui, buttons, sliders, etc. 
         self.background_image = None
         self.background_color = background_color
         
@@ -29,10 +29,21 @@ class BaseScene:
             
     def render_base_ui(self, screen):
         for element in self.ui_elements:
-            element.render(screen)   
+            element.render(screen)
+            if isinstance(element, Slider_Bar):
+                screen.blit(element.get_surface(), (screen.get_width() - element.get_surface().get_width(), 0))   
             
     def render(self, screen):
         self.display.fill(self.background_color)
         if self.background_image is not None:
             self.display.blit(self.background_image, (self.display.get_width() * 0.5 - 0.5 * self.background_image.get_width(), 0))
         self.render_base_ui(screen)
+        
+        
+class Start(BaseScene):
+    def __init__(self, display, gameStateManager, background_color=WHITE):
+        BaseScene.__init__(self,display=display,gameStateManager=gameStateManager, background_color=background_color)
+        
+    # def render(self, screen):
+    #     self.display.fill('red')
+    #     self.render_base_ui(screen)

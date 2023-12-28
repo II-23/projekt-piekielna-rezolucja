@@ -1,7 +1,7 @@
 import pygame
 from gamestatemanager import *
 from Button import Button
-from BaseScene import *
+from src.Scenes.BaseScene import *
 pygame.init()
 
 GRAY_COLOR = (65, 65, 67)

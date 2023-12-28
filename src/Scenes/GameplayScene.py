@@ -1,4 +1,4 @@
-from BaseScene import BaseScene, setup_button
+from Scenes.BaseScene import BaseScene, setup_button
 from Slider import Slider_Bar
 import pygame
 

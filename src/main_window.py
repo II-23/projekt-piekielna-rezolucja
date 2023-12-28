@@ -2,11 +2,10 @@ import pygame
 from pygame.locals import *
 import numpy
 import math
-#from Slider import *
 from gamestatemanager import GameStateManager
-from BaseScene import *
-from GameplayScene import GameplayScene
-from MainMenuScene import MainMenuScene
+from Scenes.BaseScene import * # this also imports slider stuff
+from Scenes.GameplayScene import GameplayScene
+from Scenes.MainMenuScene import MainMenuScene
 
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
@@ -27,7 +26,7 @@ class Main_Window:
         self.FramesPerSec = pygame.time.Clock()
         self.FPS = 60
         # setting up manager for game states (in other words: scenes)
-        self.gameStateManager = GameStateManager('level') # this is the default scene
+        self.gameStateManager = GameStateManager('start') # this is the default scene
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.states = {'start':self.start, 'level':self.level}
@@ -35,7 +34,6 @@ class Main_Window:
     def on_init(self):
         ...
         # WHYYY is this not in __init__()
-        #self._display_surface.fill(GRAY_COLOR)
         
     def on_event(self, event):
         button_clicks = []

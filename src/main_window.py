@@ -27,6 +27,9 @@ class Main_Window:
         self.FPS = 60
         # setting up manager for game states (in other words: scenes)
         self.gameStateManager = GameStateManager('start') # this is the default scene
+        # Here we create scenes for our game. The input part is handled in __input__() of each of these scenes,
+        # so this space here, in main_window, can stay clean. If you want to create your own scene check out 
+        # .py files of these scenes (and BaseScene) here and take inspirations.  
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.states = {'start':self.start, 'level':self.level}

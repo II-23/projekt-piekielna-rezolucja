@@ -34,10 +34,6 @@ class Main_Window:
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.states = {'start':self.start, 'level':self.level}
         
-    def on_init(self):
-        ...
-        # WHYYY is this not in __init__()
-        
     def on_event(self, event):
         button_clicks = []
         match event.type:

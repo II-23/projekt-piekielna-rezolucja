@@ -11,12 +11,6 @@ RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
 SLIDER_SIZE = (220, 70)
 
-def setup_button(gameStateManager, to_change, position):
-    def test2(args):
-        gameStateManager.set_state(to_change)
-    button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200))
-    return button2
-
 class Main_Window:
     def __init__(self, resolution):
         self.size = self.width, self.height = resolution
@@ -51,7 +45,6 @@ class Main_Window:
         pygame.quit()
         
     def on_execute(self):
-        self.on_init()
         while (self.running):
             events = pygame.event.get()
             for event in events:

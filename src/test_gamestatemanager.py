@@ -1,7 +1,9 @@
 import pygame
 from gamestatemanager import *
 from Button import Button
-from src.Scenes.BaseScene import *
+from Scenes.BaseScene import * # this also imports slider stuff
+from Scenes.GameplayScene import GameplayScene
+from Scenes.MainMenuScene import MainMenuScene
 pygame.init()
 
 GRAY_COLOR = (65, 65, 67)
@@ -24,7 +26,7 @@ piwo_img = pygame.image.load("./assets/piwo.png")
 
 # creating scenes and scene manager
 gameStateManager = GameStateManager('start')
-start = Start(screen, gameStateManager, background_color=GRAY_COLOR)
+start = BaseScene(screen, gameStateManager, background_color=GRAY_COLOR)
 level = BaseScene(screen, gameStateManager)
 
 # setting up buttons

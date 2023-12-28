@@ -6,6 +6,7 @@ import math
 from gamestatemanager import GameStateManager
 from BaseScene import *
 from GameplayScene import GameplayScene
+from MainMenuScene import MainMenuScene
 
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
@@ -27,17 +28,8 @@ class Main_Window:
         self.FPS = 60
         # setting up manager for game states (in other words: scenes)
         self.gameStateManager = GameStateManager('level') # this is the default scene
-        self.start = Start(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        #backgorund for start
-        piwo_img = pygame.image.load("./assets/piwo.png")
-        # creating buttons
-        self.button_level = setup_button(self.gameStateManager, 'start', (100, 300))
-        self.button_start = setup_button(self.gameStateManager, 'level', (100, 100))
-        # adding elements to start scene
-        self.start.add_ui_element(self.button_start)
-        self.start.add_background_image(piwo_img)
-        # creating dictionary for game states
         self.states = {'start':self.start, 'level':self.level}
         
     def on_init(self):

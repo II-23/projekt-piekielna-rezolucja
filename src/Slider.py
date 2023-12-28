@@ -1,11 +1,11 @@
 import pygame
 import numpy as np
 from enum import Enum
-from main_window import RESOLUTION
+#from main_window import RESOLUTION
 
 pygame.font.init()
 pygame.display.init()
-
+RESOLUTION = (1280, 720)
 SLIDER_SIZE = (236.16 * RESOLUTION[0]/1920.0, 70.2 * RESOLUTION[1]/1080.0)
 SLIDER_COLOR_OFF = (70, 75, 80)
 SLIDER_COLOR_OFF_HOVER = (100, 105, 110)
@@ -57,6 +57,7 @@ class Slider_Bar(pygame.sprite.Sprite):
             slider.render()
             self.get_surface().blit(slider.get_surface(), (self.LEFT_MARGIN + self.SLIDER_OFFSET, (SLIDER_SIZE[1] + self.INTERLINE) * i + self.TOP_MARGIN))
             i += 1
+            
     def process_input(self, events, mouse, *args):
         for slider in self.sliders:
             slider.process_input(events, (mouse.get_pos()[0] - self.parent_rect[0], mouse.get_pos()[1] - self.parent_rect[1]))

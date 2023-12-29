@@ -1,6 +1,6 @@
 # AD     
-from Button import Button
-from Slider import Slider_Bar
+from Utility.Button import Button
+from Utility.Slider import Slider_Bar
 import pygame
 
 BLACK = (0, 0, 0)

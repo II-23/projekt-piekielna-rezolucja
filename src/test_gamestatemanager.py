@@ -1,6 +1,6 @@
 import pygame
 from gamestatemanager import *
-from Button import Button
+from Utility.Button import Button
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene

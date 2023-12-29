@@ -1,5 +1,5 @@
 import pygame
-from Button import Button
+from Utility.Button import Button
 pygame.init()
 
 # Set up display

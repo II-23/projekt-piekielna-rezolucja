@@ -26,7 +26,7 @@ while running:
             running = False
     screen.fill((255, 255, 255))
 
-    button.process_input(events, pygame.mouse)
+    button.process_input(events, pygame.mouse, 0)
     button.update(pygame.mouse)
     button.render(screen)   
 

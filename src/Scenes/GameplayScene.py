@@ -1,6 +1,8 @@
 # AD     
 from Scenes.BaseScene import BaseScene, setup_button
 from Slider import Slider_Bar
+from char import Symbol, Formula, Set_of_formulas
+from generator import *
 import pygame
 
 class GameplayScene(BaseScene):
@@ -30,5 +32,15 @@ class GameplayScene(BaseScene):
         # creating button to go to start scene
         self.start_screen_button = setup_button(self.gameStateManager, 'start', (100, 300))
         self.add_ui_element(self.start_screen_button)
+        #self.add_ui_element(dupa)
+        x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
+        set=Set_of_formulas((500,500), (500,300), x)
+        for x in set.tab:
+            self.add_ui_element(x)
+            
+
+
+        '''for x in set.tab:
+            for y in x.tab:
+                self.add_ui_element(y)'''
         
-    

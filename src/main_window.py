@@ -37,21 +37,9 @@ class Main_Window:
         self.paper_sheet = pygame.transform.rotate(self.paper_sheet, 90)
         paper_height = self.paper_sheet.get_height()
         self.paper_sheet = pygame.transform.scale_by(self.paper_sheet, self.height/paper_height)
-        self.slider_bar = Slider_Bar((0.18 * self.width, self.height))
         #tutaj
-        #self.symbol=Symbol((25,25), 7, (500,300))
-        #self.formula=Formula((25,25), (500, 400), [-1,-1,1], 50000)
-        #self.set=Set_of_formulas((500,500), (500,300), [[3,[-1,-1,1]],[3,[-1,-1,1]]])
-        x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
-        self.set=Set_of_formulas((500,500), (500,300), x)
-        self.slider_bar.add_slider("p")
-        self.slider_bar.add_slider("q")
-        self.slider_bar.add_slider("r")
-        self.slider_bar.add_slider("k")
-        self.slider_bar.add_slider("s")
-        self.slider_bar.add_slider("h")
-        self.slider_bar.add_slider("u")
-        self.slider_bar.add_slider("w") 
+        #!x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
+        #!self.set=Set_of_formulas((500,500), (500,300), x)
     def on_init(self):
         self._display_surface.fill(GRAY_COLOR)
         self._display_surface.blit(self.paper_sheet, (self.width * 0.5 - 0.5 * self.paper_sheet.get_width(), 0))
@@ -68,9 +56,11 @@ class Main_Window:
         
     def on_render(self):
         self.states[self.gameStateManager.get_state()].render(self._display_surface)
-        for x in self.set.tab:
+        """for x in self.set.tab:
             for y in x.tab:
-                self._display_surface.blit(y.get_surface(), y.get_rect())
+                #self._display_surface.blit(y.get_surface(), y.get_rect())
+                y.render()
+                #self._display_surface.blit(y.get_surface(), y.get_rect())   """
         pygame.display.update()
         
     def on_cleanup(self):

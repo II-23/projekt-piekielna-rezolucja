@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from enum import Enum
+from Utility.Button import Button
 #from main_window import RESOLUTION
 
 pygame.font.init()
@@ -31,6 +32,7 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2
         self.parent_rect = None
         self.variable_font = pygame.font.Font(None, round(55 * RESOLUTION[0]/1280))
+        self.validate_button = Button()
         
     def get_surface(self):
         return self._surface

@@ -57,7 +57,7 @@ class Main_Window:
     def on_render(self):
         self.states[self.gameStateManager.get_state()].render(self._display_surface)
         pygame.display.update()
-        
+           
     def on_cleanup(self):
         pygame.quit()
         

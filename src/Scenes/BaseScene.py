@@ -59,6 +59,8 @@ class BaseScene:
                 screen.blit(element.get_surface(), element.get_rect())   
             if isinstance(element, Formula):
                 screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Set_of_formulas):
+                screen.blit(element.get_surface(), element.get_rect())   
             
 
             

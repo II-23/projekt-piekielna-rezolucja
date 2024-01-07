@@ -34,9 +34,9 @@ class GameplayScene(BaseScene):
         self.add_ui_element(self.start_screen_button)
         
         x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
-        set=Set_of_formulas((500,500), (500,300), x)
-        for x in set.tab:
-            self.add_ui_element(x)
+        set=Set_of_formulas((500,500), (500,150), x)
+        #for x in set.tab:
+        #    self.add_ui_element(x)
 
         #
         #self.selected=[Formula((25,25), (500,100), [1,1,0], 500, False),Formula((25,25), (800,100), [1,0,2], 500, False)]
@@ -46,6 +46,7 @@ class GameplayScene(BaseScene):
         self.add_ui_element(set)
         self.add_ui_element(set.selected[0])
         self.add_ui_element(set.selected[1])
+        self.add_ui_element(set.button)
         #    
 
 

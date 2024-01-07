@@ -1,4 +1,5 @@
 import pygame
+from Button import Button
 class Symbol(pygame.sprite.Sprite):
     def __init__(self, size, num, pos):
         self.state=0
@@ -119,7 +120,13 @@ class Formula(pygame.sprite.Sprite):
 
 class Set_of_formulas(pygame.sprite.Sprite):
     def __init__(self, size, pos, list):
-        self.selected=[Formula((25,25), (500,100), [1,1,0], 500, False),Formula((25,25), (800,100), [1,0,2], 500, False)]
+        self.selected=[Formula((25,25), (500,100), [1,1,0], 500, False),Formula((25,25), (800,100), [1,0,2], 500, True)]
+        #
+        self.button=Button((500,500), (100,100), self.button_clicked, "red", "green", "blue")
+        loaded_bar = pygame.image.load("./assets/slider_bar.png").convert_alpha()
+        self.surface=pygame.transform.scale(loaded_bar, size).convert_alpha()
+        self.set_rect = pygame.Rect(pos[0], pos[1], 500, 500)
+        #
         self.selected_index=[1,1]
         self.width=size[0]
         self.height=size[1]
@@ -129,8 +136,13 @@ class Set_of_formulas(pygame.sprite.Sprite):
         counter=0
         for i in range(len(list)):
            self.tab.append(Formula((25,25), (self.x, self.y+i*25), list[i][1], self.width, True))
+    def button_clicked(self, *args):
+        self.tab.append(Formula((25,25), (self.x, self.y+len(self.tab)*25), [1,1,-1], self.width, True))
     def render(self, screen):
-        pass
+        self.get_surface().fill((0,0,0,0))
+        for x in range(len(self.tab)):
+            self.tab[x].render(screen)
+            self.get_surface().blit(self.tab[x].get_surface(), (0,25*x))
     def update(self, mouse=pygame.mouse):
         if self.selected_index[0]!=-1:
             if self.tab[self.selected_index[0]].state!=3:
@@ -154,7 +166,15 @@ class Set_of_formulas(pygame.sprite.Sprite):
                     self.selected[1].tab=self.tab[x].tab
                 else:
                      self.tab[x].state=1
+        for x in self.tab:
+            x.update(mouse)
             
 
     def process_input(self, events, mouse, *args):
+        for x in self.tab:
+            x.process_input(events, mouse, *args)
         pass
+    def get_surface(self):
+        return self.surface
+    def get_rect(self):
+        return self.set_rect

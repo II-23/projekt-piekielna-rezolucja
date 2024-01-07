@@ -39,9 +39,9 @@ class Symbol(pygame.sprite.Sprite):
             self.surface = pygame.transform.scale(self.symbol[1], (self.width, self.height))
         
     def update(self, mouse_pos):
-        print("sranie")
+        pass
     def process_input(self, raz, dwa, trzy):
-        print("dupa")
+        pass
     def get_surface(self):
         return self.surface
     def get_rect(self):
@@ -49,7 +49,8 @@ class Symbol(pygame.sprite.Sprite):
     
 
 class Formula(pygame.sprite.Sprite):
-    def __init__(self, size, pos, list, width):
+    def __init__(self, size, pos, list, width, clickable):
+        self.clickable=clickable
         self.state=0
         self.width=size[0]
         self.height=size[1]
@@ -94,19 +95,19 @@ class Formula(pygame.sprite.Sprite):
         return self.x<pos[0]<self.x+self.width*12 and self.y<pos[1]<self.y+self.height
     def update(self, mouse=pygame.mouse):
         mouse_pos = (mouse.get_pos()[0], mouse.get_pos()[1])
-        if self.state==0 and self.cursor_over_formula(mouse_pos)==True:
+        if self.state==0 and self.cursor_over_formula(mouse_pos)==True and self.clickable:
             for element in self.tab:
                 element.state=1
             self.state=1
-        if self.state==1 and self.cursor_over_formula(mouse_pos)==False:
+        if self.state==1 and self.cursor_over_formula(mouse_pos)==False and self.clickable:
             for element in self.tab:
                 element.state=0
             self.state=0
     def process_input(self, events, mouse, *args):
         pos=mouse.get_pos()
         for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN and self.cursor_over_formula(pos):
-                if self.state!=2:
+            if event.type == pygame.MOUSEBUTTONDOWN and self.cursor_over_formula(pos) and self.clickable:
+                if self.state==1:
                     self.state=2
                 else:
                     self.state=1
@@ -118,6 +119,8 @@ class Formula(pygame.sprite.Sprite):
 
 class Set_of_formulas(pygame.sprite.Sprite):
     def __init__(self, size, pos, list):
+        self.selected=[Formula((25,25), (500,100), [1,1,0], 500, False),Formula((25,25), (800,100), [1,0,2], 500, False)]
+        self.selected_index=[1,1]
         self.width=size[0]
         self.height=size[1]
         self.x=pos[0]
@@ -125,4 +128,33 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.tab=[]
         counter=0
         for i in range(len(list)):
-           self.tab.append(Formula((25,25), (self.x, self.y+i*25), list[i][1], self.width))
+           self.tab.append(Formula((25,25), (self.x, self.y+i*25), list[i][1], self.width, True))
+    def render(self, screen):
+        pass
+    def update(self, mouse=pygame.mouse):
+        if self.selected_index[0]!=-1:
+            if self.tab[self.selected_index[0]].state!=3:
+                self.selected_index[0]=-1
+                self.selected[0].tab=[]
+                
+        if self.selected_index[1]!=-1:
+            if self.tab[self.selected_index[1]].state!=4:
+                self.selected_index[1]=-1
+                self.selected[1].tab=[]
+        for x in range(len(self.tab)):
+            
+            if self.tab[x].state==2:
+                if self.selected_index[0]==-1:
+                    self.tab[x].state=3
+                    self.selected_index[0]=x
+                    self.selected[0].tab=self.tab[x].tab
+                elif self.selected_index[1]==-1:
+                    self.tab[x].state=4
+                    self.selected_index[1]=x
+                    self.selected[1].tab=self.tab[x].tab
+                else:
+                     self.tab[x].state=1
+            
+
+    def process_input(self, events, mouse, *args):
+        pass

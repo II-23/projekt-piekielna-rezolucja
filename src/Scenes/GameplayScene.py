@@ -32,12 +32,21 @@ class GameplayScene(BaseScene):
         # creating button to go to start scene
         self.start_screen_button = setup_button(self.gameStateManager, 'start', (100, 300))
         self.add_ui_element(self.start_screen_button)
-        #self.add_ui_element(dupa)
+        
         x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
         set=Set_of_formulas((500,500), (500,300), x)
         for x in set.tab:
             self.add_ui_element(x)
-            
+
+        #
+        #self.selected=[Formula((25,25), (500,100), [1,1,0], 500, False),Formula((25,25), (800,100), [1,0,2], 500, False)]
+        #x=Formula((25,25), (100,100), [], 500)
+        #self.add_ui_element(self.selected[0])
+        #self.add_ui_element(self.selected[1])
+        self.add_ui_element(set)
+        self.add_ui_element(set.selected[0])
+        self.add_ui_element(set.selected[1])
+        #    
 
 
         '''for x in set.tab:

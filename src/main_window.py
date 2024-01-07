@@ -56,11 +56,6 @@ class Main_Window:
         
     def on_render(self):
         self.states[self.gameStateManager.get_state()].render(self._display_surface)
-        """for x in self.set.tab:
-            for y in x.tab:
-                #self._display_surface.blit(y.get_surface(), y.get_rect())
-                y.render()
-                #self._display_surface.blit(y.get_surface(), y.get_rect())   """
         pygame.display.update()
         
     def on_cleanup(self):

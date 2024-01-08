@@ -53,7 +53,7 @@ class Formula:
         return formula_copy
 
 
-class Set_Of_Formulas:
+class Generator:
     def __init__(self, size, max_variable_number):
         self.formulas = [] # stores the list of formulas
         self.size = size # how many formulas are there in the set
@@ -141,11 +141,11 @@ class Set_Of_Formulas:
 
 
 def generate(max_variable_number, formulas_number, max_len):
-    formulas = Set_Of_Formulas(formulas_number, max_variable_number)
+    formulas = Generator(formulas_number, max_variable_number)
     formulas.fill(max_len, max_variable_number)
     return formulas.get_list_of_lists()
 
-abc = Set_Of_Formulas(formulas_number, max_variable_number)   
+abc = Generator(formulas_number, max_variable_number)   
 abc.fill(max_len, max_variable_number)        
         
 print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")

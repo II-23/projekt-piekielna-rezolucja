@@ -3,7 +3,7 @@ from Scenes.BaseScene import BaseScene, setup_button
 from Slider import Slider_Bar
 from char import Symbol, Formula, Set_of_formulas
 from generator import *
-from mszwejda import Dupa
+from generator_new import Generator
 import pygame
 
 class GameplayScene(BaseScene):
@@ -37,7 +37,7 @@ class GameplayScene(BaseScene):
         x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
 
         #
-        abc = Dupa(5, 6)   
+        abc = Generator(5, 6)   
         abc.fill(5, 6)
         y=abc.formulas
         #

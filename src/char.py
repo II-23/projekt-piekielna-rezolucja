@@ -130,7 +130,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         #once we start fixing layout of stuff on the screen, line below needs to use variables passed from init.
         #for now it acts as placeholder
         self.selected=[Formula((25,25), (500,100), [], 500, False),Formula((25,25), (800,100), [], 500, True)]
-        self.button=Button((500,500), (100,100), self.button_clicked, "red", "green", "blue")
+        self.button=Button((500,120), (100,20), self.button_clicked, "red", "green", "blue")
         loaded_bar = pygame.image.load("./assets/slider_bar.png").convert_alpha()
         self.surface=pygame.transform.scale(loaded_bar, size).convert_alpha()
         self.set_rect = pygame.Rect(pos[0], pos[1], 500, 500)
@@ -142,7 +142,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.tab=[]
         #adding formulas given by the generator. Still uses generator prototype.
         for i in range(len(list)):
-           self.tab.append(Formula((25,25), (self.x, self.y+i*25), list[i][1], self.width, True))
+           self.tab.append(Formula((25,25), (self.x, self.y+i*25), list[i].variables, self.width, True))
     def button_clicked(self, *args):
         #if player selected less than 2 formulas
         if self.selected[0].tab==[] or self.selected[1].tab==[]:
@@ -153,6 +153,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
             q3=[]
             x=len(q1)
             check=-1
+            tautology_safeguard=0
             for i in range(x):
                 if (q1[i]==1 and q2[i]==-1) or (q1[i]==-1 and q2[i]==1):
                     if check==-1:
@@ -161,10 +162,12 @@ class Set_of_formulas(pygame.sprite.Sprite):
                         #this triggers if there are two variables that could be resolved by. My code currently doesnt have a way
                         #to store + and - on the same var, it could be 2 in the future if we decide to let the user do it anyway
                         print("głupota")
+                        tautology_safeguard=1
+
             if check==-1:
                 #if there is no variable to resolve by
                 print("głupota")
-            else:
+            elif tautology_safeguard==0:
                 #proceeds to make a new list according to rules.
                 for i in range(x):
                     if i==check:

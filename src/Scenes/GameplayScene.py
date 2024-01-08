@@ -3,6 +3,7 @@ from Scenes.BaseScene import BaseScene, setup_button
 from Slider import Slider_Bar
 from char import Symbol, Formula, Set_of_formulas
 from generator import *
+from mszwejda import Dupa
 import pygame
 
 class GameplayScene(BaseScene):
@@ -34,7 +35,14 @@ class GameplayScene(BaseScene):
         self.add_ui_element(self.start_screen_button)
         
         x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
-        set=Set_of_formulas((500,500), (500,150), x)
+
+        #
+        abc = Dupa(5, 6)   
+        abc.fill(5, 6)
+        y=abc.formulas
+        #
+
+        set=Set_of_formulas((500,500), (500,150), y)
         self.add_ui_element(set)
         self.add_ui_element(set.selected[0])
         self.add_ui_element(set.selected[1])

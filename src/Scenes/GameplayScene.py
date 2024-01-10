@@ -6,6 +6,7 @@ from Formulas.FormulaSet import Set_of_formulas
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 import pygame
+from game_over import Game_over_window
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
@@ -46,4 +47,6 @@ class GameplayScene(BaseScene):
         self.add_ui_element(formula_set.selected[0])
         self.add_ui_element(formula_set.selected[1])
         self.add_ui_element(formula_set.button)
+        scorescreen=Game_over_window((500,500),(200,200),1, formula_set)
+        self.add_ui_element(scorescreen)
         #    

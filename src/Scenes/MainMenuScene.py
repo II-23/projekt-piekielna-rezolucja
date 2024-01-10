@@ -10,6 +10,7 @@ class MainMenuScene(BaseScene):
         piwo_img = pygame.image.load("./assets/piwo.png")
         # button for going to da GAME
         self.gameplay_screen_button = setup_button(self.gameStateManager, 'level', (100, 100))
+        self.gameplay_screen_button.init_text(text='Start Button')
         # adding elements to start scene
         self.add_ui_element(self.gameplay_screen_button)
         self.add_background_image(piwo_img)

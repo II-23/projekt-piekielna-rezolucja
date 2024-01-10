@@ -6,6 +6,7 @@ from gamestatemanager import GameStateManager
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
+from Scenes.GameplayIntroScene import GameplayIntroScene
 
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
@@ -26,7 +27,8 @@ class Main_Window:
         # buttons/sliders/whatever check out .py files of these scenes (and BaseScene) here and take inspirations.  
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.states = {'start':self.start, 'level':self.level}
+        self.gameplay_intro = GameplayIntroScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.states = {'start':self.start, 'level':self.level, 'gp_intro':self.gameplay_intro}
         
     def on_event(self, event):
         button_clicks = []

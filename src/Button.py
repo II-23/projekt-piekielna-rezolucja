@@ -30,8 +30,11 @@ class Button():
         self.text_color = color
         self.font = pygame.font.Font(font, text_size)
         self.text_printing_format = self.wrap_text(self.text_str)
-        print(self.text_printing_format)
-        #print(f'TYPE FONT: {self.font}')
+        self.page = 0
+        for t in self.text_printing_format:
+            print(t)
+        print(f'len: {len(self.text_printing_format)}')
+        print(self.text_printing_format[0])
         self.text = self.font.render(self.text_str, True, self.text_color)   
     
     def cursor_over_button(self, mouse):
@@ -50,7 +53,7 @@ class Button():
         if self.text is not None:
             #y_offset = 0
             t_y = self.position[1]+self.size[1]*self.text_margin
-            for line in self.text_printing_format:
+            for line in self.text_printing_format[self.page]:
                 fw, fh = self.font.size(line)
                 text_line = self.font.render(line, True, self.text_color)
                 screen.blit(text_line, (self.position[0]*(1+self.text_margin), t_y))
@@ -91,16 +94,30 @@ class Button():
     def wrap_text(self, text_to_wrap):
         words = text_to_wrap.split()
         allowed_width = self.size[0]*(1-self.text_margin*2)
+        allowed_height = self.size[1]*(1-self.text_margin*2)
+        print(f'allowed height: {allowed_height}')
+        pages = []
         lines = []
+        fw, fh = self.font.size(' '.join('test'))
+        current_text_height = 0
         while len(words) > 0:
             new_line = []
             while len(words) > 0:
                 new_line.append(words.pop(0))
-                print(f'TYPE FONT: {self.font}')
                 fw, fh = self.font.size(' '.join(new_line + words[:1]))
                 if fw > allowed_width:
                     break
             line = ' '.join(new_line)
+            current_text_height += fh
             lines.append(line)
-        return lines
+            # if text will go out of the button it will be split into pages 
+            if current_text_height + fh > allowed_height:
+                print(f'current height: {current_text_height}')
+                print(lines)
+                current_text_height = 0
+                pages.append(lines)
+                lines = []
+        if len(pages) == 0: # this handle the case if there's only one page of text
+            pages.append(lines)
+        return pages
             

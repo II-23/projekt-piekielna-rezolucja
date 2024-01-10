@@ -6,7 +6,13 @@ from gamestatemanager import GameStateManager
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
+from Utils.Slider import *
+from Formulas.Formula import *
+from Formulas.FormulaSet import *
+from Config.definitnios import ASSETS_DIR
 
+GAME_TITLE = "Piekielna rezolucja 3"
+GAME_LOGO = pygame.image.load(ASSETS_DIR + "/placeholder_logo.png")
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
 SLIDER_SIZE = (220, 70)
@@ -27,7 +33,6 @@ class Main_Window:
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.states = {'start':self.start, 'level':self.level}
-        
     def on_event(self, event):
         button_clicks = []
         match event.type:
@@ -40,7 +45,7 @@ class Main_Window:
     def on_render(self):
         self.states[self.gameStateManager.get_state()].render(self._display_surface)
         pygame.display.update()
-        
+           
     def on_cleanup(self):
         pygame.quit()
         
@@ -56,5 +61,8 @@ class Main_Window:
         self.on_cleanup()
 
 if __name__ == "__main__":
+    
+    pygame.display.set_caption(GAME_TITLE)
+    pygame.display.set_icon(GAME_LOGO)
     app = Main_Window(RESOLUTION)
     app.on_execute()

@@ -1,6 +1,8 @@
 # AD     
-from Button import Button
-from Slider import Slider_Bar
+from Utils.Button import Button
+from Utils.Slider import Slider_Bar
+from Formulas.Formula import Symbol, Formula
+from Formulas.FormulaSet import Set_of_formulas
 import pygame
 
 BLACK = (0, 0, 0)
@@ -53,7 +55,15 @@ class BaseScene:
             # If your class that displays something needs some blit(), put it here just like this one
             # If you need to give it some more parameters or something, give me a call (message, don't call me)
             if isinstance(element, Slider_Bar):
-                screen.blit(element.get_surface(), (screen.get_width() - element.get_surface().get_width(), 0))   
+                screen.blit(element.get_surface(), (screen.get_width() - element.get_surface().get_width(), 0))  
+            if isinstance(element, Symbol):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Formula):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Set_of_formulas):
+                screen.blit(element.get_surface(), element.get_rect())   
+            
+
             
     def render(self, screen):
         self.display.fill(self.background_color)

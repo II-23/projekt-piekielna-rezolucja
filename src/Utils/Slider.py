@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from enum import Enum
+from Config.definitnios import ASSETS_DIR
 #from main_window import RESOLUTION
 
 pygame.font.init()
@@ -21,7 +22,7 @@ class Status(Enum):
 class Slider_Bar(pygame.sprite.Sprite):
     def __init__(self, size):
         self.size = self.width, self.height = size
-        loaded_bar = pygame.image.load("./assets/slider_bar.png").convert_alpha()
+        loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self._surface = pygame.transform.scale(loaded_bar, size)
         self.sliders = []
         self.variable_dict = {}

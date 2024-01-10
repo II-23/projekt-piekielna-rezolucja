@@ -11,6 +11,13 @@ class Symbol_Type(Enum):
     NEGATION = 2
     VARIABLE = 3
 
+class Formula_State(Enum):
+    DEFAULT = 0
+    HOVER = 1
+    CLICKED_NOT_ASSIGNED = 2
+    CLICKED_SLOT_1 = 3
+    CLICKED_SLOT_2 = 4
+
 #If type is Symbol_Type.VARIABLE, then kwarg variable_index must be specified
 class Symbol(pygame.sprite.Sprite):
     def __init__(self, size, type, pos, **kwargs):
@@ -51,13 +58,13 @@ class Symbol(pygame.sprite.Sprite):
 class Formula(pygame.sprite.Sprite):
     def __init__(self, size, pos, list_of_formulas, width, clickable):
         self.clickable=clickable
-        self.state=0
+        self.state=Formula_State.DEFAULT
         self.width=size[0]
         self.height=size[1]
         self.x=pos[0]
         self.y=pos[1]
         self.max_width=width
-        self.tab=[]
+        self.symbols=[]
         self.surface = pygame.surface.Surface((self.width*12, self.height)).convert_alpha()
         
         self.content=list_of_formulas
@@ -67,24 +74,24 @@ class Formula(pygame.sprite.Sprite):
         counter=0
         for i in range(len(list_of_formulas)):
             if list_of_formulas[i]==1:
-                if len(self.tab)>0:
-                    self.tab.append(Symbol((self.width, self.height), Symbol_Type.ALTERNATIVE, (pos[0]+counter*self.width, pos[1])))
+                if len(self.symbols)>0:
+                    self.symbols.append(Symbol((self.width, self.height), Symbol_Type.ALTERNATIVE, (pos[0]+counter*self.width, pos[1])))
                     counter+=1
-                self.tab.append(Symbol((self.width, self.height), Symbol_Type.VARIABLE, (pos[0]+counter*self.width, pos[1]), variable_index=i))
+                self.symbols.append(Symbol((self.width, self.height), Symbol_Type.VARIABLE, (pos[0]+counter*self.width, pos[1]), variable_index=i))
                 counter=counter+1
             if list_of_formulas[i]==-1:
-                if len(self.tab)>0:
-                    self.tab.append(Symbol((self.width, self.height), Symbol_Type.ALTERNATIVE, (pos[0]+counter*self.width, pos[1])))
+                if len(self.symbols)>0:
+                    self.symbols.append(Symbol((self.width, self.height), Symbol_Type.ALTERNATIVE, (pos[0]+counter*self.width, pos[1])))
                     counter+=1
-                self.tab.append(Symbol((self.width, self.height), Symbol_Type.NEGATION, (pos[0]+counter*self.width, pos[1])))
+                self.symbols.append(Symbol((self.width, self.height), Symbol_Type.NEGATION, (pos[0]+counter*self.width, pos[1])))
                 counter=counter+1
-                self.tab.append(Symbol((self.width, self.height), Symbol_Type.VARIABLE, (pos[0]+counter*self.width, pos[1]), variable_index=i))
+                self.symbols.append(Symbol((self.width, self.height), Symbol_Type.VARIABLE, (pos[0]+counter*self.width, pos[1]), variable_index=i))
                 counter=counter+1
     def render(self, screen):
         #fill with transparent and blit all of the symbols stored in "tab"
         self.get_surface().fill((0,0,0,0))
         i=0
-        for symbol in self.tab:
+        for symbol in self.symbols:
             symbol.render(screen)
             self.get_surface().blit(symbol.get_surface(), (i*self.width,0))
             i+=1
@@ -96,25 +103,25 @@ class Formula(pygame.sprite.Sprite):
         #used to cause bug where formulas hovered and clicked would act like not hovered, not clicked.
         #bugs sometimes. Plz review, i have no idea what goes wrong.
         mouse_pos = (mouse.get_pos()[0], mouse.get_pos()[1])
-        if self.state==1 and self.cursor_over_formula(mouse_pos)==False and self.clickable:
-            for element in self.tab:
+        if self.state==Formula_State.HOVER and self.cursor_over_formula(mouse_pos)==False and self.clickable:
+            for element in self.symbols:
                 element.state=0
-            self.state=0
+            self.state=Formula_State.DEFAULT
 
-        if self.state==0 and self.cursor_over_formula(mouse_pos)==True and self.clickable:
-            for element in self.tab:
+        if self.state==Formula_State.DEFAULT and self.cursor_over_formula(mouse_pos)==True and self.clickable:
+            for element in self.symbols:
                 element.state=1
-            self.state=1
+            self.state=Formula_State.HOVER
         
     def process_input(self, events, mouse, *args):
         #if formula is clicked it checks if it is hovered. If so, it is now clicked. if not, it is now hovered.
         pos=mouse.get_pos()
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and self.cursor_over_formula(pos) and self.clickable:
-                if self.state==1:
-                    self.state=2
+                if self.state==Formula_State.HOVER:
+                    self.state=Formula_State.CLICKED_NOT_ASSIGNED
                 else:
-                    self.state=1
+                    self.state=Formula_State.HOVER
     def get_surface(self):
         return self.surface
     def get_rect(self):

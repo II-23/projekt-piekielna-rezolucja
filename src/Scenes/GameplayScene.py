@@ -1,9 +1,10 @@
 # AD     
 from Scenes.BaseScene import BaseScene, setup_button
-from Slider import Slider_Bar
-from char import Symbol, Formula, Set_of_formulas
-from generator import *
-from generator_new import Generator
+from Utils.Slider import Slider_Bar
+from Formulas.Formula import Symbol, Formula
+from Formulas.FormulaSet import Set_of_formulas
+from Formulas.FormulaGenerator import *
+from Config.definitnios import ASSETS_DIR
 import pygame
 
 class GameplayScene(BaseScene):
@@ -12,7 +13,7 @@ class GameplayScene(BaseScene):
         '''Here you will learn how to add things to your scene. It's simple. Create the object and set its parameters so it fits your needs.
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
         '''
-        paper_sheet = pygame.image.load("./assets/papersheet.jpg")
+        paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
         paper_sheet = pygame.transform.rotate(paper_sheet, 90)
         paper_height = paper_sheet.get_height()
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
@@ -34,17 +35,15 @@ class GameplayScene(BaseScene):
         self.start_screen_button = setup_button(self.gameStateManager, 'start', (100, 300))
         self.add_ui_element(self.start_screen_button)
         
-        x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
-
         #
-        abc = Generator(5, 6)   
-        abc.fill(5, 6)
-        y=abc.formulas
+        formula_generator = Generator(5, 6)   
+        formula_generator.fill(5, 6)
+        formulas=abc.formulas
         #
 
-        set=Set_of_formulas((500,500), (500,150), y)
-        self.add_ui_element(set)
-        self.add_ui_element(set.selected[0])
-        self.add_ui_element(set.selected[1])
-        self.add_ui_element(set.button)
+        formula_set=Set_of_formulas((500,500), (500,150), formulas)
+        self.add_ui_element(formula_set)
+        self.add_ui_element(formula_set.selected[0])
+        self.add_ui_element(formula_set.selected[1])
+        self.add_ui_element(formula_set.button)
         #    

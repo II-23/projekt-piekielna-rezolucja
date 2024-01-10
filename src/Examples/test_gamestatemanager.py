@@ -1,6 +1,6 @@
 import pygame
 from gamestatemanager import *
-from Button import Button
+from Utils.Button import Button
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
@@ -17,12 +17,12 @@ clock = pygame.time.Clock()
 # This is example of preprocessing a background image,
 # you should do this in your Scene class, in __init__(), in order to not 
 # pollute main_window.py 
-paper_sheet = pygame.image.load("./assets/papersheet.jpg")
+paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
 paper_sheet = pygame.transform.rotate(paper_sheet, 90)
 paper_height = paper_sheet.get_height()
 paper_sheet = pygame.transform.scale_by(paper_sheet, height/paper_height)
 
-piwo_img = pygame.image.load("./assets/piwo.png")
+piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
 
 # creating scenes and scene manager
 gameStateManager = GameStateManager('start')

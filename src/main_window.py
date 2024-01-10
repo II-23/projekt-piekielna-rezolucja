@@ -6,12 +6,13 @@ from gamestatemanager import GameStateManager
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
-from Slider import *
-from char import *
-from generator import *
+from Utils.Slider import *
+from Formulas.Formula import *
+from Formulas.FormulaSet import *
+from Config.definitnios import ASSETS_DIR
 
 GAME_TITLE = "Piekielna rezolucja 3"
-GAME_LOGO = pygame.image.load("./assets/placeholder_logo.png")
+GAME_LOGO = pygame.image.load(ASSETS_DIR + "/placeholder_logo.png")
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
 SLIDER_SIZE = (220, 70)
@@ -33,7 +34,7 @@ class Main_Window:
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.states = {'start':self.start, 'level':self.level}
         
-        self.paper_sheet = pygame.image.load("./assets/papersheet.jpg")
+        self.paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
         self.paper_sheet = pygame.transform.rotate(self.paper_sheet, 90)
         paper_height = self.paper_sheet.get_height()
         self.paper_sheet = pygame.transform.scale_by(self.paper_sheet, self.height/paper_height)

@@ -1,7 +1,8 @@
 # AD     
-from Button import Button
-from Slider import Slider_Bar
-from char import Symbol, Formula, Set_of_formulas
+from Utils.Button import Button
+from Utils.Slider import Slider_Bar
+from Formulas.Formula import Symbol, Formula
+from Formulas.FormulaSet import Set_of_formulas
 import pygame
 
 BLACK = (0, 0, 0)

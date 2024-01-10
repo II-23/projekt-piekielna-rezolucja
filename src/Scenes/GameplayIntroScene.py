@@ -20,10 +20,16 @@ class GameplayIntroScene(BaseScene):
         Wielu ludzi pyta mnie o to samo: ale jak ty to robisz, skąd czerpiesz tę radość? A ja odpowiadam, że to proste!\
         To umiłowanie życia. To właśnie ono sprawia, że dzisiaj na przykład buduję maszyny, a jutro - kto wie? Dlaczego by nie - oddam się pracy społecznej i będę, ot, choćby, sadzić... doć— m-marchew... '
         
-        def foo(args):
-            print('clicky')
         col = (255, 135, 135)
         tw_size = (800, 250)
-        self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2, 460), tw_size, foo, col, col, col)
+        self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2, 460), tw_size, None, col, col, col)
         self.text_window.init_text(font=None, text_size=32, color=(42, 62, 115), text=intro_text)
+        def foo(args):
+            self.text_window.text_next_page()
+            print('next page!')
+        self.text_window.on_click_event = foo
         self.add_ui_element(self.text_window)
+        
+        self.gp_scene_button = setup_button(gameStateManager, 'level', (1050, 610))
+        self.gp_scene_button.init_text(font=None, color=(255, 77, 131), text='Play!')
+        self.add_ui_element(self.gp_scene_button)

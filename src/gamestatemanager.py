@@ -1,4 +1,3 @@
-# AD     
 import pygame
 
 class GameStateManager:

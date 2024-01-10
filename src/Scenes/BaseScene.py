@@ -1,4 +1,3 @@
-# AD     
 from Button import Button
 from Slider import Slider_Bar
 import pygame

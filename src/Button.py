@@ -23,6 +23,8 @@ class Button():
         self.font = None
         self.text_margin = 0.1
         self.text_printing_format = None
+        self.page = 0
+        self.max_page = 0
         
     def init_text(self, font=None, text_size=32, color=(0, 255, 0), text='2137'): 
         #print(f'doing the init:))')
@@ -30,11 +32,11 @@ class Button():
         self.text_color = color
         self.font = pygame.font.Font(font, text_size)
         self.text_printing_format = self.wrap_text(self.text_str)
-        self.page = 0
-        for t in self.text_printing_format:
-            print(t)
-        print(f'len: {len(self.text_printing_format)}')
-        print(self.text_printing_format[0])
+        self.max_page = len(self.text_printing_format)-1
+        # for t in self.text_printing_format:
+        #     print(t)
+        # print(f'len: {len(self.text_printing_format)}')
+        # print(self.text_printing_format[0])
         self.text = self.font.render(self.text_str, True, self.text_color)   
     
     def cursor_over_button(self, mouse):
@@ -95,7 +97,7 @@ class Button():
         words = text_to_wrap.split()
         allowed_width = self.size[0]*(1-self.text_margin*2)
         allowed_height = self.size[1]*(1-self.text_margin*2)
-        print(f'allowed height: {allowed_height}')
+        #print(f'allowed height: {allowed_height}')
         pages = []
         lines = []
         fw, fh = self.font.size(' '.join('test'))
@@ -112,12 +114,17 @@ class Button():
             lines.append(line)
             # if text will go out of the button it will be split into pages 
             if current_text_height + fh > allowed_height:
-                print(f'current height: {current_text_height}')
-                print(lines)
+                #print(f'current height: {current_text_height}')
+                #print(lines)
                 current_text_height = 0
                 pages.append(lines)
                 lines = []
         if len(pages) == 0: # this handle the case if there's only one page of text
             pages.append(lines)
         return pages
+    
+    def text_next_page(self):
+        self.page += 1
+        if self.page > self.max_page:
+            self.page = 0
             

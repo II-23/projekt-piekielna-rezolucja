@@ -1,11 +1,10 @@
-# AD     
 from Scenes.BaseScene import BaseScene, setup_button, Button
 from Slider import Slider_Bar
 import pygame
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
-        BaseScene.__init__(self,display=display,gameStateManager=gameStateManager, background_color=background_color)
+        BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''Here you will learn how to add things to your scene. It's simple. Create the object and set its parameters so it fits your needs.
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
         '''

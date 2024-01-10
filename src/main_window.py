@@ -33,19 +33,6 @@ class Main_Window:
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.states = {'start':self.start, 'level':self.level}
-        
-        self.paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
-        self.paper_sheet = pygame.transform.rotate(self.paper_sheet, 90)
-        paper_height = self.paper_sheet.get_height()
-        self.paper_sheet = pygame.transform.scale_by(self.paper_sheet, self.height/paper_height)
-        #tutaj
-        #!x=generate(max_variable_number, formulas_number, max_len, formula_choice_modifier)
-        #!self.set=Set_of_formulas((500,500), (500,300), x)
-    def on_init(self):
-        self._display_surface.fill(GRAY_COLOR)
-        self._display_surface.blit(self.paper_sheet, (self.width * 0.5 - 0.5 * self.paper_sheet.get_width(), 0))
-        self.slider_bar_rect = self._display_surface.blit(self.slider_bar.get_surface(), (self.width - self.slider_bar.get_surface().get_width(), 0))
-        self.slider_bar.set_parent_rect(self.slider_bar_rect)
     def on_event(self, event):
         button_clicks = []
         match event.type:

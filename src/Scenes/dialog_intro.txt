@@ -1,0 +1,12 @@
+Left:
+Jak to jest być skrybą, dobrze?
+Right:
+Dobrze:
+Left:
+Cooo, to crazy!!!
+Right:
+Co nie? dziwne
+Left: 
+bardzo dziwne
+Right:
+i w dodatku głupie

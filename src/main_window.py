@@ -10,10 +10,10 @@ from Utils.Slider import *
 from Formulas.Formula import *
 from Formulas.FormulaSet import *
 from Config.definitnios import ASSETS_DIR
+from Config.graphics import RESOLUTION
 
 GAME_TITLE = "Piekielna rezolucja 3"
 GAME_LOGO = pygame.image.load(ASSETS_DIR + "/placeholder_logo.png")
-RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
 SLIDER_SIZE = (220, 70)
 

@@ -1,6 +1,7 @@
 # AD     
 from Utils.Button import Button
 from Utils.Slider import Slider_Bar
+from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
 from Formulas.Formula import Symbol, Formula
 from Formulas.FormulaSet import Set_of_formulas
 import pygame
@@ -61,6 +62,8 @@ class BaseScene:
             if isinstance(element, Formula):
                 screen.blit(element.get_surface(), element.get_rect())   
             if isinstance(element, Set_of_formulas):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, PiekielnaRezolucjaLogo):
                 screen.blit(element.get_surface(), element.get_rect())   
             
 

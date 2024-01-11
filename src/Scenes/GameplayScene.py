@@ -5,6 +5,7 @@ from Formulas.Formula import Symbol, Formula
 from Formulas.FormulaSet import Set_of_formulas
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
+from Utils.ResolutionButton import ResolutionButton
 import pygame
 
 class GameplayScene(BaseScene):
@@ -42,8 +43,10 @@ class GameplayScene(BaseScene):
         #
 
         formula_set=Set_of_formulas((500,500), (500,150), formulas)
+
         self.add_ui_element(formula_set)
         self.add_ui_element(formula_set.selected[0])
         self.add_ui_element(formula_set.selected[1])
         self.add_ui_element(formula_set.button)
+
         #    

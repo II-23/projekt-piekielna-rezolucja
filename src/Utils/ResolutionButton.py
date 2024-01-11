@@ -11,27 +11,37 @@ class ResolutionButton(Button, pygame.sprite.Sprite):
         FRAME_PATH = os.path.join(ASSETS_DIR, "resolution_button_frames")
         FRAME_UPDATE_RATE = 0.05
         self.gif_player = GifPlayer(FRAME_PATH, FRAME_UPDATE_RATE)
-        self.is_visible = False
+        self.is_flamed = False
         self.size = self.gif_player.get_surface().get_size()
+        self.not_flamed_surface = pygame.image.load(os.path.join(ASSETS_DIR, "resolution_button_without_flames.gif"))
+        self.flames_alpha = 0
         Button.__init__(self, position, self.size, on_click_event, COLOR_PLACEHOLDER, COLOR_PLACEHOLDER, COLOR_PLACEHOLDER)
     
-    def make_visible(self):
-        self.is_visible = True
+    def make_flamed(self):
+        self.is_flamed = True
 
-    def make_not_visible(self):
-        self.is_visible = False
+    def make_not_flamed(self):
+        self.is_flamed = False
 
     def update(self, mouse):
         Button.update(self, mouse)
         self.gif_player.update(mouse)
 
     def render(self, screen):
-        if (self.is_visible):
-            screen.blit(self.get_surface(), self.get_rect())
+        screen.blit(self.get_surface(), self.get_rect())
 
     def get_surface(self):
-        return self.gif_player.get_surface()
-    
+        return_surface = self.not_flamed_surface.copy().convert_alpha()
+        flames = self.gif_player.get_surface()
+        if self.is_flamed:
+            self.flames_alpha = min(255, self.flames_alpha + 20)
+        else:
+            self.flames_alpha = max(0, self.flames_alpha - 20)
+        flames.set_alpha(self.flames_alpha)
+        return_surface.blit(flames, (0,0))
+        return return_surface
+        return_surface.blit(flame)
+
     def get_rect(self):
         return pygame.Rect(*self.position, *self.size)
 

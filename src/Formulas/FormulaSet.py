@@ -16,6 +16,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self.surface=pygame.transform.scale(loaded_bar, size).convert_alpha()
         self.set_rect = pygame.Rect(pos[0], pos[1], 500, 500)
+
         self.selected_index=[1,1]
         self.width=size[0]
         self.height=size[1]
@@ -105,9 +106,9 @@ class Set_of_formulas(pygame.sprite.Sprite):
                 else:
                      self.formulas[x].state=Formula_State.DEFAULT
         if (self.selected_index[0] != -1 and self.selected_index[1] != -1):
-            self.button.make_visible()
+            self.button.make_flamed()
         else:
-            self.button.make_not_visible()
+            self.button.make_not_flamed()
         for x in self.formulas:
             x.update(mouse)
 

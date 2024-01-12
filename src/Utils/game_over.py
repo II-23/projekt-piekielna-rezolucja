@@ -1,5 +1,5 @@
 import pygame
-from Button import Button
+from Utils.Button import Button
 
 class Game_over_window:
     def __init__(self, pos, size, result, set):
@@ -15,10 +15,8 @@ class Game_over_window:
     def render(self, screen):
         if self.set.state==1:
             self.surface.fill((100,0,0))
-            #print("dupa")
         if self.set.state==0:
             self.get_surface().fill((0,0,0,0))
-            #print("sranie")
         
     def update(self, mouse_pos):
         pass

@@ -4,8 +4,8 @@ from Utils.Slider import Slider_Bar
 from Formulas.Formula import Symbol, Formula
 from Formulas.FormulaSet import Set_of_formulas
 import pygame
-from game_over import Game_over_window
-from clock import Clock
+from Utils.game_over import Game_over_window
+from Utils.clock import Clock
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

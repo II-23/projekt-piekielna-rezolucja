@@ -6,8 +6,8 @@ from Formulas.FormulaSet import Set_of_formulas
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 import pygame
-from game_over import Game_over_window
-from clock import Clock
+from Utils.game_over import Game_over_window
+from Utils.clock import Clock
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):

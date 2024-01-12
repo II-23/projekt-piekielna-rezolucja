@@ -23,6 +23,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.x=pos[0]
         self.y=pos[1]
         self.formulas=[]
+        self.state=0
         #adding formulas given by the generator. Still uses generator prototype.
         for i in range(len(list_of_formulas)):
            self.formulas.append(Formula((25,25), (self.x, self.y+i*25), list_of_formulas[i].variables, self.width, True))
@@ -74,6 +75,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
                         x.state=Formula_State.HOVER
                 else:
                     print("znaleziono sprzeczność")
+                    self.state=1
     def render(self, screen):
         #fills with transparent and blits formulas
         self.get_surface().fill((0,0,0,0))
@@ -82,6 +84,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
             self.get_surface().blit(self.formulas[x].get_surface(), (0,25*x))
 
     def update(self, mouse=pygame.mouse):
+        self.selected[0].state=Formula_State.CLICKED_NOT_ASSIGNED
+        self.selected[1].state=Formula_State.CLICKED_NOT_ASSIGNED
         #likely cause of bugs with formula state lol.
         #if formula that is indicated to be selected for a slot(selected index) has been unclicked, it clears selected_index and selected
         if self.selected_index[0]!=-1:

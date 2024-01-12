@@ -1,6 +1,6 @@
 from random import *
 
-CHANCE_FOR_SATISFIABLE = 100 # as a percentage
+CHANCE_FOR_SATISFIABLE = 0 # as a percentage
 
 max_variable_number= 5
 formulas_number=5 # has to be at least 2

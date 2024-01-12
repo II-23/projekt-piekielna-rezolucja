@@ -5,6 +5,8 @@ from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
 from Formulas.Formula import Symbol, Formula
 from Formulas.FormulaSet import Set_of_formulas
 import pygame
+from Utils.game_over import Game_over_window
+from Utils.clock import Clock
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -64,6 +66,10 @@ class BaseScene:
             if isinstance(element, Set_of_formulas):
                 screen.blit(element.get_surface(), element.get_rect())   
             if isinstance(element, PiekielnaRezolucjaLogo):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Game_over_window):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Clock):
                 screen.blit(element.get_surface(), element.get_rect())   
             
 

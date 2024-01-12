@@ -37,12 +37,12 @@ class Symbol(pygame.sprite.Sprite):
         
         self.surface = pygame.transform.scale(self.symbol[0], (self.width, self.height))
         self.symbol_rect = pygame.Rect(self.x, self.y, self.width, self.height)
-    def render(self, screen):
-        if self.state==0:
+    def render(self, screen, state):
+        if state==0:
             self.surface = pygame.transform.scale(self.symbol[0], (self.width, self.height))
-        if self.state==1:
+        if state==1:
             self.surface = pygame.transform.scale(self.symbol[1], (self.width, self.height))
-        if self.state==2:
+        if state==2:
             self.surface = pygame.transform.scale(self.symbol[1], (self.width, self.height))
         
     def update(self, mouse_pos):
@@ -92,7 +92,12 @@ class Formula(pygame.sprite.Sprite):
         self.get_surface().fill((0,0,0,0))
         i=0
         for symbol in self.symbols:
-            symbol.render(screen)
+            if self.state==Formula_State.DEFAULT:
+                symbol.render(screen,0)
+            if self.state==Formula_State.HOVER:  
+                symbol.render(screen,1)
+            if self.state==Formula_State.CLICKED_NOT_ASSIGNED or self.state==Formula_State.CLICKED_SLOT_1 or self.state==Formula_State.CLICKED_SLOT_2:
+                symbol.render(screen,2)
             self.get_surface().blit(symbol.get_surface(), (i*self.width,0))
             i+=1
     def cursor_over_formula(self, pos):
@@ -103,7 +108,7 @@ class Formula(pygame.sprite.Sprite):
         #used to cause bug where formulas hovered and clicked would act like not hovered, not clicked.
         #bugs sometimes. Plz review, i have no idea what goes wrong.
         mouse_pos = (mouse.get_pos()[0], mouse.get_pos()[1])
-        if self.state==Formula_State.HOVER and self.cursor_over_formula(mouse_pos)==False and self.clickable:
+        '''if self.state==Formula_State.HOVER and self.cursor_over_formula(mouse_pos)==False and self.clickable:
             for element in self.symbols:
                 element.state=0
             self.state=Formula_State.DEFAULT
@@ -111,7 +116,11 @@ class Formula(pygame.sprite.Sprite):
         if self.state==Formula_State.DEFAULT and self.cursor_over_formula(mouse_pos)==True and self.clickable:
             for element in self.symbols:
                 element.state=1
+            self.state=Formula_State.HOVER'''
+        if self.cursor_over_formula(mouse_pos)==True and self.state==Formula_State.DEFAULT:
             self.state=Formula_State.HOVER
+        if self.state==Formula_State.HOVER and self.cursor_over_formula(mouse_pos)==False:
+            self.state=Formula_State.DEFAULT
         
     def process_input(self, events, mouse, *args):
         #if formula is clicked it checks if it is hovered. If so, it is now clicked. if not, it is now hovered.

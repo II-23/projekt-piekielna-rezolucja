@@ -22,7 +22,6 @@ class Formula_State(Enum):
 class Symbol(pygame.sprite.Sprite):
     def __init__(self, size, type, pos, **kwargs):
         self.state=0
-        self.state=0
         self.width = size[0]
         self.height = size[1]
         self.x=pos[0]
@@ -96,7 +95,6 @@ class Formula(pygame.sprite.Sprite):
             if self.state==Formula_State.DEFAULT:
                 symbol.render(screen,0)
             if self.state==Formula_State.HOVER:  
-                print("dupa")
                 symbol.render(screen,1)
             if self.state==Formula_State.CLICKED_NOT_ASSIGNED or self.state==Formula_State.CLICKED_SLOT_1 or self.state==Formula_State.CLICKED_SLOT_2:
                 symbol.render(screen,2)
@@ -120,7 +118,6 @@ class Formula(pygame.sprite.Sprite):
                 element.state=1
             self.state=Formula_State.HOVER'''
         if self.cursor_over_formula(mouse_pos)==True and self.state==Formula_State.DEFAULT:
-            print("dupa2")
             self.state=Formula_State.HOVER
         if self.state==Formula_State.HOVER and self.cursor_over_formula(mouse_pos)==False:
             self.state=Formula_State.DEFAULT

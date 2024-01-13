@@ -3,16 +3,20 @@ from Utils.Button import Button
 from Formulas.Formula import *
 from Config.definitnios import ASSETS_DIR
 from Formulas.Formula import Formula_State
+from Utils.ResolutionButton import ResolutionButton
+from Config.graphics import RESOLUTION
 
 class Set_of_formulas(pygame.sprite.Sprite):
     def __init__(self, size, pos, list_of_formulas):
         #once we start fixing layout of stuff on the screen, line below needs to use variables passed from init.
         #for now it acts as placeholder
         self.selected=[Formula((25,25), (500,100), [], 500, False),Formula((25,25), (800,100), [], 500, True)]
-        self.button=Button((500,120), (100,20), self.button_clicked, "red", "green", "blue")
+        #self.button=Button((500,120), (100,20), self.button_clicked, "red", "green", "blue")
+        self.button = ResolutionButton((0.339* RESOLUTION[0],0), self.button_clicked)
         loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self.surface=pygame.transform.scale(loaded_bar, size).convert_alpha()
         self.set_rect = pygame.Rect(pos[0], pos[1], 500, 500)
+
         self.selected_index=[1,1]
         self.width=size[0]
         self.height=size[1]
@@ -105,6 +109,10 @@ class Set_of_formulas(pygame.sprite.Sprite):
                     self.selected[1].content=self.formulas[x].content
                 else:
                      self.formulas[x].state=Formula_State.DEFAULT
+        if (self.selected_index[0] != -1 and self.selected_index[1] != -1):
+            self.button.make_flamed()
+        else:
+            self.button.make_not_flamed()
         for x in self.formulas:
             x.update(mouse)
 

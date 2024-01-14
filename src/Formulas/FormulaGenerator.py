@@ -108,18 +108,20 @@ class Generator:
                     continue
                 var = choice(vars)
                 vars.remove(var)
-                backlog = randint(0, max(0, modified_formula.length))
+                backlogs = [randint(0, max(0, modified_formula.length // 2 - 1)), randint(0, max(0, modified_formula.length // 2 - 1))]
                 modified_formula_cut = modified_formula.copy()
                 initialized = []
                 for i in range(modified_formula.size):
                     if modified_formula.variables[i] != 0:
                         initialized.append(i)
-                while backlog > 0:
-                    backlog -= 1
-                    id = choice(initialized)
-                    initialized.remove(id)
-                    modified_formula_cut.variables[id] = 0
-                    modified_formula_cut.length -= 1
+                modified_formulas = [modified_formula.copy(), modified_formula]
+                for i in range(len(backlogs)):
+                    while backlogs[i] > 0:
+                        backlogs[i] -= 1
+                        id = choice(initialized)
+                        initialized.remove(id)
+                        modified_formulas[i].variables[id] = 0
+                        modified_formula[i].length -= 1
                 modified_formula.variables[var] = choice([-1, 1])
                 modified_formula.length += 1
                 modified_formula_cut.variables[var] = -1 * modified_formula.variables[var]

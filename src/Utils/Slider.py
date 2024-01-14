@@ -1,11 +1,12 @@
 import pygame
 import numpy as np
 from enum import Enum
-from main_window import RESOLUTION
+from Config.definitnios import ASSETS_DIR
+#from main_window import RESOLUTION
 
 pygame.font.init()
 pygame.display.init()
-
+RESOLUTION = (1280, 720)
 SLIDER_SIZE = (236.16 * RESOLUTION[0]/1920.0, 70.2 * RESOLUTION[1]/1080.0)
 SLIDER_COLOR_OFF = (70, 75, 80)
 SLIDER_COLOR_OFF_HOVER = (100, 105, 110)
@@ -21,7 +22,7 @@ class Status(Enum):
 class Slider_Bar(pygame.sprite.Sprite):
     def __init__(self, size):
         self.size = self.width, self.height = size
-        loaded_bar = pygame.image.load("./assets/slider_bar.png").convert_alpha()
+        loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self._surface = pygame.transform.scale(loaded_bar, size)
         self.sliders = []
         self.variable_dict = {}
@@ -31,10 +32,13 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2
         self.parent_rect = None
         self.variable_font = pygame.font.Font(None, round(55 * RESOLUTION[0]/1280))
+        
     def get_surface(self):
         return self._surface
+    
     def set_parent_rect(self, parent_rect):
         self.parent_rect = parent_rect
+        
     def add_slider(self, variable):
         new_slider = Slider(SLIDER_SIZE)
         variable_text = self.variable_font.render(variable, True, VARIABLE_COLOR)
@@ -43,18 +47,22 @@ class Slider_Bar(pygame.sprite.Sprite):
         new_slider.set_parent_rect(slider_rect)
         self.variable_dict[variable] = len(self.sliders)
         self.sliders.append(new_slider)
-    def update(self):
+        
+    def update(self, mouse=pygame.mouse):
         for slider in self.sliders:
             slider.update()
-    def render(self):
+            
+    def render(self, screen):
         i = 0
         for slider in self.sliders:
             slider.render()
             self.get_surface().blit(slider.get_surface(), (self.LEFT_MARGIN + self.SLIDER_OFFSET, (SLIDER_SIZE[1] + self.INTERLINE) * i + self.TOP_MARGIN))
             i += 1
-    def process_input(self, events, mouse):
+            
+    def process_input(self, events, mouse, *args):
         for slider in self.sliders:
             slider.process_input(events, (mouse.get_pos()[0] - self.parent_rect[0], mouse.get_pos()[1] - self.parent_rect[1]))
+            
     def update(self, mouse=pygame.mouse):
         rel_coord = (mouse.get_pos()[0] - self.parent_rect[0], mouse.get_pos()[1] - self.parent_rect[1])
         for slider in self.sliders:
@@ -76,20 +84,26 @@ class Slider(pygame.sprite.Sprite):
         self.true_false_font = pygame.font.Font(None, round(1.3* self.height))
         self.true_sign = self.true_false_font.render("T", True, TRUE_FALSE_COLOR)
         self.false_sign = self.true_false_font.render("F", True, TRUE_FALSE_COLOR)
+        
     def set_parent_rect(self, parent_rect):
         self.parent_rect = parent_rect
+        
     def change_state(self):
         self.state = not self.state
+        
     def get_surface(self):
         return self._surface
+    
     def cursor_over_button(self, pos):
         x, y = (pos[0] - self.parent_rect[0], pos[1] - self.parent_rect[1])
         return 0 <= x < self.width and 0 <= y < self.height
+    
     def process_input(self, events, pos):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.cursor_over_button(pos):
                     self.change_state()
+                    
     def update(self, pos):
         if (self.cursor_over_button(pos)):
             self.status = Status.HOWER
@@ -100,6 +114,7 @@ class Slider(pygame.sprite.Sprite):
             self.current_frame += 1
         elif (not self.state and self.current_frame > 0):
             self.current_frame -= 1
+            
     def render(self):
         if (self.status == Status.IDLE):
             if not self.state:

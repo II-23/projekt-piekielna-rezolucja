@@ -1,5 +1,5 @@
 import pygame
-from Button import Button
+from Utils.Button import Button
 pygame.init()
 
 # Set up display
@@ -14,7 +14,7 @@ def test(args):
     print(69)
 
 def test2(args):
-    print(args)
+    print(args[0][0])
 
 button = Button((100, 100), (200, 100), test, (0, 0, 0), (70, 70, 70), (200, 200, 200))
 button2 = Button((100, 300), (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200))

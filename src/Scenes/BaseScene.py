@@ -1,6 +1,11 @@
-from Button import Button
-from Slider import Slider_Bar
+from Utils.Button import Button
+from Utils.Slider import Slider_Bar
+from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
+from Formulas.Formula import Symbol, Formula
+from Formulas.FormulaSet import Set_of_formulas
 import pygame
+from Utils.game_over import Game_over_window
+from Utils.clock import Clock
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -52,7 +57,21 @@ class BaseScene:
             # If your class that displays something needs some blit(), put it here just like this one
             # If you need to give it some more parameters or something, give me a call (message, don't call me)
             if isinstance(element, Slider_Bar):
-                screen.blit(element.get_surface(), (screen.get_width() - element.get_surface().get_width(), 0))   
+                screen.blit(element.get_surface(), (screen.get_width() - element.get_surface().get_width(), 0))  
+            if isinstance(element, Symbol):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Formula):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Set_of_formulas):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, PiekielnaRezolucjaLogo):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Game_over_window):
+                screen.blit(element.get_surface(), element.get_rect())   
+            if isinstance(element, Clock):
+                screen.blit(element.get_surface(), element.get_rect())   
+            
+
             
     def render(self, screen):
         self.display.fill(self.background_color)

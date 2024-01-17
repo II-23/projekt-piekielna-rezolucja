@@ -28,6 +28,7 @@ def generate_variable(letters):
 
 def derive_formulas(letters, formula):
     #takes a formula and returns two formulas whose 'formula' is the resolvent
+
     if isinstance(formula, Variable):
         letter = choice(letters)
         while Variable(letter) == formula:
@@ -52,14 +53,15 @@ def derive_formulas(letters, formula):
         if order==3: return (Or(x, formula), Or(formula, y))
         if order==4: return (Or(formula, x), Or(formula, y))
     
-    elif formula.used_variables() == 2:
-            print('dupa')
-    elif formula.used_variables() == 3:
+    elif len(formula.used_variables()) == 2:
+            return('dupa')
+    elif len(formula.used_variables()) == 3:
             ...
 
-x=derive_formulas(letters,(Variable('r')))
+x=derive_formulas(letters, Variable('r'))
 for i in x:
       print(i)
+
 
 # class Set_formulas_n:
 #     def __init__(self, size, letters):

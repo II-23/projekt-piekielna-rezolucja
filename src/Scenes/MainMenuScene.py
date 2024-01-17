@@ -1,6 +1,7 @@
 # AD     
 from Scenes.BaseScene import BaseScene, setup_button
 from Slider import Slider_Bar
+from volume_slider import Volume_slider
 import pygame
 
 class MainMenuScene(BaseScene):
@@ -13,3 +14,5 @@ class MainMenuScene(BaseScene):
         # adding elements to start scene
         self.add_ui_element(self.gameplay_screen_button)
         self.add_background_image(piwo_img)
+        self.slider = Volume_slider((200, 250), (200, 12), 0.5,0,100,'red','grey',50)
+        self.add_ui_element(self.slider)

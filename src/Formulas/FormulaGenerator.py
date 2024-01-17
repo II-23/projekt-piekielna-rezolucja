@@ -78,13 +78,12 @@ class Generator:
         #generating safisfiable sets
         if satisfiable <= CHANCE_FOR_SATISFIABLE: 
             self.satisfiable = True
-            var_used = [[0, 0, 0] for i in range(max_variable_number)] # keeps track of whether value of certain variable has been generated
+            var_used = [[0,0] for i in range(max_variable_number)] # keeps track of whether value of certain variable has been generated
             # generating formulas
             for i in range(len(self.valuation)): # drawing value for each variable
                 self.valuation[i] = choice([-1, 1])
-                var_used[i][0] = 0; # stores the sum of ..[1] and ..[2]
-                var_used[i][1] = 0; # stores how many times variable var has been used in the "1" state
-                var_used[i][-1] = 0; # stores how many times variable var has been used in the "-1" negation state
+                var_used[i][0] = 0 # how many times a variable has been used in the whole set
+                var_used[i][1] = 0 # what is the advantage for the variable (how many more times has this variable been used in the positive (+1) vs negation (-1) form)
             for formula in self.formulas:
                 initialized = [False for i in range(max_variable_number)]
                 length = randint(1, max_len) # drawing a length of the current formula
@@ -96,12 +95,12 @@ class Generator:
                         final_var = var_used[var][0] <= max(2, self.size - max_variable_number + 1) and initialized[var] == True
 
                     # to ensure that a single variable is not responsible for to many formulas satisfiability
-                    if var_used[var][0] <= max(1, self.size - max_variable_number): # this value is somewhat arbitrary. Perhaps different values would be better here
-                        formula.variables[var] = self.valuation[var]
-                        var_used[var][self.valuation[var]] += 1 # beacuse self.valuation[var] is either -1 or 1 then var_used[self.val...] will result in either var_used[1] or var_used[-1] == var_used[2] accordingly
+                    if var_used[var][1] > 0:
+                        formula.variables[var] = -1
+                        var_used[var][1] -= 1 # beacuse self.valuation[var] is either -1 or 1 then var_used[self.val...] will result in either var_used[1] or var_used[-1] == var_used[2] accordingly
                     else:
-                        formula.variables[var] = self.valuation[var] * -1
-                        var_used[var][self.valuation[var] * -1] += 1
+                        formula.variables[var] = 1
+                        var_used[var][1] += 1
                     formula.length += 1
                     var_used[var][0] += 1
                     initialized[var] = True

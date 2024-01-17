@@ -8,37 +8,41 @@ class Status:
     CLICKED = 2
 
 class Volume_slider:
-    def __init__(self,pos:tuple,size:tuple,initaial_val,min_val,max_val):
+    def __init__(self,pos:tuple,size:tuple,initial_val:float,min_val,max_val,button_colr,bar_colr,button_width):
         self.pos=pos
         self.size=size
         self.slider_left_pos=self.pos[0]-(size[0]//2)
         self.slider_right_pos=self.pos[0]+(size[0]//2)
-        self.slider_top_pos=self.pos[0]
+        self.slider_top_pos=self.pos[1]
         self.min_val=min_val
         self.max_val=max_val
-        self.initaial_val=(self.slider_right_pos-self.slider_left_pos)*initaial_val
-
+        self.button_width=button_width
+        self.initial_val=(self.slider_right_pos-self.slider_left_pos)*initial_val
         self.bar_rect=pygame.Rect(self.slider_left_pos,self.slider_top_pos,self.size[0],self.size[1])
-        self.button_rect=pygame.Rect(self.slider_left_pos+self.initaial_val-6,self.slider_top_pos,10,self.size[1])
+        button_left_pos=(self.slider_right_pos - self.slider_left_pos - self.button_width) * initial_val+ self.slider_left_pos
+        self.button_rect=pygame.Rect(button_left_pos ,self.slider_top_pos,self.button_width,self.size[1])
         self.status = Status.IDLE
+        self.button_colr=button_colr
+        self.bar_colr=bar_colr
     def move_slider(self, mouse_pos):
-        new_x = max(self.slider_left_pos, min(mouse_pos[0], self.slider_right_pos))
+        new_x = max(self.slider_left_pos+self.button_width/2, min(mouse_pos[0], self.slider_right_pos-self.button_width/2))
         self.button_rect.centerx = new_x
 
     def cursor_over_button(self, mouse_pos):
         return self.button_rect.collidepoint(mouse_pos)
 
     def render(self,screen):
-        pygame.draw.rect(screen,GRAY_COLOR,self.bar_rect)
-        pygame.draw.rect(screen,"lightblue",self.button_rect)
+        pygame.draw.rect(screen,self.bar_colr,self.bar_rect)
+        pygame.draw.rect(screen,self.button_colr,self.button_rect)
 
     def get_value(self):
-        val_range = self.slider_right_pos - self.slider_left_pos
-        button_val = self.button_rect.centerx - self.slider_left_pos
+        val_range = self.slider_right_pos - self.slider_left_pos - self.button_width
+        button_val = self.button_rect.centerx - self.slider_left_pos - self.button_width/2 
         result_val = (button_val / val_range) * (self.max_val - self.min_val)
         return result_val
 
-    def process_input(self, events, mouse_pos):
+    def process_input(self, events,mouse, *args):
+        mouse_pos=pygame.mouse.get_pos()
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.cursor_over_button(mouse_pos):
@@ -49,7 +53,8 @@ class Volume_slider:
                     pass
                 self.status = Status.IDLE
 
-    def update(self, mouse_pos):
+    def update(self,mouse):
+        mouse_pos=mouse.get_pos()
         if self.status == Status.CLICKED:
             self.move_slider(mouse_pos)
         elif self.cursor_over_button(mouse_pos):
@@ -61,7 +66,7 @@ class Volume_slider:
 class tests:
     def __init__(self, screen) -> None:
         self.screen = screen
-        self.sliders=[Volume_slider((100,5),(100,10),0.5,0,100)]
+        self.sliders=[Volume_slider((700,10), (200,10), 0.9, 0, 100,'red','grey',30)]
     def run(self):
         mouse_pos=pygame.mouse.get_pos()
         mouse=pygame.mouse.get_pressed()
@@ -77,18 +82,14 @@ class tests:
 # running = True
 # while running:
 #     events = pygame.event.get()
-#     mouse_pos = pygame.mouse.get_pos()
-
 #     for event in events:
 #         if event.type == pygame.QUIT:
 #             running = False
 
 #     # Clear the screen before drawing
 #     screen.fill((0, 0, 0))
-
-#     # Process input and update for each slider
-#     test.sliders[0].process_input(events, mouse_pos)
-#     test.sliders[0].update(mouse_pos)
+#     test.sliders[0].process_input(events,pygame.mouse,pygame.mouse)
+#     test.sliders[0].update(pygame.mouse)
 #     test.run()
 
 #     pygame.display.flip()

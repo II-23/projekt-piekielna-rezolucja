@@ -1,9 +1,12 @@
 # AD     
 from Scenes.BaseScene import BaseScene, setup_button
+from Slider import Slider_Bar
+from volume_slider import Volume_slider
 from Utils.Slider import Slider_Bar
 from Config.definitnios import ASSETS_DIR
 from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
 from Config.graphics import RESOLUTION
+
 import pygame
 import os
 
@@ -17,5 +20,11 @@ class MainMenuScene(BaseScene):
         self.gameplay_screen_button = setup_button(self.gameStateManager, 'level', (100, 100))
         # adding elements to start scene
         self.add_ui_element(self.gameplay_screen_button)
+        self.add_background_image(piwo_img)
+        
+        self.slider = Volume_slider((200, 250), (200, 12), 0.5,0,100,'red','grey',50)
+        self.add_ui_element(self.slider)
+
         self.add_ui_element(logo)
         self.add_background_image(piwo_img)
+

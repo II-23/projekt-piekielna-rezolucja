@@ -1,7 +1,7 @@
 Left:
 Jak to jest być skrybą, dobrze?
 Right:
-Dobrze:
+Dobrze
 Left:
 Cooo, to crazy!!!
 Right:

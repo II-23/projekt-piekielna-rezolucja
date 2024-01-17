@@ -58,7 +58,7 @@ class Button():
             for line in self.text_printing_format[self.page]:
                 fw, fh = self.font.size(line)
                 text_line = self.font.render(line, True, self.text_color)
-                screen.blit(text_line, (self.position[0]*(1+self.text_margin), t_y))
+                screen.blit(text_line, (self.position[0]+self.text_margin*self.size[0], t_y))
                 t_y += fh 
 
     def process_input(self, events, mouse, *args):
@@ -87,7 +87,8 @@ class Button():
             self.status = Status.HOWER
 
     def trigger_event(self, *args):
-        self.on_click_event(*args)
+        if self.on_click_event:
+            self.on_click_event(*args)
         
     def update_text(self, new_text, color=None):
         self.text_str = new_text

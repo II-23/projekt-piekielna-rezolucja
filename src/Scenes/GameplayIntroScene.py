@@ -1,5 +1,6 @@
 from Scenes.BaseScene import BaseScene, setup_button, Button
-from Slider import Slider_Bar
+from Utils.Slider import Slider_Bar
+from Config.graphics import RESOLUTION
 from enum import Enum
 import pygame
 
@@ -7,7 +8,7 @@ class Side(Enum):
     LEFT = -1
     RIGHT = 1
 
-RESOLUTION = (1280, 720)
+#RESOLUTION = (1280, 720)
 
 class Actor:
     '''This is a class for the npcs that talk during cutscenes'''
@@ -71,6 +72,31 @@ class DialogManager():
         self.switch_actor_talking()
         
     
+class DialogScene():
+    def __init__(self) -> None:
+        self.text = {}
+        self.line = 1
+
+    def load_dialog(self, filename, dialog_name):
+        path = 'src/Scenes/'+filename
+        with open(path,'r') as file:
+            dialog = file.read()
+        text = split_dialog(dialog)
+        dialog = []
+        for i in range(max(len(text[0]), len(text[1]))):
+            for j in range(2):
+                  if i < len(text[j]):
+                    dialog.append(text[j][i])
+        self.text[dialog_name] = dialog
+        #print(dialog)
+    
+    def next_line(self, dialog_name):
+        if self.line >= len(self.text[dialog_name]):
+            self.line = 0
+        res = self.text[dialog_name][self.line]
+        print(res)
+        self.line += 1 
+        return res[0]
 
 class GameplayIntroScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
@@ -84,35 +110,26 @@ class GameplayIntroScene(BaseScene):
         self.left_npc.dialog, self.right_npc.dialog = split_dialog(dialog)
         self.dialog_manager = DialogManager(self.left_npc, self.right_npc)
         #self.dialog_manager.switch_actor_talking()
-        test = Side(1)
-        #print(test)
-        #print(f'side: {Side(-1)}')
-        #print(f'side: {Side(1)}')
-        
-        #print(self.left_npc.dialog)
-        #print(self.right_npc.dialog)
-        intro_text = 'Jak to jest być skrybą, dobrze? \
-        A, wie pan, moim zdaniem to nie ma tak, że dobrze, albo że niedobrze.\
-        Gdybym miał powiedzieć, co cenię w życiu najbardziej, powiedziałbym, że ludzi.\
-        Ludzi, którzy podali mi pomocną dłoń, kiedy sobie nie radziłem, kiedy byłem sam,\
-        i co ciekawe, to właśnie przypadkowe spotkania wpływają na nasze życie.\
-        Chodzi o to, że kiedy wyznaje się pewne wartości, nawet pozornie uniwersalne,\
-        bywa, że nie znajduje się zrozumienia, które by tak rzec, które pomaga się nam rozwijać.\
-        Ja miałem szczęście, by tak rzec, ponieważ je znalazłem, i dziękuję życiu!\
-        Dziękuję mu; życie to śpiew, życie to taniec, życie to miłość!\
-        Wielu ludzi pyta mnie o to samo: ale jak ty to robisz, skąd czerpiesz tę radość? A ja odpowiadam, że to proste!\
-        To umiłowanie życia. To właśnie ono sprawia, że dzisiaj na przykład buduję maszyny, a jutro - kto wie? Dlaczego by nie - oddam się pracy społecznej i będę, ot, choćby, sadzić... doć— m-marchew... '
+        self.test_scene = DialogScene()
+        intro_name = 'test_dialog'
+        self.test_scene.load_dialog('dialog_intro.txt', intro_name)
         
         col = (255, 135, 135)
-        tw_size = (800, 250)
-        self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2, 460), tw_size, None, col, col, (255,160,160))
-        self.text_window.init_text(font=None, text_size=32, color=(42, 62, 115), text=intro_text)
+        tw_size = (750, 250)
+        self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2 + 25, 460), tw_size, None, col, col, (255,160,160))
+        self.text_window.init_text(font=None, text_size=32, color=(42, 62, 115), text=self.test_scene.next_line(intro_name))
         def foo(args):
             self.text_window.text_next_page()
             self.dialog_manager.say_line()
             #print('next page!')
         self.text_window.on_click_event = foo
         self.add_ui_element(self.text_window)
+        self.next_dialog_line_button = Button((RESOLUTION[0]/2-tw_size[0]/2+750-125+25, 460-50), (125, 50), None, (200, 150, 150), (255, 135, 135), (255,180,180))
+        self.next_dialog_line_button.init_text(font=None, color=(255, 77, 131), text='Next')
+        def bar(args):
+            self.text_window.update_text(new_text=self.test_scene.next_line(intro_name))
+        self.next_dialog_line_button.on_click_event = bar
+        self.add_ui_element(self.next_dialog_line_button)
         
         self.gp_scene_button = setup_button(gameStateManager, 'level', (1050, 610))
         self.gp_scene_button.init_text(font=None, color=(255, 77, 131), text='Play!')

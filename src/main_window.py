@@ -6,15 +6,12 @@ from gamestatemanager import GameStateManager
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
-<<<<<<< HEAD
 from Scenes.GameplayIntroScene import GameplayIntroScene
-=======
 from Utils.Slider import *
 from Formulas.Formula import *
 from Formulas.FormulaSet import *
 from Config.definitnios import ASSETS_DIR
 from Config.graphics import RESOLUTION
->>>>>>> main
 
 GAME_TITLE = "Piekielna rezolucja 3"
 GAME_LOGO = pygame.image.load(ASSETS_DIR + "/placeholder_logo.png")

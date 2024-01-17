@@ -104,7 +104,7 @@ class Or(Formula):
         return self.formula1.calculate(variables) + self.formula2.calculate(variables) > 0
     
     def __str__(self):
-        return f'({self.formula1} v {self.formula2})'
+        return f'{self.formula1} v {self.formula2}'
     
     def __eq__(self, other):
         return {self.formula1, self.formula2} == {other.formula1, other.formula2}
@@ -122,14 +122,12 @@ class Not(Formula):
     def __eq__(self, other):
         return self.formula == other.formula
 
-# variables = {
+variables = {
 
-#                 'p': True,
-#                 'q': False,
-#                 'r': True,
-#                 's': False,
-#                 'x': True,
-#                 'y': False,
-#                 'j': 'true'}
-    
-
+                'p': True,
+                'q': False,
+                'r': True,
+                's': False,
+                'x': True,
+                'y': False,
+                'j': 'true'}

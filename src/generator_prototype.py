@@ -1,8 +1,8 @@
 from tools import Formula, Variable, And, Or, Not
 from random import choice, randint
 
-# letters = ['p','q','r','s','t','u','w']
-letters = ['p','q','r']
+letters = ['p','q','r','s','t','u','w']
+# letters = ['p','q','r']
 
 # def generate_formula(letters):
 #     while True: 
@@ -23,7 +23,6 @@ letters = ['p','q','r']
 #         return formula
     
 def generate_variable(letters):
-    # -||-
     return Variable(choice(letters))
 
 def derive_formulas(letters, formula):
@@ -54,13 +53,31 @@ def derive_formulas(letters, formula):
         if order==4: return (Or(formula, x), Or(formula, y))
     
     elif len(formula.used_variables()) == 2:
-            return('dupa')
+            f1 = formula.formula1
+            f2 = formula.formula2
+            letter = choice(letters)
+            while letter in formula.used_variables():
+                letter = choice(letters)
+            type_ = randint(2,3)
+            if type_ == 2:
+                x = Variable(letter)
+                y = Not(Variable(letter))
+                order = randint(1,4)
+                if order==1: return (Or(x, f1), Or(y, f2))
+                if order==2: return (Or(f1, x), Or(f2, y))
+                if order==3: return (Or(x, f1), Or(f2, y))
+                if order==4: return (Or(f1, x), Or(y, f2))
+            
+        
     elif len(formula.used_variables()) == 3:
-            ...
+            if len(formula.formula1.used_variables())==1: f1, f2, f3 = formula.formula1, formula.formula2.formula1, formula.formula2.formula2
+            else: f1, f2, f3 = formula.formula1.formula1, formula.formula1.formula2, formula.formula2
+            return (f1,f2,f3)
 
-x=derive_formulas(letters, Variable('r'))
+x=derive_formulas(letters, Or(Not(Variable('p')),Variable('q')))
 for i in x:
       print(i)
+
 
 
 # class Set_formulas_n:

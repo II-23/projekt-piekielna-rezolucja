@@ -91,28 +91,6 @@ def derive_formulas(letters, formula, letter=None):
 
             return (x,y)
 
-def generator(letters, size):
-
-    letter = choice(letters)
-    start1, start2 = Variable(letter), Not(Variable(letter))
-    
-    result = [start1, start2]
-
-    while len(result)<size:
-        length = len(result)
-        n = randint(0,length-1)
-
-        formula = result.pop(n)
-
-        if len(formula.used_variables())>2:
-            continue
-
-        f1, f2 = derive_formulas(letters, formula)
-        result.append(f1)
-        result.append(f2)
-
-    return result
-            
 class Set_formulas:
 
     def __init__(self, size, letters):
@@ -139,8 +117,3 @@ class Set_formulas:
             f1, f2 = derive_formulas(letters, formula)
             self.set.append(f1)
             self.set.append(f2)
-
-# s = Set_formulas(5, letters)
-# s.fill()
-# for i in s.set:
-#     print(i)

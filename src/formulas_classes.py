@@ -1,8 +1,6 @@
 from itertools import product
 from random import choice
 
-'''Może dużo tekstu, ale od 160 linijki są testy więc nie ma aż tak dużo'''
-
 class MissingVariableValue(Exception):
     ...
 
@@ -43,11 +41,6 @@ class Formula:
                 return False
         return True
     
-    def generate(letters):
-        return Or(Variable(choice(letters)), Variable(choice(letters)))
-    
-
-
 class Variable(Formula):
     def __init__(self,variable):
         self.variable = variable
@@ -84,8 +77,6 @@ class And(Formula):
         self.formula2 = formula2
         
     def calculate(self, variables):
-        '''Warning! The formula (p ∧ False) is always False, even if "variables" does not contain p. 
-        This is because (x ∧ False) is a contradiction.'''
         return self.formula1.calculate(variables) + self.formula2.calculate(variables) == 2
     
     def __str__(self):
@@ -121,13 +112,3 @@ class Not(Formula):
     
     def __eq__(self, other):
         return self.formula == other.formula
-
-# variables = {
-
-#                 'p': True,
-#                 'q': False,
-#                 'r': True,
-#                 's': False,
-#                 'x': True,
-#                 'y': False,
-#                 'j': 'true'}

@@ -1,4 +1,4 @@
-from tools import Formula, Variable, And, Or, Not
+from formulas_classes import Formula, Variable, And, Or, Not
 from random import choice, randint
 
 letters = ['p','q','r','s','t','u','w']
@@ -90,46 +90,57 @@ def derive_formulas(letters, formula, letter=None):
                         y = Or(choice((f1,f2)), new)
 
             return (x,y)
-                         
-    if len(formula.used_variables()) == 3:
-            if len(formula.formula1.used_variables())==1: f1, f2, f3 = formula.formula1, formula.formula2.formula1, formula.formula2.formula2
-            else: f1, f2, f3 = formula.formula1.formula1, formula.formula1.formula2, formula.formula2
-            
 
-x=derive_formulas(letters, Or(Not(Variable('q')), Variable('r')))
-for i in x:
-      print(i)
-# print(x)
+def generator(letters, size):
 
-# print(choice([1,2]))
-
-
-# class Set_formulas_n:
-#     def __init__(self, size, letters):
-#         self.size=size
-#         self.letters=letters
-#         self.set = []
-
-#     def clear(self):
-#         self.set=[]
+    letter = choice(letters)
+    start1, start2 = Variable(letter), Not(Variable(letter))
     
-#     def clear_one(self, index):
-#         self.set.pop(index)
+    result = [start1, start2]
 
-#     def fill(self):
-#         for _ in range(self.size):
-#             while True:
-#                 formula = generate_formula(self.letters)
-#                 self.set.append(formula)
-#                 break
+    while len(result)<size:
+        length = len(result)
+        n = randint(0,length-1)
 
-#     def chceck(self):
-#         ...
+        formula = result.pop(n)
+
+        if len(formula.used_variables())>2:
+            continue
+
+        f1, f2 = derive_formulas(letters, formula)
+        result.append(f1)
+        result.append(f2)
+
+    return result
             
-# size = 5
-# x = Set_formulas_n(size,letters)
-# x.fill()
-# for i in range(size):
-#     print(x.set[i])
+class Set_formulas:
 
-# print(generate_variable(letters))
+    def __init__(self, size, letters):
+        self.size=size
+        self.letters=letters
+        self.set = []
+
+    def fill(self):
+
+        letter = choice(self.letters)
+        start1, start2 = Variable(letter), Not(Variable(letter))
+        
+        self.set = [start1, start2]
+
+        while len(self.set)<self.size:
+            length = len(self.set)
+            n = randint(0,length-1)
+
+            formula = self.set.pop(n)
+
+            if len(formula.used_variables())>2:
+                continue
+
+            f1, f2 = derive_formulas(letters, formula)
+            self.set.append(f1)
+            self.set.append(f2)
+
+# s = Set_formulas(5, letters)
+# s.fill()
+# for i in s.set:
+#     print(i)

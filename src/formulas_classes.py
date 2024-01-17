@@ -122,12 +122,12 @@ class Not(Formula):
     def __eq__(self, other):
         return self.formula == other.formula
 
-variables = {
+# variables = {
 
-                'p': True,
-                'q': False,
-                'r': True,
-                's': False,
-                'x': True,
-                'y': False,
-                'j': 'true'}
+#                 'p': True,
+#                 'q': False,
+#                 'r': True,
+#                 's': False,
+#                 'x': True,
+#                 'y': False,
+#                 'j': 'true'}

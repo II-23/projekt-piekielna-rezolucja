@@ -10,11 +10,11 @@ class Side(Enum):
 
 #RESOLUTION = (1280, 720)
 
-class Actor:
-    '''This is a class for the npcs that talk during cutscenes'''
-    def __init__(self):
-        self.dialog = []
-        self.active = False
+# class Actor:
+#     '''This is a class for the npcs that talk during cutscenes'''
+#     def __init__(self):
+#         self.dialog = []
+#         self.active = False
         
 def split_dialog(text, left_name, right_name):
     left_lines = []

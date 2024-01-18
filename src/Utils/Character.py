@@ -72,8 +72,11 @@ class Player:
         for pos2, size2 in self.obstacles:
             if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
                 collision = True
-        print(self.velocity)
+        #print(self.velocity)
         if not collision:
             self.pos += self.velocity * self.speed
+    
+    def update(self, mouse):
+        pass
 
 

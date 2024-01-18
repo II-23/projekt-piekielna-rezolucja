@@ -25,7 +25,7 @@ class MainMenuScene(BaseScene):
         self.slider = Volume_slider((200, 250), (200, 12), 0.5,0,100,'red','grey',50)
         self.add_ui_element(self.slider)
 
-        self.character = Player((0,0), 100)
+        self.character = Player((0,0), 100, "player/player.png")
         self.add_ui_element(self.character)
 
         self.add_ui_element(logo)

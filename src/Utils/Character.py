@@ -2,26 +2,82 @@
 
 import pygame
 import numpy as np
+from PIL import Image, ImageOps
 import os
 from Config.definitnios import ASSETS_DIR
 
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
 
+def save_as(dict, image, path, name):
+    new_path = os.path.join(os.path.dirname(path), name + ".png")
+    image.save(new_path)
+    dict[name] = new_path
+
 class Player:
-    def __init__(self, pos:tuple, size):
+    def __init__(self, pos:tuple, size, sprite_path):
+
         self.pos = np.array(pos)
         self.size = size
         self.velocity = np.array([0,0])
         self.speed = 6
+        self.state = "s"
+
+        self.animation = False
+        self.f = 1
+
         self.obstacles = []
         self.obstacles.append(((100,100), (100, 100)))
 
+        self.frames = {}
+
+
+        #nie wiem
+
+        image_path = os.path.join(ASSETS_DIR, sprite_path)
+        image = Image.open(image_path)
+        image = image.resize((size*3, size))
+        
+
+        # S
+        im = image.crop((0,0,100,100))
+        save_as(self.frames, im, image_path, "s")
+
+        # W
+        im = image.crop((100,0,200,100))
+        save_as(self.frames, im, image_path, "w")
+
+        # D
+        im = image.crop((200,0,300,100))
+        save_as(self.frames, im, image_path, "a")
+
+        # A
+        im = ImageOps.mirror(im)
+        save_as(self.frames, im, image_path, "d")
+
+        for name in ["w","s","a","d"]:
+            new_path = os.path.join(os.path.dirname(image_path), name + ".png")
+            im = Image.open(new_path)
+
+            im1 = im.rotate(5)
+            save_as(self.frames, im1, image_path, name + "1")
+
+            im2 = im.rotate(-5)
+            save_as(self.frames, im2, image_path, name + "2")
+
+
+
+
     def render(self,screen):
 
-        rect= pygame.Rect(self.pos[0], self.pos[1], self.size, self.size)
-        image_path = os.path.join(ASSETS_DIR, "player/idle.png")
-        image = pygame.image.load(image_path)
+        rect = pygame.Rect(self.pos[0], self.pos[1], self.size, self.size)
+
+        if self.animation:
+            self.f += 0.1
+            lizma = int(((self.f)%2)+1)
+            image = pygame.image.load( self.frames[self.state + str(lizma)] )
+        else:
+            image = pygame.image.load( self.frames[self.state] )
 
         screen.blit(image, rect)
 
@@ -55,7 +111,7 @@ class Player:
                     self.velocity[0] += -1  
                 elif event.key == pygame.K_d:
                     self.velocity[0] += 1   
-
+                    
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
                     self.velocity[1] -= -1  
@@ -65,6 +121,21 @@ class Player:
                     self.velocity[0] -= -1  
                 elif event.key == pygame.K_d:
                     self.velocity[0] -= 1  
+
+        if self.velocity[1] == 1:
+            self.state = "s"
+        if self.velocity[1] == -1:
+            self.state = "w"
+        if self.velocity[0] == 1:
+            self.state = "d"
+        if self.velocity[0] == -1:
+            self.state = "a"
+
+        if self.velocity[0] == 0 and self.velocity[1] == 0:
+            self.animation = False
+            self.state = "s"
+        else:
+            self.animation = True
 
         collision = False
         dummy_pos = self.pos + self.velocity * self.speed

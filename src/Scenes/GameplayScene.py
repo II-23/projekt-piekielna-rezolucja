@@ -54,3 +54,7 @@ class GameplayScene(BaseScene):
         clock=Clock((100,100), (300,300), 60)
         self.add_ui_element(clock)
         #
+        
+    def on_entry(self):
+        print('entering gameplayScene')
+        #return super().on_entry()

@@ -11,11 +11,11 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 def setup_button(gameStateManager, to_change, position):
-    '''This is a function that is used for creating a button that will switch current scene.
-    
-    '''
+    '''This is a function that is used for creating a button that will switch current scene.'''
     def test2(args):
         gameStateManager.set_state(to_change)
+        #print(f'now on {to_change} state')
+        gameStateManager.states[gameStateManager.get_state()].on_entry()
     button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200))
     return button2
 
@@ -33,7 +33,11 @@ class BaseScene:
         self.ui_elements = [] # list of all elements of our ui, buttons, sliders, etc. 
         self.background_image = None
         self.background_color = background_color
-        
+    
+    def on_entry(self):
+        '''This is the method that is executed when GameStateManager changes to a scene'''
+        pass
+      
     # These two are just for adding stuff to the scene
     def add_ui_element(self, button):
         self.ui_elements.append(button)

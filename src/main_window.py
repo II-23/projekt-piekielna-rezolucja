@@ -6,7 +6,7 @@ from gamestatemanager import GameStateManager
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
-from Scenes.GameplayIntroScene import GameplayIntroScene
+from Scenes.DialogScene import DialogScene
 from Utils.Slider import *
 from Formulas.Formula import *
 from Formulas.FormulaSet import *
@@ -33,8 +33,8 @@ class Main_Window:
         # buttons/sliders/whatever check out .py files of these scenes (and BaseScene) here and take inspirations.  
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.gameplay_intro = GameplayIntroScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.states = {'start':self.start, 'level':self.level, 'gp_intro':self.gameplay_intro}
+        self.gameplay_intro = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro}
         
     def on_event(self, event):
         button_clicks = []
@@ -43,10 +43,10 @@ class Main_Window:
                 self.running = False
                 
     def on_loop(self):
-        self.states[self.gameStateManager.get_state()].update(pygame.mouse)
+        self.gameStateManager.states[self.gameStateManager.get_state()].update(pygame.mouse)
         
     def on_render(self):
-        self.states[self.gameStateManager.get_state()].render(self._display_surface)
+        self.gameStateManager.states[self.gameStateManager.get_state()].render(self._display_surface)
         pygame.display.update()
            
     def on_cleanup(self):
@@ -57,7 +57,7 @@ class Main_Window:
             events = pygame.event.get()
             for event in events:
                 self.on_event(event)
-            self.states[self.gameStateManager.get_state()].process_input(events, pygame.mouse)
+            self.gameStateManager.states[self.gameStateManager.get_state()].process_input(events, pygame.mouse)
             self.on_loop()
             self.on_render()
             self.FramesPerSec.tick(self.FPS)

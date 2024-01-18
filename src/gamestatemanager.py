@@ -3,6 +3,7 @@ import pygame
 class GameStateManager:
     def __init__(self, currentState):
         self.currentState=currentState
+        self.states = {}
         
     def get_state(self):
         return self.currentState

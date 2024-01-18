@@ -22,4 +22,3 @@ class MainMenuScene(BaseScene):
         
     def on_entry(self):
         print('entering main menu scene')
-        return super().on_entry()

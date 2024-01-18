@@ -35,7 +35,8 @@ class BaseScene:
         self.background_color = background_color
     
     def on_entry(self):
-        '''This is the method that is executed when GameStateManager changes to a scene'''
+        '''This is the method that is executed when GameStateManager changes to a scene. For example you can use it 
+        to reset gameplay, generate new formulas etc.'''
         pass
       
     # These two are just for adding stuff to the scene
@@ -74,9 +75,7 @@ class BaseScene:
                 screen.blit(element.get_surface(), element.get_rect())   
             if isinstance(element, Clock):
                 screen.blit(element.get_surface(), element.get_rect())   
-            
-
-            
+                
     def render(self, screen):
         self.display.fill(self.background_color)
         if self.background_image is not None:

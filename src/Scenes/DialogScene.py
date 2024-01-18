@@ -73,9 +73,10 @@ def split_dialog(text, left_name, right_name):
         
     
 class DialogManager():
-    def __init__(self) -> None:
+    def __init__(self, dialog_name) -> None:
         self.text = {}
         self.line = 0
+        self.current_dialog = dialog_name
 
     def load_dialog(self, filename, dialog_name):
         path = 'src/Scenes/'+filename
@@ -89,16 +90,20 @@ class DialogManager():
                     dialog.append(text[j][i])
         self.text[dialog_name] = dialog
     
-    def next_line(self, dialog_name):
-        if self.line >= len(self.text[dialog_name]):
+    def next_line(self):
+        if self.line >= len(self.text[self.current_dialog]):
             self.reset_dialog()
-        res = self.text[dialog_name][self.line]
+        res = self.text[self.current_dialog][self.line]
         self.line += 1 
         return res[0]
     
     def reset_dialog(self):
         self.line = 0
-
+        
+    def set_current_dialog(self, dialog_name):
+        self.current_dialog = dialog_name
+        
+        
 class DialogScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)

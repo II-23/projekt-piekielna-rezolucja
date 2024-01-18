@@ -1,5 +1,6 @@
 from Scenes.BaseScene import BaseScene, setup_button
 from Utils.Slider import Slider_Bar
+from Utils.Button import Button
 from Config.definitnios import ASSETS_DIR
 from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
 from Config.graphics import RESOLUTION
@@ -13,12 +14,17 @@ class MainMenuScene(BaseScene):
         logo = PiekielnaRezolucjaLogo((RESOLUTION[0]*0.3, 0))
         piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
         # button for going to da GAME
-        self.gameplay_screen_button = setup_button(self.gameStateManager, 'dialog', (100, 100))
+        #self.gameplay_screen_button = setup_button(self.gameStateManager, 'dialog', (100, 100))
+        self.gameplay_screen_button = Button((100, 100), (200, 100), None, (0, 0, 0), (70, 70, 70), (200, 200, 200))
+        def test2(args):
+            gameStateManager.set_state('dialog')
+            gameStateManager.states[gameStateManager.get_state()].on_entry({'scene':'test_dialog'})
+        self.gameplay_screen_button.on_click_event = test2
         self.gameplay_screen_button.init_text(text='Start Button')
         # adding elements to start scene
         self.add_ui_element(self.gameplay_screen_button)
         self.add_ui_element(logo)
         self.add_background_image(piwo_img)
         
-    def on_entry(self):
+    def on_entry(self, *args):
         print('entering main menu scene')

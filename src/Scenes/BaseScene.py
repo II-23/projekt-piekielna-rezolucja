@@ -34,7 +34,7 @@ class BaseScene:
         self.background_image = None
         self.background_color = background_color
     
-    def on_entry(self):
+    def on_entry(self, *args):
         '''This is the method that is executed when GameStateManager changes to a scene. For example you can use it 
         to reset gameplay, generate new formulas etc.'''
         pass

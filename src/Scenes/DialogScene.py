@@ -108,9 +108,12 @@ class DialogScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         
+        '''A dialog manager for all the dialogs in the game. Currently they are 100% cosmetic so there are no options to choose from, just 
+        some text that adds a little bit of flavour to the game. Because of that all of the dialogs will be in this scene and when GameStateManager
+        will switch to this scene it will set a current dialog to some option. That way we can add easily multiple dialogs to our game.'''
         self.DIALOG_NUMBER = 0
         self.talking_side = Side.LEFT # to remember which side is currently talking
-        self.dialog_manager = DialogManager()
+        self.dialog_manager = DialogManager('test_dialog')
         intro_name = 'test_dialog'
         self.dialog_manager.load_dialog('dialog_intro.txt', intro_name)
         
@@ -118,7 +121,7 @@ class DialogScene(BaseScene):
         col = (255, 135, 135)
         tw_size = (750, 250)
         self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2 + 25, 460), tw_size, None, col, col, (255,160,160))
-        self.text_window.init_text(font=None, text_size=32, color=(42, 62, 115), text=self.dialog_manager.next_line(intro_name))
+        self.text_window.init_text(font=None, text_size=32, color=(42, 62, 115), text=self.dialog_manager.next_line())
         def foo(args):
             self.text_window.text_next_page()
         self.text_window.on_click_event = foo
@@ -128,16 +131,19 @@ class DialogScene(BaseScene):
         self.next_dialog_line_button.init_text(font=None, color=(255, 77, 131), text='Next')
         def bar(args):
             '''function for next_dialog_line_button that sends a new line of dialog to be displayed to the text_window'''
-            self.text_window.update_text(new_text=self.dialog_manager.next_line(intro_name))
+            self.text_window.update_text(new_text=self.dialog_manager.next_line())
         self.next_dialog_line_button.on_click_event = bar
         self.add_ui_element(self.next_dialog_line_button)
         
         '''This is a button that redirects to the GameplayScene'''
+        #TODO better way to create buttons that go to the next scenes
         self.gp_scene_button = setup_button(gameStateManager, 'level', (1050, 610))
         self.gp_scene_button.init_text(font=None, color=(255, 77, 131), text='Play!')
         self.add_ui_element(self.gp_scene_button)
         
-    def on_entry(self):
+    def on_entry(self, *args):
         print('entering dialog scene')
+        print(f'current dialog {args[0]["scene"]}')
+        self.dialog_manager.set_current_dialog(args[0]["scene"])
         self.dialog_manager.reset_dialog()
-        self.text_window.update_text(new_text=self.dialog_manager.next_line('test_dialog'))
+        self.text_window.update_text(new_text=self.dialog_manager.next_line())

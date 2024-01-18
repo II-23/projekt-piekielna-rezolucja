@@ -93,6 +93,7 @@ class Button():
     def update_text(self, new_text, color=None):
         self.text_str = new_text
         self.text_printing_format = self.wrap_text(self.text_str)
+        print(self.text_printing_format)
         self.max_page = len(self.text_printing_format)-1
         self.page = 0
         self.text = self.font.render(new_text, True, color if color else self.text_color)
@@ -123,8 +124,9 @@ class Button():
                 current_text_height = 0
                 pages.append(lines)
                 lines = []
-        if len(pages) == 0: # this handle the case if there's only one page of text
-            pages.append(lines)
+        # if len(pages) == 0: # this handle the case if there's only one page of text
+        #     pages.append(lines)
+        pages.append(lines)
         return pages
     
     def text_next_page(self):

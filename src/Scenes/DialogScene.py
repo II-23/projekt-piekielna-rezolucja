@@ -19,33 +19,28 @@ class Side(Enum):
 def split_dialog(text, left_name, right_name):
     left_lines = []
     right_lines = []
-    left = []
-    right = []
+    current_line = ""
     side = Side.LEFT
     text = text.splitlines()
     for line in text:
         line = line.strip()
         if line == left_name:
             side = Side.LEFT
-            if right:
-                right_lines.append(right)
-                right = []
+            if current_line:
+                right_lines.append(current_line)
+                current_line = ""
         elif line == right_name:
             side = Side.RIGHT
-            if left:
-                left_lines.append(left)
-                left = []
+            if current_line:
+                left_lines.append(current_line)
+                current_line = ""
         else:
-            #print(f'appending {line} to {side}')
-            if side == Side.RIGHT:
-                right.append(line)
-            if side == Side.LEFT:
-                left.append(line)
-    if left:
-        left_lines.append(left)
-    if right:
-        right_lines.append(right)
-                
+            current_line += line + " "
+    if current_line:
+        if side == Side.RIGHT:
+            right_lines.append(current_line)
+        if side == Side.LEFT:
+            left_lines.append(current_line)
     return left_lines, right_lines
 
 # class DialogManager():
@@ -95,7 +90,7 @@ class DialogManager():
             self.reset_dialog()
         res = self.text[self.current_dialog][self.line]
         self.line += 1 
-        return res[0]
+        return res
     
     def reset_dialog(self):
         self.line = 0
@@ -147,3 +142,4 @@ class DialogScene(BaseScene):
         self.dialog_manager.set_current_dialog(args[0]["scene"])
         self.dialog_manager.reset_dialog()
         self.text_window.update_text(new_text=self.dialog_manager.next_line())
+    

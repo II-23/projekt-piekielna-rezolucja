@@ -39,5 +39,5 @@ class MainMenuScene(BaseScene):
         self.add_background_image(piwo_img)
   
     def on_entry(self, *args):
-        pass
+        super().on_entry(*args)
 

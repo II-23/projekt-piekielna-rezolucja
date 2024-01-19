@@ -1,7 +1,7 @@
 # AD     
 from Scenes.BaseScene import BaseScene, setup_button
-from volume_slider import Volume_slider
 from Utils.Character import Player
+from Utils.volume_slider import Volume_slider
 from Utils.Slider import Slider_Bar
 from Config.definitnios import ASSETS_DIR
 from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo

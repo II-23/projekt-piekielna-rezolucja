@@ -21,8 +21,8 @@ class MainMenuScene(BaseScene):
         (Probably will add better way to do this) that is the dialog that will be loaded when changed to dialog scene.'''
         self.gameplay_screen_button = Button((100, 100), (200, 100), None, (0, 0, 0), (70, 70, 70), (200, 200, 200))
         def go_to_scene(args):
-            gameStateManager.set_state('dialog')
-            gameStateManager.states[gameStateManager.get_state()].on_entry({'scene':'test_dialog'})
+            gameStateManager.set_state('dialog', {'scene':'test_dialog'})
+            #gameStateManager.states[gameStateManager.get_state()].on_entry({'scene':'test_dialog'})
         self.gameplay_screen_button.on_click_event = go_to_scene
         self.gameplay_screen_button.init_text(text='Start Button')
         # adding elements to start scene
@@ -36,5 +36,5 @@ class MainMenuScene(BaseScene):
         self.add_background_image(piwo_img)
   
     def on_entry(self, *args):
-        print('entering main menu scene')
+        pass
 

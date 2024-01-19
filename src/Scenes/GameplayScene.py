@@ -56,4 +56,5 @@ class GameplayScene(BaseScene):
         #
         
     def on_entry(self, *args):
-        print('entering gameplayScene')
+        '''TODO probalby here will be something to reset the score/formulas'''
+        pass

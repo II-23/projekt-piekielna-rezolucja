@@ -1,2 +1,4 @@
-numpy==1.26.2
+imagesize==1.4.1
+numpy==1.26.1
+Pillow==10.1.0
 pygame==2.5.2

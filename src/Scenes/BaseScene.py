@@ -57,10 +57,10 @@ class BaseScene:
     def render_base_ui(self, screen):
         for element in self.ui_elements:
             element.render(screen)
-            # !!!IMPORTANT!!!
-            # !!!UwAGA KURWA!!!
-            # If your class that displays something needs some blit(), put it here just like this one
-            # If you need to give it some more parameters or something, give me a call (message, don't call me)
+            '''!!!IMPORTANT!!!
+               !!!UwAGA KURWA!!!
+            If your class that displays something needs some blit(), put it here just like this one
+            If you need to give it some more parameters or something, give me a call (message, don't call me)'''
             if isinstance(element, Slider_Bar):
                 screen.blit(element.get_surface(), (screen.get_width() - element.get_surface().get_width(), 0))  
             if isinstance(element, Symbol):

@@ -13,13 +13,14 @@ class MainMenuScene(BaseScene):
         # backgorund for main menu
         logo = PiekielnaRezolucjaLogo((RESOLUTION[0]*0.3, 0))
         piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
-        # button for going to da GAME
-        #self.gameplay_screen_button = setup_button(self.gameStateManager, 'dialog', (100, 100))
+        '''button for going to da GAME
+        Here I create the function for the button manually because I want to pass the additional arguments to it,
+        (Probably will add better way to do this) that is the dialog that will be loaded when changed to dialog scene.'''
         self.gameplay_screen_button = Button((100, 100), (200, 100), None, (0, 0, 0), (70, 70, 70), (200, 200, 200))
-        def test2(args):
+        def go_to_scene(args):
             gameStateManager.set_state('dialog')
             gameStateManager.states[gameStateManager.get_state()].on_entry({'scene':'test_dialog'})
-        self.gameplay_screen_button.on_click_event = test2
+        self.gameplay_screen_button.on_click_event = go_to_scene
         self.gameplay_screen_button.init_text(text='Start Button')
         # adding elements to start scene
         self.add_ui_element(self.gameplay_screen_button)

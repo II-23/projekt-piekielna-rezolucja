@@ -45,20 +45,14 @@ class BaseScene:
     def on_entry(self, *args):
         '''This is the method that is executed when GameStateManager changes to a scene. For example you can use it 
         to reset gameplay, generate new formulas etc. Override it in each scene, with your own code, if you want to use it.'''
-        #set opacity to 0
         self.lower_opacity = True
         self.pause = True
-        pass
     
     def on_exit(self):
         '''This is a method that is executed when leaving a scene'''
         self.up_opacity = True
         self.pause = True
-        print(self.pause)
-        print(self.up_opacity)
-        #set opacity to 255
-        print(f'exiting, opacity = {self.screen_saver_alpha}')
-      
+  
     # These two are just for adding stuff to the scene
     def add_ui_element(self, button):
         self.ui_elements.append(button)
@@ -103,7 +97,7 @@ class BaseScene:
         if self.background_image is not None:
             self.display.blit(self.background_image, (self.display.get_width() * 0.5 - 0.5 * self.background_image.get_width(), 0))
         self.render_base_ui(screen)
-        # This is a section for scene transitions
+        
         '''When entering a scene the screen will start to become less black'''
         if self.lower_opacity:
             opacity = self.screen_saver_alpha - self.transition_tick
@@ -112,9 +106,8 @@ class BaseScene:
                 self.lower_opacity = False
                 self.pause = False
             self.screen_saver_alpha = opacity
-            
+        '''And when exiting a scene it will go dark'''    
         if self.up_opacity:
-            print('debil')
             opacity = self.screen_saver_alpha + self.transition_tick
             if opacity >= 255:
                 opacity = 255

@@ -109,8 +109,8 @@ class DialogScene(BaseScene):
         self.add_ui_element(self.gp_scene_button)
         
     def on_entry(self, *args):
-        print('entering dialog scene')
-        print(f'current dialog {args[0]["scene"]}')
+        #print('entering dialog scene')
+        #print(f'current dialog {args[0]["scene"]}')
         self.dialog_manager.set_current_dialog(args[0]["scene"])
         self.dialog_manager.reset_dialog()
         self.text_window.update_text(new_text=self.dialog_manager.next_line())

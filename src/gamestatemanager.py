@@ -11,5 +11,6 @@ class GameStateManager:
     
     def set_state(self, state, args):
         '''If you want to pass arguments to the on_entry() put them in a dict'''
+        self.states[self.get_state()].on_exit()
         self.currentState=state
         self.states[self.get_state()].on_entry(args)

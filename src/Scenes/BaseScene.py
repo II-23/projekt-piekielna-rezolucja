@@ -31,11 +31,15 @@ class BaseScene:
         self.ui_elements = [] # list of all elements of our ui, buttons, sliders, etc. 
         self.background_image = None
         self.background_color = background_color
-    
+        
     def on_entry(self, *args):
         '''This is the method that is executed when GameStateManager changes to a scene. For example you can use it 
         to reset gameplay, generate new formulas etc. Override it in each scene, with your own code, if you want to use it.'''
         pass
+    
+    def on_exit(self):
+        '''This is a method that is executed when leaving a scene'''
+        print('dupadupa')
       
     # These two are just for adding stuff to the scene
     def add_ui_element(self, button):

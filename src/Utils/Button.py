@@ -16,28 +16,23 @@ class Button():
         self.click_color = click_color
         self.on_click_event = on_click_event
         self.status = Status.IDLE
-        # text
-        self.text = None
-        self.text_str = None
+        # text variables
+        self.text = None # This is the pygame text, kinda used like a flag to check if the button has any text
+        self.text_str = None # This is the string format of the text
+        self.text_printing_format = None # And this is formatted text (after using wrap_text) in form of a list 
         self.text_color = None
         self.font = None
-        self.text_margin = 0.1
-        self.text_printing_format = None
+        self.text_margin = 0.1 # How much free space is going to be around the text
+        '''If the text is a little bit larger than the text window it gets split into pages in wrap_text().
+        Page is the current page (index of the list with pages), and max_page is... the maximum page that can be accesed'''
         self.page = 0
         self.max_page = 0
         
     def init_text(self, font=None, text_size=32, color=(0, 255, 0), text='2137'): 
-        #print(f'doing the init:))')
-        self.text_str = text
-        self.text_color = color
+        '''Initalizes text. It is exluded from init() so that we can still create buttons without text,
+        if someone wants to.'''
         self.font = pygame.font.Font(font, text_size)
-        self.text_printing_format = self.wrap_text(self.text_str)
-        self.max_page = len(self.text_printing_format)-1
-        # for t in self.text_printing_format:
-        #     print(t)
-        # print(f'len: {len(self.text_printing_format)}')
-        # print(self.text_printing_format[0])
-        self.text = self.font.render(self.text_str, True, self.text_color)   
+        self.update_text(text,color)
     
     def cursor_over_button(self, mouse):
         mouse_pos = mouse.get_pos()
@@ -51,9 +46,10 @@ class Button():
         elif self.status == Status.CLICKED:
             color = self.click_color
         
+        '''I'm not 100% positive that this is the correct way to display a text in pygame.
+        Let me know if I should change something - Adam Dziwi'''
         pygame.draw.rect(screen, color, pygame.Rect(*self.position, *self.size))
         if self.text is not None:
-            #y_offset = 0
             t_y = self.position[1]+self.size[1]*self.text_margin
             for line in self.text_printing_format[self.page]:
                 fw, fh = self.font.size(line)
@@ -92,41 +88,40 @@ class Button():
         
     def update_text(self, new_text, color=None):
         self.text_str = new_text
+        self.text_color = color if color else self.text_color
         self.text_printing_format = self.wrap_text(self.text_str)
-        print(self.text_printing_format)
         self.max_page = len(self.text_printing_format)-1
         self.page = 0
-        self.text = self.font.render(new_text, True, color if color else self.text_color)
+        self.text = self.font.render(self.text_str, True, self.text_color)
         
     def wrap_text(self, text_to_wrap):
-        words = text_to_wrap.split()
+        '''Method used to slice a long dialog into parts so each fits perfectly into the button.
+        Text is split into smaller parts that are put into a list (self.text_printing_format). I was 
+        inpired by some kind soul on StackOverflow with this beauty. '''
+        words = text_to_wrap.split() # first we split text into words
         allowed_width = self.size[0]*(1-self.text_margin*2)
         allowed_height = self.size[1]*(1-self.text_margin*2)
-        #print(f'allowed height: {allowed_height}')
         pages = []
-        lines = []
+        current_page = []
         fw, fh = self.font.size(' '.join('test'))
         current_text_height = 0
-        while len(words) > 0:
+        while len(words) > 0: # then we go over the whole list of words
             new_line = []
             while len(words) > 0:
-                new_line.append(words.pop(0))
-                fw, fh = self.font.size(' '.join(new_line + words[:1]))
-                if fw > allowed_width:
+                new_line.append(words.pop(0)) # add a word to a new line
+                fw, fh = self.font.size(' '.join(new_line + words[:1])) # calculate lenght of a line with the next word
+                if fw > allowed_width: # if it's too long stop, we have a new line of text for our button!
                     break
             line = ' '.join(new_line)
             current_text_height += fh
-            lines.append(line)
-            # if text will go out of the button it will be split into pages 
-            if current_text_height + fh > allowed_height:
-                #print(f'current height: {current_text_height}')
-                #print(lines)
+            current_page.append(line) # we add our new line to a current page
+            if current_text_height + fh > allowed_height: 
+                '''if current page height plus height of one new line excedes our limit we 
+                add current page to the "library" and create another new, empty one'''
                 current_text_height = 0
-                pages.append(lines)
-                lines = []
-        # if len(pages) == 0: # this handle the case if there's only one page of text
-        #     pages.append(lines)
-        pages.append(lines)
+                pages.append(current_page)
+                current_page = []
+        pages.append(current_page)
         return pages
     
     def text_next_page(self):

@@ -7,16 +7,10 @@ import pygame
 class Side(Enum):
     LEFT = -1
     RIGHT = 1
-
-#RESOLUTION = (1280, 720)
-
-# class Actor:
-#     '''This is a class for the npcs that talk during cutscenes'''
-#     def __init__(self):
-#         self.dialog = []
-#         self.active = False
         
 def split_dialog(text, left_name, right_name):
+    '''Some sort of function that splits text into two parts for the dialog.
+    Probably not the best way to do this but it works. Feel free to make it better if you are bored'''
     left_lines = []
     right_lines = []
     current_line = ""
@@ -42,32 +36,12 @@ def split_dialog(text, left_name, right_name):
         if side == Side.LEFT:
             left_lines.append(current_line)
     return left_lines, right_lines
-
-# class DialogManager():
-#     def __init__(self, left_npc, right_npc):
-#         self.left_actor = left_npc
-#         self.right_actor = right_npc
-#         self.side_talking = Side.LEFT
-#         self.left_dialog = self.left_actor.dialog.copy()
-#         self.right_dialog = self.right_actor.dialog.copy()
-
-#     def reset_dialog(self):
-#         self.side_talking = Side.LEFT
-#         self.left_dialog = self.left_actor.dialog.copy()
-#         self.right_dialog = self.right_actor.dialog.copy()
-
-#     def switch_actor_talking(self):
-#         self.side_talking = Side(self.side_talking.value*(-1))
-        
-#     def say_line(self):
-#         if not self.right_dialog and not self.left_dialog:
-#             self.reset_dialog()
-#         text = self.left_dialog.pop(0) if self.side_talking == Side.LEFT and self.left_dialog else (self.right_dialog.pop(0) if self.right_dialog else '...')
-#         print(text)
-#         self.switch_actor_talking()
         
     
 class DialogManager():
+    '''A dialog manager for all the dialogs in the game. Currently they are 100% cosmetic so there are no options to choose from, just 
+        some text that adds a little bit of flavour to the game. Because of that all of the dialogs will be in this scene and when GameStateManager
+        will switch to this scene it will set a current dialog to some option. That way we can add easily multiple dialogs to our game.'''
     def __init__(self, dialog_name) -> None:
         self.text = {}
         self.line = 0
@@ -103,9 +77,7 @@ class DialogScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         
-        '''A dialog manager for all the dialogs in the game. Currently they are 100% cosmetic so there are no options to choose from, just 
-        some text that adds a little bit of flavour to the game. Because of that all of the dialogs will be in this scene and when GameStateManager
-        will switch to this scene it will set a current dialog to some option. That way we can add easily multiple dialogs to our game.'''
+        '''Initalizing dialog manager'''
         self.DIALOG_NUMBER = 0
         self.talking_side = Side.LEFT # to remember which side is currently talking
         self.dialog_manager = DialogManager('test_dialog')

@@ -36,7 +36,7 @@ class BaseScene:
     
     def on_entry(self, *args):
         '''This is the method that is executed when GameStateManager changes to a scene. For example you can use it 
-        to reset gameplay, generate new formulas etc.'''
+        to reset gameplay, generate new formulas etc. Override it in each scene, with your own code, if you want to use it.'''
         pass
       
     # These two are just for adding stuff to the scene

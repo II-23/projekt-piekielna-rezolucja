@@ -108,6 +108,10 @@ class Player:
                 return True
         return False
 
+    def reset(self):
+        self.velocity[0] = 0
+        self.velocity[1] = 0
+        self.active = False
 
     def process_input(self, events,mouse, *args):
 

@@ -54,5 +54,5 @@ class MainMenuScene(BaseScene):
         super().on_entry(*args)
 
     def on_exit(self):
-        self.character.reset()
+        #self.character.reset()
         super().on_exit()

@@ -27,7 +27,21 @@ class Player:
         self.f = 1
 
         self.obstacles = []
-        self.obstacles.append(((100,100), (100, 100)))
+
+        # left border
+        self.obstacles.append(((0,0), (50, 200)))
+        self.obstacles.append(((0,470), (50, 200)))
+
+        # right border
+        self.obstacles.append(((1230,0), (50, 200)))
+        self.obstacles.append(((1230,470), (50, 200)))
+
+        # top border
+        self.obstacles.append(((0,0), (2000, 30)))
+
+        # bottom border
+        self.obstacles.append(((0,670), (540, 30)))
+        self.obstacles.append(((740,670), (2000, 30)))
 
         self.frames = {}
 
@@ -72,9 +86,10 @@ class Player:
 
         screen.blit(image, rect)
 
-        for pos, size in self.obstacles:
-            rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
-            pygame.draw.rect(screen,(100,100,100),rect)
+        if False:
+            for pos, size in self.obstacles:
+                rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
+                pygame.draw.rect(screen,(100,100,100),rect)
             
     def check_collision(self, pos1, size1, pos2, size2):
         x1, y1 = pos1

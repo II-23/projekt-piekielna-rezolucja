@@ -5,7 +5,13 @@ from Config.definitnios import ASSETS_DIR
 from Formulas.Formula import Formula_State
 from Utils.ResolutionButton import ResolutionButton
 from Config.graphics import RESOLUTION
-
+class Set_Of_Formulas_State(Enum):
+    DEFAULT = 0
+    OUT_OF_TIME = 1
+    OUT_OF_SPACE = 2
+    WRONG_EVALUATION = 3
+    FOUND_EVALUATION = 4
+    FOUND_PROOF = 5
 class Set_of_formulas(pygame.sprite.Sprite):
     def __init__(self, size, pos, list_of_formulas):
         #once we start fixing layout of stuff on the screen, line below needs to use variables passed from init.
@@ -23,7 +29,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.x=pos[0]
         self.y=pos[1]
         self.formulas=[]
-        self.state=0
+        self.state=Set_Of_Formulas_State.DEFAULT
         #adding formulas given by the generator. Still uses generator prototype.
         for i in range(len(list_of_formulas)):
            self.formulas.append(Formula((25,25), (self.x, self.y+i*25), list_of_formulas[i].variables, self.width, True))
@@ -74,14 +80,14 @@ class Set_of_formulas(pygame.sprite.Sprite):
                     for x in self.formulas:
                         x.state=Formula_State.HOVER
                     if len(self.formulas)>20:
-                        self.state=2
+                        self.state=Set_Of_Formulas_State.OUT_OF_SPACE
                 else:
                     print("znaleziono sprzeczność")
-                    self.state=1
+                    self.state=Set_Of_Formulas_State.FOUND_PROOF
     def render(self, screen):
         #fills with transparent and blits formulas
         self.get_surface().fill((0,0,0,0))
-        if self.state==0:
+        if self.state==Set_Of_Formulas_State.DEFAULT:
             for x in range(len(self.formulas)):
                 self.formulas[x].render(screen)
                 self.get_surface().blit(self.formulas[x].get_surface(), (0,25*x+50))
@@ -91,7 +97,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
             self.get_surface().blit(self.selected[1].get_surface(), (200,0))
 
     def update(self, mouse=pygame.mouse):
-        if self.state==0:
+        if self.state==Set_Of_Formulas_State.DEFAULT:
             self.selected[0].state=Formula_State.CLICKED_NOT_ASSIGNED
             self.selected[1].state=Formula_State.CLICKED_NOT_ASSIGNED
             #likely cause of bugs with formula state lol.
@@ -125,11 +131,11 @@ class Set_of_formulas(pygame.sprite.Sprite):
                 x.update(mouse)
             self.selected[0].update(mouse)
             self.selected[1].update(mouse)
-        if self.state!=0:
+        if self.state!=Set_Of_Formulas_State.DEFAULT:
             self.button.state=self.state
 
     def process_input(self, events, mouse, *args):
-        if self.state==0:
+        if self.state==Set_Of_Formulas_State.DEFAULT:
             for x in self.formulas:
                 x.process_input(events, mouse, *args)
             pass

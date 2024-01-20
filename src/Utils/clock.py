@@ -1,5 +1,6 @@
 import pygame
 import math
+from Formulas.FormulaSet import Set_Of_Formulas_State
 PI=math.pi
 class Clock(pygame.sprite.Sprite):
     def __init__(self, size, pos, time, game):
@@ -50,10 +51,10 @@ class Clock(pygame.sprite.Sprite):
     def update(self, mouse=pygame.mouse):
         if self.time_left<0:
             self.state=1
-            self.game.state=2
+            self.game.state=Set_Of_Formulas_State.OUT_OF_TIME
     def process_input(self, events, mouse, *args):
         for event in events:
-            if event.type == self.timer_event and self.game.state==0:
+            if event.type == self.timer_event and self.game.state==Set_Of_Formulas_State.DEFAULT:
                 self.time_left-=self.timer_interval
                 #print(self.time_left)
     def get_surface(self):

@@ -62,7 +62,7 @@ class Formula(pygame.sprite.Sprite):
         self.width=size[0]
         self.height=size[1]
         self.x=pos[0]
-        self.y=pos[1]
+        self.y=pos[1]+50
         self.max_width=width
         self.symbols=[]
         self.surface = pygame.surface.Surface((self.width*12, self.height)).convert_alpha()
@@ -108,15 +108,7 @@ class Formula(pygame.sprite.Sprite):
         #used to cause bug where formulas hovered and clicked would act like not hovered, not clicked.
         #bugs sometimes. Plz review, i have no idea what goes wrong.
         mouse_pos = (mouse.get_pos()[0], mouse.get_pos()[1])
-        '''if self.state==Formula_State.HOVER and self.cursor_over_formula(mouse_pos)==False and self.clickable:
-            for element in self.symbols:
-                element.state=0
-            self.state=Formula_State.DEFAULT
-
-        if self.state==Formula_State.DEFAULT and self.cursor_over_formula(mouse_pos)==True and self.clickable:
-            for element in self.symbols:
-                element.state=1
-            self.state=Formula_State.HOVER'''
+        
         if self.cursor_over_formula(mouse_pos)==True and self.state==Formula_State.DEFAULT:
             self.state=Formula_State.HOVER
         if self.state==Formula_State.HOVER and self.cursor_over_formula(mouse_pos)==False:

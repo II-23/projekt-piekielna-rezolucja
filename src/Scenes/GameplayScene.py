@@ -38,20 +38,18 @@ class GameplayScene(BaseScene):
         self.start_screen_button = setup_button(self.gameStateManager, 'start', (100, 300))
         self.add_ui_element(self.start_screen_button)
         
-        #
+        
         formula_generator = Generator(5, 6)   
         formula_generator.fill(5, 6)
         formulas=abc.formulas
-        #
+        
 
-        formula_set=Set_of_formulas((500,500), (500,150), formulas)
+        self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
 
-        self.add_ui_element(formula_set)
-        self.add_ui_element(formula_set.selected[0])
-        self.add_ui_element(formula_set.selected[1])
-        self.add_ui_element(formula_set.button)
-        scorescreen=Game_over_window((500,500),(200,200),1, formula_set)
-        self.add_ui_element(scorescreen)
-        clock=Clock((100,100), (300,300), 60)
+        self.add_ui_element(self.formula_set)
+        self.add_ui_element(self.formula_set.button)
+        self.scorescreen=Game_over_window((400,100),(500,800),1, self.formula_set)
+        self.add_ui_element(self.scorescreen)
+        clock=Clock((100,100), (300,300), 60, self.formula_set)
         self.add_ui_element(clock)
-        #    
+    

@@ -79,47 +79,58 @@ class Set_of_formulas(pygame.sprite.Sprite):
     def render(self, screen):
         #fills with transparent and blits formulas
         self.get_surface().fill((0,0,0,0))
-        for x in range(len(self.formulas)):
-            self.formulas[x].render(screen)
-            self.get_surface().blit(self.formulas[x].get_surface(), (0,25*x))
+        if self.state==0:
+            for x in range(len(self.formulas)):
+                self.formulas[x].render(screen)
+                self.get_surface().blit(self.formulas[x].get_surface(), (0,25*x+50))
+            self.selected[0].render(screen)
+            self.get_surface().blit(self.selected[0].get_surface(), (0,0))
+            self.selected[1].render(screen)
+            self.get_surface().blit(self.selected[1].get_surface(), (200,0))
 
     def update(self, mouse=pygame.mouse):
-        self.selected[0].state=Formula_State.CLICKED_NOT_ASSIGNED
-        self.selected[1].state=Formula_State.CLICKED_NOT_ASSIGNED
-        #likely cause of bugs with formula state lol.
-        #if formula that is indicated to be selected for a slot(selected index) has been unclicked, it clears selected_index and selected
-        if self.selected_index[0]!=-1:
-            if self.formulas[self.selected_index[0]].state!=Formula_State.CLICKED_SLOT_1:
-                self.clear_selected(0)
-        if self.selected_index[1]!=-1:
-            if self.formulas[self.selected_index[1]].state!=Formula_State.CLICKED_SLOT_2:
-                self.clear_selected(1)
-        for x in range(len(self.formulas)):
-            #if something is clicked, checks if either slot is empty. If so, it selects it for a slot. If no, it is unclicked
-            if self.formulas[x].state==Formula_State.CLICKED_NOT_ASSIGNED:
-                if self.selected_index[0]==-1:
-                    self.formulas[x].state = Formula_State.CLICKED_SLOT_1
-                    self.selected_index[0]=x
-                    self.selected[0].symbols=self.formulas[x].symbols
-                    self.selected[0].content=self.formulas[x].content
-                elif self.selected_index[1]==-1:
-                    self.formulas[x].state=Formula_State.CLICKED_SLOT_2
-                    self.selected_index[1]=x
-                    self.selected[1].symbols=self.formulas[x].symbols
-                    self.selected[1].content=self.formulas[x].content
-                else:
-                     self.formulas[x].state=Formula_State.DEFAULT
-        if (self.selected_index[0] != -1 and self.selected_index[1] != -1):
-            self.button.make_flamed()
-        else:
-            self.button.make_not_flamed()
-        for x in self.formulas:
-            x.update(mouse)
+        if self.state==0:
+            self.selected[0].state=Formula_State.CLICKED_NOT_ASSIGNED
+            self.selected[1].state=Formula_State.CLICKED_NOT_ASSIGNED
+            #likely cause of bugs with formula state lol.
+            #if formula that is indicated to be selected for a slot(selected index) has been unclicked, it clears selected_index and selected
+            if self.selected_index[0]!=-1:
+                if self.formulas[self.selected_index[0]].state!=Formula_State.CLICKED_SLOT_1:
+                    self.clear_selected(0)
+            if self.selected_index[1]!=-1:
+                if self.formulas[self.selected_index[1]].state!=Formula_State.CLICKED_SLOT_2:
+                    self.clear_selected(1)
+            for x in range(len(self.formulas)):
+                #if something is clicked, checks if either slot is empty. If so, it selects it for a slot. If no, it is unclicked
+                if self.formulas[x].state==Formula_State.CLICKED_NOT_ASSIGNED:
+                    if self.selected_index[0]==-1:
+                        self.formulas[x].state = Formula_State.CLICKED_SLOT_1
+                        self.selected_index[0]=x
+                        self.selected[0].symbols=self.formulas[x].symbols
+                        self.selected[0].content=self.formulas[x].content
+                    elif self.selected_index[1]==-1:
+                        self.formulas[x].state=Formula_State.CLICKED_SLOT_2
+                        self.selected_index[1]=x
+                        self.selected[1].symbols=self.formulas[x].symbols
+                        self.selected[1].content=self.formulas[x].content
+                    else:
+                         self.formulas[x].state=Formula_State.DEFAULT
+            if (self.selected_index[0] != -1 and self.selected_index[1] != -1):
+                self.button.make_flamed()
+            else:
+                self.button.make_not_flamed()
+            for x in self.formulas:
+                x.update(mouse)
+            self.selected[0].update(mouse)
+            self.selected[1].update(mouse)
+        if self.state!=0:
+            self.button.state=self.state
 
     def process_input(self, events, mouse, *args):
-        for x in self.formulas:
-            x.process_input(events, mouse, *args)
-        pass
+        if self.state==0:
+            for x in self.formulas:
+                x.process_input(events, mouse, *args)
+            pass
     def get_surface(self):
         return self.surface
     def get_rect(self):

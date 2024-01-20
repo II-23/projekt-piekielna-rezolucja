@@ -2,7 +2,8 @@ import pygame
 import math
 PI=math.pi
 class Clock(pygame.sprite.Sprite):
-    def __init__(self, size, pos, time):
+    def __init__(self, size, pos, time, game):
+        self.game=game
         self.timer=clock = pygame.time.Clock()
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         self.timer_interval = 100
@@ -13,6 +14,7 @@ class Clock(pygame.sprite.Sprite):
         self.surface=pygame.Surface(size)
         self.rect=pygame.Rect(size[0],size[1],pos[0],pos[1])
         self.size=size[0]
+        self.state=0
         
     def render(self, screen):
         current_color=(int(self.time_left/self.time_total*255), int(self.time_left/self.time_total*255), int(self.time_left/self.time_total*255))
@@ -46,7 +48,9 @@ class Clock(pygame.sprite.Sprite):
         self.get_surface().set_colorkey((0, 0, 0))
 
     def update(self, mouse=pygame.mouse):
-        pass
+        if self.time_left<0:
+            self.state=1
+            self.game.state=2
     def process_input(self, events, mouse, *args):
         for event in events:
             if event.type == self.timer_event:

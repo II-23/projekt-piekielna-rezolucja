@@ -7,6 +7,7 @@ from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
 from Scenes.DialogScene import DialogScene
+from Scenes.MapScene import MapScene
 from Utils.Slider import *
 from Formulas.Formula import *
 from Formulas.FormulaSet import *
@@ -33,9 +34,11 @@ class Main_Window:
         # buttons/sliders/whatever check out .py files of these scenes (and BaseScene) here and take inspirations.  
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.start.screen_saver_alpha = 0
-        self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.gameplay_intro = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro}
+        self.formula_gameplay = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.dialog = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.map_level = MapScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.gameStateManager.states = {'start': self.start, 'level': self.formula_gameplay, 'dialog': self.dialog, 
+                                        'map': self.map_level}
         
     def on_event(self, event):
         button_clicks = []

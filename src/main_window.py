@@ -6,6 +6,7 @@ from gamestatemanager import GameStateManager
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
+from Scenes.IntroScene import IntroScene
 from Scenes.DialogScene import DialogScene
 from Utils.Slider import *
 from Formulas.Formula import *
@@ -27,15 +28,16 @@ class Main_Window:
         self.FramesPerSec = pygame.time.Clock()
         self.FPS = 60
         # setting up manager for game states (in other words: scenes)
-        self.gameStateManager = GameStateManager('start') # this is the default scene
+        self.gameStateManager = GameStateManager('intro') # this is the default scene
         # Here we create scenes for our game. The init part is handled in __init__() of each of these scenes,
         # so this space here, in main_window, can stay clean. If you want to create your own scene or add some
         # buttons/sliders/whatever check out .py files of these scenes (and BaseScene) here and take inspirations.  
+        self.intro = IntroScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.start.screen_saver_alpha = 0
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.gameplay_intro = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro}
+        self.gameStateManager.states = {'intro': self.intro, 'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro}
         
     def on_event(self, event):
         button_clicks = []

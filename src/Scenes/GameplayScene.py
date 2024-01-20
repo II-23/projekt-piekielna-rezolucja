@@ -1,4 +1,3 @@
-# AD     
 from Scenes.BaseScene import BaseScene, setup_button
 from Utils.Slider import Slider_Bar
 from Formulas.Formula import Symbol, Formula
@@ -12,7 +11,7 @@ from Utils.clock import Clock
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
-        BaseScene.__init__(self,display=display,gameStateManager=gameStateManager, background_color=background_color)
+        BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''Here you will learn how to add things to your scene. It's simple. Create the object and set its parameters so it fits your needs.
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
         '''
@@ -54,4 +53,9 @@ class GameplayScene(BaseScene):
         self.add_ui_element(scorescreen)
         clock=Clock((100,100), (300,300), 60)
         self.add_ui_element(clock)
-        #    
+        #
+        
+    def on_entry(self, *args):
+        '''TODO probalby here will be something to reset the score/formulas'''
+        super().on_entry(*args)
+        

@@ -1,4 +1,3 @@
-# AD     
 from Utils.Button import Button
 from Utils.Slider import Slider_Bar
 from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
@@ -7,16 +6,15 @@ from Formulas.FormulaSet import Set_of_formulas
 import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
+from Config.graphics import RESOLUTION
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 def setup_button(gameStateManager, to_change, position):
-    '''This is a function that is used for creating a button that will switch current scene.
-    
-    '''
+    '''This is a function that is used for creating a button that will switch current scene.'''
     def test2(args):
-        gameStateManager.set_state(to_change)
+        gameStateManager.set_state(to_change, args)
     button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200))
     return button2
 
@@ -28,13 +26,33 @@ class BaseScene:
     '''
     def __init__(self, display, gameStateManager, background_color=WHITE):
         self.display = display
+        self.pause = False
         self.width = display.get_width()
         self.height = display.get_height()
         self.gameStateManager = gameStateManager
         self.ui_elements = [] # list of all elements of our ui, buttons, sliders, etc. 
         self.background_image = None
         self.background_color = background_color
+        self.screen_saver = pygame.Surface(RESOLUTION)
+        self.screen_saver_alpha = 255
+        self.screen_saver.set_alpha(self.screen_saver_alpha)                
+        self.screen_saver.fill((0,0,0))
+        self.transition_tick = 15
+        self.lower_opacity = False
+        self.up_opacity = False
+          
         
+    def on_entry(self, *args):
+        '''This is the method that is executed when GameStateManager changes to a scene. For example you can use it 
+        to reset gameplay, generate new formulas etc. Override it in each scene, with your own code, if you want to use it.'''
+        self.lower_opacity = True
+        self.pause = True
+    
+    def on_exit(self):
+        '''This is a method that is executed when leaving a scene'''
+        self.up_opacity = True
+        self.pause = True
+  
     # These two are just for adding stuff to the scene
     def add_ui_element(self, button):
         self.ui_elements.append(button)
@@ -43,8 +61,9 @@ class BaseScene:
         self.background_image = new_image
          
     def process_input(self, events, pressed_keys):
-        for element in self.ui_elements:
-            element.process_input(events, pygame.mouse, 0)
+        if not self.pause:
+            for element in self.ui_elements:
+                element.process_input(events, pygame.mouse, 0)
             
     def update(self, mouse=pygame.mouse):
         for element in self.ui_elements:
@@ -53,10 +72,10 @@ class BaseScene:
     def render_base_ui(self, screen):
         for element in self.ui_elements:
             element.render(screen)
-            # !!!IMPORTANT!!!
-            # !!!UwAGA KURWA!!!
-            # If your class that displays something needs some blit(), put it here just like this one
-            # If you need to give it some more parameters or something, give me a call (message, don't call me)
+            '''!!!IMPORTANT!!!
+               !!!UwAGA KURWA!!!
+            If your class that displays something needs some blit(), put it here just like this one
+            If you need to give it some more parameters or something'''
             if isinstance(element, Slider_Bar):
                 screen.blit(element.get_surface(), (screen.get_width() - element.get_surface().get_width(), 0))  
             if isinstance(element, Symbol):
@@ -71,11 +90,30 @@ class BaseScene:
                 screen.blit(element.get_surface(), element.get_rect())   
             if isinstance(element, Clock):
                 screen.blit(element.get_surface(), element.get_rect())   
-            
-
-            
+                
+        
     def render(self, screen):
         self.display.fill(self.background_color)
         if self.background_image is not None:
             self.display.blit(self.background_image, (self.display.get_width() * 0.5 - 0.5 * self.background_image.get_width(), 0))
         self.render_base_ui(screen)
+        
+        '''When entering a scene the screen will start to become less black'''
+        if self.lower_opacity:
+            opacity = self.screen_saver_alpha - self.transition_tick
+            if opacity <= 0:
+                opacity = 0
+                self.lower_opacity = False
+                self.pause = False
+            self.screen_saver_alpha = opacity
+        '''And when exiting a scene it will go dark'''    
+        if self.up_opacity:
+            opacity = self.screen_saver_alpha + self.transition_tick
+            if opacity >= 255:
+                opacity = 255
+                self.up_opacity = False
+                self.pause = False
+            self.screen_saver_alpha = opacity
+            
+        self.screen_saver.set_alpha(self.screen_saver_alpha)
+        screen.blit(self.screen_saver, (0,0))

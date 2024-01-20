@@ -26,6 +26,8 @@ class Player:
         self.animation = False
         self.f = 1
 
+        self.active = False # Determines whether character is going to interact with areas
+
         self.areas = []
         self.obstacles = []
 
@@ -109,9 +111,12 @@ class Player:
 
     def process_input(self, events,mouse, *args):
 
-        for event in events:
-            
+        print("proces")
 
+        self.velocity[0] = 0
+        self.velocity[0] = 0
+
+        for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
                     self.velocity[1] += -1  
@@ -153,13 +158,26 @@ class Player:
         for pos2, size2 in self.obstacles:
             if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
                 collision = True
+            
         #print(self.velocity)
         if not collision:
             self.pos += self.velocity * self.speed
 
+        collision = False
+
         for x in self.areas:
-            if self.check_collision(self.pos, (self.size, self.size), x.pos, x.size):
-                x.process_input(events,mouse, *args)
+            if self.check_collision(dummy_pos, (self.size, self.size), x.pos, x.size):
+                if self.active:
+                    x.process_input(events,mouse, *args)
+                    self.velocity[0] = 0
+                    self.velocity[1] = 0
+                    self.active = False
+                collision = True
+
+        if not collision:
+            self.active = True
+
+        
     
     def update(self, mouse):
         pass

@@ -26,6 +26,7 @@ class Player:
         self.animation = False
         self.f = 1
 
+        self.areas = []
         self.obstacles = []
 
         # left border
@@ -90,6 +91,9 @@ class Player:
             for pos, size in self.obstacles:
                 rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
                 pygame.draw.rect(screen,(100,100,100),rect)
+
+            for x in self.areas:
+                x.render(screen)
             
     def check_collision(self, pos1, size1, pos2, size2):
         x1, y1 = pos1
@@ -152,6 +156,10 @@ class Player:
         #print(self.velocity)
         if not collision:
             self.pos += self.velocity * self.speed
+
+        for x in self.areas:
+            if self.check_collision(self.pos, (self.size, self.size), x.pos, x.size):
+                x.process_input(events,mouse, *args)
     
     def update(self, mouse):
         pass

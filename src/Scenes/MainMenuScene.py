@@ -1,5 +1,6 @@
 from Scenes.BaseScene import BaseScene, setup_button
 from Utils.Character import Player
+from Utils.Area import Area
 from Utils.volume_slider import Volume_slider
 from Utils.Slider import Slider_Bar
 from Utils.Button import Button
@@ -34,11 +35,18 @@ class MainMenuScene(BaseScene):
         self.slider = Volume_slider((200, 250), (200, 12), 0.5,0,100,'red','grey',50)
         self.add_ui_element(self.slider)
 
-        self.character = Player((550, 300), 150, "player/player.png")
-        self.add_ui_element(self.character)
-
         self.add_ui_element(logo)
         self.add_background_image(background_img)
+
+        # setting up a character and things they can interact with
+        self.character = Player((550, 300), 150, "player/player.png")
+        
+        self.area = Area((600,700),(100,100),None)
+        self.area.on_enter_event = go_to_scene
+        self.character.areas.append(self.area)
+
+
+        self.add_ui_element(self.character)
   
     def on_entry(self, *args):
         super().on_entry(*args)

@@ -38,18 +38,9 @@ class Player:
         image = Image.open(image_path)
         image = image.resize((size*3, size))
         
-
-        # S
-        im = image.crop((0,0,100,100))
-        save_as(self.frames, im, image_path, "s")
-
-        # W
-        im = image.crop((100,0,200,100))
-        save_as(self.frames, im, image_path, "w")
-
-        # D
-        im = image.crop((200,0,300,100))
-        save_as(self.frames, im, image_path, "a")
+        for i, x in enumerate(["s","w","a"]):
+            im = image.crop((i*size,0,(i+1)*size,size))
+            save_as(self.frames, im, image_path, x)
 
         # A
         im = ImageOps.mirror(im)

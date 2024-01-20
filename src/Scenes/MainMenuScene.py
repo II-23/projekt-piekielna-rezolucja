@@ -16,6 +16,8 @@ class MainMenuScene(BaseScene):
         # backgorund for main menu
         logo = PiekielnaRezolucjaLogo((RESOLUTION[0]*0.3, 0))
         piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
+        background_img = pygame.image.load(ASSETS_DIR + "/background.png")
+        background_img = pygame.transform.scale(background_img, (1300,730))
         '''button for going to da GAME
         Here I create the function for the button manually because I want to pass the additional arguments to it,
         (Probably will add better way to do this) that is the dialog that will be loaded when changed to dialog scene.'''
@@ -32,11 +34,11 @@ class MainMenuScene(BaseScene):
         self.slider = Volume_slider((200, 250), (200, 12), 0.5,0,100,'red','grey',50)
         self.add_ui_element(self.slider)
 
-        self.character = Player((0,0), 100, "player/player.png")
+        self.character = Player((550, 300), 150, "player/player.png")
         self.add_ui_element(self.character)
 
         self.add_ui_element(logo)
-        self.add_background_image(piwo_img)
+        self.add_background_image(background_img)
   
     def on_entry(self, *args):
         super().on_entry(*args)

@@ -111,11 +111,6 @@ class Player:
 
     def process_input(self, events,mouse, *args):
 
-        print("proces")
-
-        self.velocity[0] = 0
-        self.velocity[0] = 0
-
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:

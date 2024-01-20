@@ -50,5 +50,9 @@ class MainMenuScene(BaseScene):
         self.add_ui_element(self.character)
   
     def on_entry(self, *args):
+        self.character.reset()
         super().on_entry(*args)
 
+    def on_exit(self):
+        self.character.reset()
+        super().on_exit()

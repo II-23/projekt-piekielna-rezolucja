@@ -73,6 +73,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
                     self.clear_selected(1)
                     for x in self.formulas:
                         x.state=Formula_State.HOVER
+                    if len(self.formulas)>20:
+                        self.state=2
                 else:
                     print("znaleziono sprzeczność")
                     self.state=1

@@ -53,7 +53,7 @@ class Clock(pygame.sprite.Sprite):
             self.game.state=2
     def process_input(self, events, mouse, *args):
         for event in events:
-            if event.type == self.timer_event:
+            if event.type == self.timer_event and self.game.state==0:
                 self.time_left-=self.timer_interval
                 #print(self.time_left)
     def get_surface(self):

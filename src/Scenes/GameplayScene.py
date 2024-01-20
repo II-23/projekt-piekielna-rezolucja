@@ -43,7 +43,7 @@ class GameplayScene(BaseScene):
         formulas=abc.formulas
         
 
-        self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
+        self.formula_set=Set_of_formulas((500,550), (500,150), formulas)
 
         self.add_ui_element(self.formula_set)
         self.add_ui_element(self.formula_set.button)

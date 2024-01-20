@@ -26,8 +26,25 @@ class Player:
         self.animation = False
         self.f = 1
 
+        self.active = False # Determines whether character is going to interact with areas
+
+        self.areas = []
         self.obstacles = []
-        self.obstacles.append(((100,100), (100, 100)))
+
+        # left border
+        self.obstacles.append(((0,0), (50, 200)))
+        self.obstacles.append(((0,470), (50, 200)))
+
+        # right border
+        self.obstacles.append(((1230,0), (50, 200)))
+        self.obstacles.append(((1230,470), (50, 200)))
+
+        # top border
+        self.obstacles.append(((0,0), (2000, 30)))
+
+        # bottom border
+        self.obstacles.append(((0,670), (540, 30)))
+        self.obstacles.append(((740,670), (2000, 30)))
 
         self.frames = {}
 
@@ -38,18 +55,9 @@ class Player:
         image = Image.open(image_path)
         image = image.resize((size*3, size))
         
-
-        # S
-        im = image.crop((0,0,100,100))
-        save_as(self.frames, im, image_path, "s")
-
-        # W
-        im = image.crop((100,0,200,100))
-        save_as(self.frames, im, image_path, "w")
-
-        # D
-        im = image.crop((200,0,300,100))
-        save_as(self.frames, im, image_path, "a")
+        for i, x in enumerate(["s","w","a"]):
+            im = image.crop((i*size,0,(i+1)*size,size))
+            save_as(self.frames, im, image_path, x)
 
         # A
         im = ImageOps.mirror(im)
@@ -81,9 +89,13 @@ class Player:
 
         screen.blit(image, rect)
 
-        for pos, size in self.obstacles:
-            rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
-            pygame.draw.rect(screen,(100,100,100),rect)
+        if False:
+            for pos, size in self.obstacles:
+                rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
+                pygame.draw.rect(screen,(100,100,100),rect)
+
+            for x in self.areas:
+                x.render(screen)
             
     def check_collision(self, pos1, size1, pos2, size2):
         x1, y1 = pos1
@@ -100,8 +112,6 @@ class Player:
     def process_input(self, events,mouse, *args):
 
         for event in events:
-            
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
                     self.velocity[1] += -1  
@@ -143,9 +153,26 @@ class Player:
         for pos2, size2 in self.obstacles:
             if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
                 collision = True
+            
         #print(self.velocity)
         if not collision:
             self.pos += self.velocity * self.speed
+
+        collision = False
+
+        for x in self.areas:
+            if self.check_collision(dummy_pos, (self.size, self.size), x.pos, x.size):
+                if self.active:
+                    x.process_input(events,mouse, *args)
+                    self.velocity[0] = 0
+                    self.velocity[1] = 0
+                    self.active = False
+                collision = True
+
+        if not collision:
+            self.active = True
+
+        
     
     def update(self, mouse):
         pass

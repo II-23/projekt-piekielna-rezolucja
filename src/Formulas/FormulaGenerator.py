@@ -1,6 +1,6 @@
 from random import *
 
-CHANCE_FOR_SATISFIABLE = 0 # as a percentage
+CHANCE_FOR_SATISFIABLE = 100 # as a percentage
 
 max_variable_number= 5
 formulas_number=5 # has to be at least 2
@@ -73,27 +73,36 @@ class Generator:
             
     def fill(self, max_len, max_variable_number):
         self.clear()
-        satisfiable = randint(0, 100) # drawing whether the set of formulas will be satisfiable
+        satisfiable = randint(0, 100)
+        print(satisfiable) # drawing whether the set of formulas will be satisfiable
         #generating safisfiable sets
         if satisfiable <= CHANCE_FOR_SATISFIABLE: 
-            self.satisfiable == True
-            valuated = [False for i in range(len(self.valuation))] # keeps track of whether value of certain variable has been generated
+            self.satisfiable = True
+            var_used = [[0,0] for i in range(max_variable_number)] # keeps track of whether value of certain variable has been generated
             # generating formulas
+            for i in range(len(self.valuation)): # drawing value for each variable
+                self.valuation[i] = choice([-1, 1])
+                var_used[i][0] = 0 # how many times a variable has been used in the whole set
+                var_used[i][1] = 0 # what is the advantage for the variable (how many more times has this variable been used in the positive (+1) vs negation (-1) form)
             for formula in self.formulas:
-                initialized = [False for i in range(len(self.valuation))]
-                var = randint(0, len(self.valuation) - 1)
-                if valuated[var] == False: # if drawn variable has not yet been set. Then choose a value for it
-                    self.valuation[var] = choice([-1, 1])
-                    valuated[var] = True
-                formula.variables[var] = self.valuation[var]
-                formula.length = 1
-                initialized[var] = True
+                initialized = [False for i in range(max_variable_number)]
                 length = randint(1, max_len) # drawing a length of the current formula
                 while formula.length < length:
-                    while initialized[var] == True: 
+                    var = 0;
+                    final_var = True;
+                    while final_var: 
                         var = randint(0, formula.size - 1) # drawing a variable to initialize from those which have not yet been initialized
-                    formula.variables[var] = choice([-1, 1])
+                        final_var = var_used[var][0] <= max(2, self.size - max_variable_number + 1) and initialized[var] == True
+
+                    # to ensure that a single variable is not responsible for to many formulas satisfiability
+                    if var_used[var][1] > 0:
+                        formula.variables[var] = -1
+                        var_used[var][1] -= 1 # beacuse self.valuation[var] is either -1 or 1 then var_used[self.val...] will result in either var_used[1] or var_used[-1] == var_used[2] accordingly
+                    else:
+                        formula.variables[var] = 1
+                        var_used[var][1] += 1
                     formula.length += 1
+                    var_used[var][0] += 1
                     initialized[var] = True
             # at the end Set_Of_Formulas.formulas stores the set of formulas which can be satisfied by the Set_Of_Formulas.valuation. Keep in mind that .valuation is not the only correct valuation and the .valuation[i] has value 0 if i'th variable may either be True or False
             return
@@ -108,18 +117,20 @@ class Generator:
                     continue
                 var = choice(vars)
                 vars.remove(var)
-                backlog = randint(0, max(0, modified_formula.length))
+                backlogs = [randint(0, max(0, modified_formula.length // 2 - 1)), randint(0, max(0, modified_formula.length // 2 - 1))]
                 modified_formula_cut = modified_formula.copy()
                 initialized = []
                 for i in range(modified_formula.size):
                     if modified_formula.variables[i] != 0:
                         initialized.append(i)
-                while backlog > 0:
-                    backlog -= 1
-                    id = choice(initialized)
-                    initialized.remove(id)
-                    modified_formula_cut.variables[id] = 0
-                    modified_formula_cut.length -= 1
+                modified_formulas = [modified_formula.copy(), modified_formula]
+                for i in range(len(backlogs)):
+                    while backlogs[i] > 0:
+                        backlogs[i] -= 1
+                        id = choice(initialized)
+                        initialized.remove(id)
+                        modified_formulas[i].variables[id] = 0
+                        modified_formula[i].length -= 1
                 modified_formula.variables[var] = choice([-1, 1])
                 modified_formula.length += 1
                 modified_formula_cut.variables[var] = -1 * modified_formula.variables[var]

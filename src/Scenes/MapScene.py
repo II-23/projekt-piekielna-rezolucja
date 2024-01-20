@@ -24,7 +24,6 @@ class MapScene(BaseScene):
         self.area.on_enter_event = go_to_scene
         self.character.areas.append(self.area)
 
-
         self.add_ui_element(self.character)
         
     def on_entry(self, *args):

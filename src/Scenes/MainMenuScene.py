@@ -19,6 +19,7 @@ class MainMenuScene(BaseScene):
         piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
         background_img = pygame.image.load(ASSETS_DIR + "/background.png")
         background_img = pygame.transform.scale(background_img, (1300,730))
+        
         '''button for going to da GAME
         Here I create the function for the button manually because I want to pass the additional arguments to it,
         (Probably will add better way to do this) that is the dialog that will be loaded when changed to dialog scene.'''

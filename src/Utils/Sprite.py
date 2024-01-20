@@ -14,18 +14,25 @@ class Sprite:
     def draw(self,screen):
         if self.vis==True:
             screen.blit(self.image, self.pos)
-
-
-#test
+    def update(self, dx, dy, hide=False):
+        self.pos = (dx, dy)
+        if hide==True:
+            self.vis = False
+    def get_pos(self):
+        return self.pos
+    
+# # test
 # RESOLUTION = (1280, 720)
 # pygame.init()
 # screen = pygame.display.set_mode(RESOLUTION)
-# sprite = Sprite("image_path", (0, 0),True,2.0)
+# sprite = Sprite("image_path", (0, 0),True)
 # running = True
 # while running:
 #     for event in pygame.event.get():
 #         if event.type == pygame.QUIT:
 #             running = False
+#     pos=sprite.get_pos()
+#     sprite.update(pos[0],pos[1])  # This will move the sprite and hide it
 
 #     screen.fill((0, 0, 0))
 #     sprite.draw(screen)

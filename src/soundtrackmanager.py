@@ -27,6 +27,12 @@ class SoundtrackManager():
     @classmethod
     def getPath(cls, fileName):
         return os.path.join(ASSETS_DIR,"soundtrack",fileName)
+    
+    @classmethod
+    @mixerCheck
+    def setVolume(cls, volume):
+        volume /= 100
+        pygame.mixer.music.set_volume(volume)
 
     @classmethod
     @mixerCheck

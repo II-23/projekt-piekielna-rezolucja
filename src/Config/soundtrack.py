@@ -5,5 +5,6 @@ MUSIC = {
 
 SOUNDS = {
     "ReverbFart" : "reverb-fart.wav",
-    "Yippee!" : "yippee-tbh.wav"
+    "Yippee!" : "yippee-tbh.wav",
+    "WritingEffect" : "writing_sound_effect.wav"
 }

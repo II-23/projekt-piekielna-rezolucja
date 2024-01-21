@@ -75,7 +75,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
                     if x!=0:
                         check=1
                 if check==1:
-                    SoundtrackManager.playSound("ReverbFart")
+                    SoundtrackManager.playSound("WritingEffect")
                     self.formulas.append(Formula((25,25), (self.x, self.y+len(self.formulas)*25), q3, self.width, True))
                     self.clear_selected(0)
                     self.clear_selected(1)

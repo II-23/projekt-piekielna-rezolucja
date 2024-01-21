@@ -1,6 +1,6 @@
 import pygame
 import os
-from Config.soundtrack import MUSIC
+from Config.soundtrack import MUSIC, SOUNDS
 from Config.definitnios import ASSETS_DIR
 
 class SoundtrackManager():
@@ -8,7 +8,7 @@ class SoundtrackManager():
     Większość funkcji ma bardzo intuicyjne działanie.
     Aby wszyscy korzystali z tego samego SoundtrackManager'a nie należy tworzyć obiektu klasy,
     a raczej korzystać bezpośrednio z klasy.
-    Aby puścić plik dźwiękowy należy:
+    Aby puścić muzykę należy:
     1. Dodać plik dźwiękowy do assets/soundrack/
     2. W pliku src/Config/soundtrack.py w słowniku MUSIC dodać utwór w postaci:
     "NazwaPrzezKtórąBędziemySięOdwoływać" : "NazwaPliku"
@@ -16,6 +16,7 @@ class SoundtrackManager():
     '''
 
     currentMusic = None
+    loadedSounds = {}
 
     def mixerCheck(func):
         def wrapper(cls, *args, **kwargs):
@@ -37,8 +38,8 @@ class SoundtrackManager():
     @classmethod
     @mixerCheck
     def playMusic(cls, musicName, *args, **kwargs):
-        musicPath = cls.getPath(MUSIC[musicName])
         try:
+            musicPath = cls.getPath(MUSIC[musicName])
             pygame.mixer.music.load(musicPath)
             pygame.mixer.music.play(*args, **kwargs)
             cls.currentMusic = musicName
@@ -70,4 +71,24 @@ class SoundtrackManager():
             cls.currentMusic = None
         except Exception as e:
             print(f"Wasn't able to stop/unload music file: {e}")
-            
+
+    @classmethod
+    @mixerCheck
+    def playSound(cls, SoundName):
+        try:
+            if SoundName not in cls.loadedSounds:
+                cls.loadedSounds[SoundName] = pygame.mixer.Sound(cls.getPath(SOUNDS[SoundName]))
+
+            cls.loadedSounds[SoundName].play()
+        except Exception as e:
+            print(f"Wasn't able to play/load sound file: {e}")
+
+    @classmethod
+    @mixerCheck
+    def stopSound(cls, SoundName):
+        try:
+            if SoundName not in cls.loadedSounds:
+                print(f"{SoundName} isn't loaded yet")
+            cls.loadedSounds[SoundName].stop()
+        except Exception as e:
+            print(f"Wasn't able to stop/unload music file: {e}")

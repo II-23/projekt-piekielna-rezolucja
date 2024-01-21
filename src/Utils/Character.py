@@ -129,26 +129,23 @@ class Player:
                     
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
-                    self.velocity[1] = 0 
+
+                    self.velocity[1] = 0
                 elif event.key == pygame.K_s:
-                    self.velocity[1] = 0    
+                    self.velocity[1] = 0 
                 elif event.key == pygame.K_a:
                     self.velocity[0] = 0  
                 elif event.key == pygame.K_d:
-                    self.velocity[0] = 0  
+                    self.velocity[0] = 0 
 
         if self.velocity[1] == 1:
             self.state = "s"
-            print('s')
         if self.velocity[1] == -1:
             self.state = "w"
-            print('w')
         if self.velocity[0] == 1:
             self.state = "d"
-            print('d')
         if self.velocity[0] == -1:
             self.state = "a"
-            print('a')
 
         if self.velocity[0] == 0 and self.velocity[1] == 0:
             self.animation = False

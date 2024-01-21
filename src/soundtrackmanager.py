@@ -9,10 +9,10 @@ class SoundtrackManager():
     Aby wszyscy korzystali z tego samego SoundtrackManager'a nie należy tworzyć obiektu klasy,
     a raczej korzystać bezpośrednio z klasy.
     Aby puścić plik dźwiękowy należy:
-    1. Dodać plik dźwiękowy do assets/
+    1. Dodać plik dźwiękowy do assets/soundrack/
     2. W pliku src/Config/soundtrack.py w słowniku MUSIC dodać utwór w postaci:
     "NazwaPrzezKtórąBędziemySięOdwoływać" : "NazwaPliku"
-    3. wykonać SoundtrackManager.playMusic(NazwaPrzezKtórąBędziemySięOdwoływać)
+    3. Wykonać SoundtrackManager.playMusic(NazwaPrzezKtórąBędziemySięOdwoływać)
     '''
 
     currentMusic = None

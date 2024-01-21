@@ -1,12 +1,16 @@
 # Piekielna Rezolucja 3
 
-In the beautiful city of Wroclaw, in the Institute of Computer Science, there was a brilliant logician. By his colleagues known as Jerzy. By his students known as prof. Marcinkowski. He taught a lot, yet only few understood what they were taught about.
-On one sunny, freezing Monday, JMa was driving to work to carry out a lecture of Advanced Logic for Computer Scientists - a course feared by many and by some - loved. As usual, he got burried in his thoughts, inventing a plan for the lecture which was about to happen in 15 minutes.
-Suddenly, the road before him opened, as if an immense erthquake had just occured, and prof Marcinkowski - unable to stop his car in time - fell into the unmeasurably deep hole - the Hell itself.
+In the enchanting city of Wroclaw, within the hallowed halls of the Institute of Computer Science, a brilliant logician was known to his colleagues as Jerzy and to his students as Professor Marcinkowski. Despite his wealth of knowledge, only a select few could truly grasp the intricacies of his teachings.
 
-To safe Marcinkowski and the future of logic, you, an inexperienced logician has to stand up to the challenged forged in the deepest of Hell - proove that a set of propositional clauses is contradictory via resolution rule, or show a valuation which satisfies the set.
+One frosty Monday, Professor Marcinkowski, affectionately called JMa, embarked on his journey to deliver a lecture on Advanced Logic for Computer Scientists—a course that inspired both fear and admiration. Lost in contemplation, he crafted a plan for the imminent lecture as he drove, unaware of the extraordinary event about to unfold.
 
-Since the Devil is an impatient creature, he shan't wait for you indefinitely. His Deamons, which guard Marcinkowski in the heart of hell are bloodthirsty. You only have a set amount of time and space on your piece of paper to succeed. Should you not be able to, the prof Marcinkowski will be held in the Hell forever and a bunch of his students will forever remain without their logic master. If you the prof Marcinkowski will be set free by the Devil. To express his gratitude to his saviour, he will grant such an individual a chance to become his pupil and boost in his genius
+Suddenly, the road before him ruptured, resembling the aftermath of an immense earthquake. Unable to halt his car in time, Professor Marcinkowski plunged into an immeasurably deep hole—an abyss that could only be described as Hell itself.
+
+To rescue Marcinkowski and safeguard the future of logic, you, an inexperienced logician, must confront a challenge forged in the depths of Hell. Your mission: prove the contradiction of a set of propositional clauses using the resolution rule or demonstrate a valuation that satisfies the set.
+
+Time is of the essence, for the Devil is an impatient creature. His bloodthirsty demons, guardians of Marcinkowski in the heart of Hell, leave you with limited time and space on your piece of paper to succeed. Failure means the professor remains trapped, and his students are left without their logic master.
+
+Should you succeed, the Devil will free Professor Marcinkowski. As a gesture of thanks, Proffessor offers a unique opportunity to become the professor's pupil and boost in his genius. The fate of Marcinkowski and the realm of logic rests in your hands.
 
 
 # Installation

@@ -116,7 +116,6 @@ class Player:
         self.active = False
 
     def process_input(self, events,mouse, *args):
-        #print(self.pos)
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:

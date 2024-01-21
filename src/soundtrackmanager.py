@@ -18,14 +18,14 @@ class SoundtrackManager():
         return os.path.join(ASSETS_DIR,"soundtrack",fileName)
 
     @mixerCheck
-    def playMusic(self, fileName, *args, **kwargs):
-        musicPath = self.getPath(fileName)
+    def playMusic(self, musicName, *args, **kwargs):
+        musicPath = self.getPath(MUSIC[musicName])
         try:
             pygame.mixer.music.load(musicPath)
             pygame.mixer.music.play(*args, **kwargs)
-            self.currentMusic = fileName
+            self.currentMusic = musicName
         except Exception as e:
-            print(f"Wasn't able to load/play music file {fileName}: {e}")
+            print(f"Wasn't able to load/play music file {musicName}: {e}")
 
     @mixerCheck
     def pauseMusic(self):
@@ -42,12 +42,11 @@ class SoundtrackManager():
             print(e)
 
     @mixerCheck
-    def stopMusic(self, fileName):
-        musicPath = self.getPath(fileName)
+    def stopMusic(self):
         try:
             pygame.mixer.music.stop()
-            pygame.mixer.music.unload(musicPath)
+            pygame.mixer.music.unload()
             self.currentMusic = None
         except Exception as e:
-            print(f"Wasn't able to stop/unload music file {fileName}: {e}")
+            print(f"Wasn't able to stop/unload music file: {e}")
             

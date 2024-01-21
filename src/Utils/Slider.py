@@ -1,7 +1,8 @@
 import pygame
 import numpy as np
 from enum import Enum
-from Config.definitnios import ASSETS_DIR
+from Config.definitnios import ASSETS_DIR, VARIABLES
+from Utils.EvaluateButton import EvaluateButton
 #from main_window import RESOLUTION
 
 pygame.font.init()
@@ -19,8 +20,10 @@ class Status(Enum):
     IDLE = 0
     HOWER = 1
 
+
+
 class Slider_Bar(pygame.sprite.Sprite):
-    def __init__(self, size):
+    def __init__(self, size, numer_of_variables):
         self.size = self.width, self.height = size
         loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self._surface = pygame.transform.scale(loaded_bar, size)
@@ -32,7 +35,16 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2
         self.parent_rect = None
         self.variable_font = pygame.font.Font(None, round(55 * RESOLUTION[0]/1280))
+        if (numer_of_variables > len(VARIABLES)):
+            raise ValueError(f"Number of variables is {numer_of_variables}, which is greater than number of variable assets ({len(VARIABLES)}). If this is not correct, please check if VARIABLES list in Config.definitions is up to date.")
+        for i in range(numer_of_variables):
+            self.add_slider(VARIABLES[i])
+        #self.evaluate_button = EvaluateButton()
+        self.evalutation_requested = False
         
+    def request_evaluation(self):
+        self.evalutation_requested = True
+
     def get_surface(self):
         return self._surface
     

@@ -16,15 +16,27 @@ class UwrManager:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         self.game_map = [[1, 1, 1],
                          [0, 1, 0],
-                         [1, 1, 1]]
+                         [0, 1, 1]]
         # these are starting coords for character when it goes to a new room
-        # bottom, top, left, right
+        # bottom (1), top (0), left (2), right (3)
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
         # position of player in the labirynth
         self.pos_in_maze = [1, 1]
 
     def set_character_position(self, direction):
         return self.starting_positions[direction]
+    
+    def move_on_map(self, direction):
+        new_pos = self.pos_in_maze
+        if direction == 0:
+            new_pos[1] -= 1
+        if direction == 1:
+            new_pos[1] += 1
+        if direction == 2:
+            new_pos[0] -= 1
+        if direction == 3:
+            new_pos[0] += 1
+
 
 
 class MapScene(BaseScene):
@@ -52,7 +64,7 @@ class MapScene(BaseScene):
         self.doors.append(Area((1320, 360),(5,100),None))
 
         def enter_room(args):
-            #print(args['d'])
+            print(args['d'])
             self.character.pos = self.uwu.set_character_position(args['d'])
 
         def go_to_scene(args):

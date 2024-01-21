@@ -4,7 +4,8 @@ from Config.definitnios import ASSETS_DIR
 from enum import Enum
 import os
 
-non_hover_symbol_list = [ASSETS_DIR + "/variables/non_hover/" + variable_asset for variable_asset in os.listdir(ASSETS_DIR + "/variables/non_hover")]
+non_hover_symbol_list = sorted([os.path.join(ASSETS_DIR,"variables","non_hover",variable_asset) for variable_asset in os.listdir(os.path.join(ASSETS_DIR,"variables","non_hover"))])
+hover_symbol_list = sorted([os.path.join(ASSETS_DIR,"variables","hover",variable_asset) for variable_asset in os.listdir(os.path.join(ASSETS_DIR,"variables","hover"))])
 
 class Symbol_Type(Enum):
     ALTERNATIVE = 1
@@ -29,11 +30,11 @@ class Symbol(pygame.sprite.Sprite):
         #assigning image to symbol according to num value. 0 is alternate, -1 is negate. 2nd row is a placeholder for colored icons(hovered)
         match type:
             case Symbol_Type.ALTERNATIVE:
-                self.symbol = [pygame.image.load(ASSETS_DIR + "/alternate.png").convert_alpha(), pygame.image.load(ASSETS_DIR + "/minus-sign.png").convert_alpha()]
+                self.symbol = [pygame.image.load(ASSETS_DIR + "/or.png").convert_alpha(), pygame.image.load(ASSETS_DIR + "/or_h.png").convert_alpha()]
             case Symbol_Type.NEGATION:
-                self.symbol = [pygame.image.load(ASSETS_DIR + "/minus-sign.png").convert_alpha(), pygame.image.load(ASSETS_DIR + "/minus-sign.png").convert_alpha()]
+                self.symbol = [pygame.image.load(ASSETS_DIR + "/not.png").convert_alpha(), pygame.image.load(ASSETS_DIR + "/not_h.png").convert_alpha()]
             case Symbol_Type.VARIABLE:
-                self.symbol = [pygame.image.load(non_hover_symbol_list[kwargs['variable_index']]).convert_alpha(), pygame.image.load(ASSETS_DIR + "/minus-sign.png").convert_alpha()]
+                self.symbol = [pygame.image.load(non_hover_symbol_list[kwargs['variable_index']]).convert_alpha(), pygame.image.load(hover_symbol_list[kwargs['variable_index']]).convert_alpha()]
         
         self.surface = pygame.transform.scale(self.symbol[0], (self.width, self.height))
         self.symbol_rect = pygame.Rect(self.x, self.y, self.width, self.height)

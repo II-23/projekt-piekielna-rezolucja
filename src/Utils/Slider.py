@@ -39,7 +39,9 @@ class Slider_Bar(pygame.sprite.Sprite):
             raise ValueError(f"Number of variables is {numer_of_variables}, which is greater than number of variable assets ({len(VARIABLES)}). If this is not correct, please check if VARIABLES list in Config.definitions is up to date.")
         for i in range(numer_of_variables):
             self.add_slider(VARIABLES[i])
-        #self.evaluate_button = EvaluateButton()
+        evaluate_button_position = (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN)
+        evaluate_button_size = (self.width - 2*self.LEFT_MARGIN, 60)
+        self.evaluate_button = EvaluateButton(evaluate_button_position, evaluate_button_size, self.request_evaluation)
         self.evalutation_requested = False
         
     def request_evaluation(self):
@@ -60,23 +62,22 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.variable_dict[variable] = len(self.sliders)
         self.sliders.append(new_slider)
         
-    def update(self, mouse=pygame.mouse):
-        for slider in self.sliders:
-            slider.update()
-            
     def render(self, screen):
         i = 0
         for slider in self.sliders:
             slider.render()
             self.get_surface().blit(slider.get_surface(), (self.LEFT_MARGIN + self.SLIDER_OFFSET, (SLIDER_SIZE[1] + self.INTERLINE) * i + self.TOP_MARGIN))
             i += 1
-            
+        self.evaluate_button.render(self.get_surface())
+
     def process_input(self, events, mouse, *args):
         for slider in self.sliders:
             slider.process_input(events, (mouse.get_pos()[0] - self.parent_rect[0], mouse.get_pos()[1] - self.parent_rect[1]))
             
     def update(self, mouse=pygame.mouse):
+        mouse_offset = (-self.parent_rect[0], -self.parent_rect[1])
         rel_coord = (mouse.get_pos()[0] - self.parent_rect[0], mouse.get_pos()[1] - self.parent_rect[1])
+        self.evaluate_button.update(mouse, mouse_offset)
         for slider in self.sliders:
             slider.update(rel_coord)
 

@@ -1,27 +1,31 @@
 import pygame
 import os
 from Utils.GifPlayer import GifPlayer
-from Utils.Button import Button
+from Utils.Button import Button, Status
 from Config.definitnios import ASSETS_DIR
 
 COLOR_PLACEHOLDER = (0,0,0) #Used bcs I wanted to inherit from Button class, but its color feature is useless for me
 
 class EvaluateButton(Button, pygame.sprite.Sprite):
-    def __init__(self, position, on_click_event):
+    def __init__(self, position, size, on_click_event):
         self.background = pygame.image.load(os.path.join(ASSETS_DIR, "evaluate_button.png"))
+        self.background = pygame.transform.scale(self.background, size)
+        self.hover_background = pygame.image.load(os.path.join(ASSETS_DIR, "evaluate_button_hover.png"))
+        self.hover_background = pygame.transform.scale(self.hover_background, size)
+        self.size = size
         Button.__init__(self, position, self.size, on_click_event, COLOR_PLACEHOLDER, COLOR_PLACEHOLDER, COLOR_PLACEHOLDER)
         Button.init_text(self, text="SPRAWDŹ")
     
-    def update(self, mouse):
-        Button.update(self, mouse)
-        self.gif_player.update(mouse)
+    def update(self, mouse, offset = (0,0)):
+        Button.update(self, mouse, offset)
 
     def render(self, screen):
-        screen.blit(self.get_surface(), self.get_rect())
+        if (self.status == Status.HOWER):
+            print("DDDUPA")
+            screen.blit(self.hover_background, self.get_rect())
+        else:
+            screen.blit(self.background, self.get_rect())
         Button.render_text(self, screen)
-
-    def get_surface(self):
-        return self.background
 
     def get_rect(self):
         return pygame.Rect(*self.position, *self.size)

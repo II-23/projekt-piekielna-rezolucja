@@ -34,8 +34,8 @@ class Button():
         self.font = pygame.font.Font(font, text_size)
         self.update_text(text,color)
     
-    def cursor_over_button(self, mouse):
-        mouse_pos = mouse.get_pos()
+    def cursor_over_button(self, mouse, offset = (0,0)):
+        mouse_pos = (mouse.get_pos()[0] + offset[0], mouse.get_pos()[1] + offset[1])
         return self.position[0] <= mouse_pos[0] <= self.position[0] + self.size[0] and \
         self.position[1] <= mouse_pos[1] <= self.position[1] + self.size[1]
 
@@ -76,10 +76,10 @@ class Button():
                 else:
                     self.status = Status.IDLE
 
-    def update(self, mouse=pygame.mouse):
+    def update(self, mouse=pygame.mouse, offset = (0,0)):
         if self.status == Status.CLICKED:
             return
-        if not self.cursor_over_button(mouse):
+        if not self.cursor_over_button(mouse, offset):
             self.status = Status.IDLE
         else:
             self.status = Status.HOWER

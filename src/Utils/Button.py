@@ -28,10 +28,12 @@ class Button():
         self.page = 0
         self.max_page = 0
         
-    def init_text(self, font=None, text_size=32, color=(0, 255, 0), text='2137'): 
+    def init_text(self, font=None, text_size=32, color=(0, 255, 0), text='2137', align_center_w=False, align_center_h=False): 
         '''Initalizes text. It is exluded from init() so that we can still create buttons without text,
         if someone wants to.'''
         self.font = pygame.font.Font(font, text_size)
+        self.align_center_w = align_center_w
+        self.align_center_h = align_center_h
         self.update_text(text,color)
     
     def cursor_over_button(self, mouse):
@@ -50,12 +52,23 @@ class Button():
         Let me know if I should change something - Adam Dziwi'''
         pygame.draw.rect(screen, color, pygame.Rect(*self.position, *self.size))
         if self.text is not None:
-            t_y = self.position[1]+self.size[1]*self.text_margin
-            for line in self.text_printing_format[self.page]:
-                fw, fh = self.font.size(line)
-                text_line = self.font.render(line, True, self.text_color)
-                screen.blit(text_line, (self.position[0]+self.text_margin*self.size[0], t_y))
-                t_y += fh 
+            if not self.align_center_h and not self.align_center_w:
+                t_y = self.position[1]+self.size[1]*self.text_margin
+                for line in self.text_printing_format[self.page]:
+                    fw, fh = self.font.size(line)
+                    text_line = self.font.render(line, True, self.text_color)
+                    screen.blit(text_line, (self.position[0]+self.text_margin*self.size[0], t_y))
+                    t_y += fh
+            else:
+                text_line = self.font.render(self.text_str, True, self.text_color)
+                fw, fh = self.font.size(self.text_str)
+                pos = [self.position[0]+self.text_margin*self.size[0],
+                       self.position[1]+self.text_margin*self.size[1]]
+                if self.align_center_w:
+                    pos[0] = self.position[0] + self.size[0]/2 - fw/2
+                if self.align_center_h:
+                    pos[1] = self.position[1] + self.size[1]/2 - fh/2
+                screen.blit(text_line, tuple(pos))
 
     def process_input(self, events, mouse, *args):
         for event in events:

@@ -8,6 +8,7 @@ from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
 from Scenes.DialogScene import DialogScene
+from Scenes.SettingsScene import SettingsScene
 from Utils.Slider import *
 from Formulas.Formula import *
 from Formulas.FormulaSet import *
@@ -36,7 +37,9 @@ class Main_Window:
         self.start.screen_saver_alpha = 0
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.gameplay_intro = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro}
+        self.settings = SettingsScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro, 
+                                        'settings': self.settings}
 
         try:
             pygame.mixer.init()

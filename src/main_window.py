@@ -3,10 +3,12 @@ from pygame.locals import *
 import numpy
 import math
 from gamestatemanager import GameStateManager
+from soundtrackmanager import SoundtrackManager
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
 from Scenes.DialogScene import DialogScene
+from Scenes.SettingsScene import SettingsScene
 from Scenes.MapScene import MapScene
 from Utils.Slider import *
 from Formulas.Formula import *
@@ -34,11 +36,17 @@ class Main_Window:
         # buttons/sliders/whatever check out .py files of these scenes (and BaseScene) here and take inspirations.  
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.start.screen_saver_alpha = 0
-        self.formula_gameplay = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.dialog = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.gameplay_intro = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.settings = SettingsScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.map_level = MapScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.gameStateManager.states = {'start': self.start, 'level': self.formula_gameplay, 'dialog': self.dialog, 
-                                        'map': self.map_level}
+        self.gameStateManager.states = {'start': self.start, 'level': self.level, 'dialog': self.gameplay_intro, 
+                                        'settings': self.settings, 'map': self.map_level}
+
+        try:
+            pygame.mixer.init()
+        except:
+            print("Unable to initialize pygame.mixer, music and sounds will not play.")
         
     def on_event(self, event):
         button_clicks = []

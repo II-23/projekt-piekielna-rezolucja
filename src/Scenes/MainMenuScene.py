@@ -42,9 +42,15 @@ class MainMenuScene(BaseScene):
         # setting up a character and things they can interact with
         self.character = Player((550, 300), 150, "player/player.png")
         
-        self.area = Area((600,700),(100,100),None)
-        self.area.on_enter_event = go_to_scene
-        self.character.areas.append(self.area)
+        self.area_intro = Area((600,700),(100,100),None)
+        self.area_intro.on_enter_event = go_to_scene
+        self.character.areas.append(self.area_intro)
+
+        def go_to_settings(args):
+            gameStateManager.set_state('settings', {})
+        self.area_settings = Area((0, 360),(5,100),None)
+        self.area_settings.on_enter_event = go_to_settings
+        self.character.areas.append(self.area_settings)
 
 
         self.add_ui_element(self.character)

@@ -16,6 +16,10 @@ class MapScene(BaseScene):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''A scene for map of the game, player will walk around and fight monsters'''
 
+        background_img = pygame.image.load(ASSETS_DIR + "/emptyroom.png")
+        background_img = pygame.transform.scale(background_img, (1300,730))
+        self.add_background_image(background_img)
+        
         # setting up a character and things they can interact with
         self.character = Player((550, 300), 150, "player/player.png")
         def go_to_scene(args):

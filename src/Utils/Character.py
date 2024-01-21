@@ -128,13 +128,13 @@ class Player:
                     
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
-                    self.velocity[1] = 0
+                    self.velocity[1] -= -1
                 elif event.key == pygame.K_s:
-                    self.velocity[1] = 0 
+                    self.velocity[1] -= 1
                 elif event.key == pygame.K_a:
-                    self.velocity[0] = 0  
+                    self.velocity[0] -= -1  
                 elif event.key == pygame.K_d:
-                    self.velocity[0] = 0 
+                    self.velocity[0] -= 1 
 
         if self.velocity[1] == 1:
             self.state = "s"
@@ -151,16 +151,27 @@ class Player:
         else:
             self.animation = True
 
+        # Move X
         collision = False
-        dummy_pos = self.pos + self.velocity * self.speed
+        dummy_pos = (self.pos[0] + self.velocity[0] * self.speed, self.pos[1])
+
+        for pos2, size2 in self.obstacles:
+            if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
+                collision = True
+
+        if not collision:
+            self.pos[0] += self.velocity[0] * self.speed
+
+        # Move Y
+        collision = False
+        dummy_pos = (self.pos[0], self.pos[1] + self.velocity[1] * self.speed)
 
         for pos2, size2 in self.obstacles:
             if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
                 collision = True
             
-        #print(self.velocity)
         if not collision:
-            self.pos += self.velocity * self.speed
+            self.pos[1] += self.velocity[1] * self.speed
 
         collision = False
 

@@ -11,12 +11,19 @@ import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 
+class Room():
+    def __init__(self, pos: tuple) -> None:
+        self.position_on_map = pos
+        # bottom (1), top (0), left (2), right (3)
+        self.doors = [0 for _ in range(3)]
+
 class UwrManager:
     def __init__(self) -> None:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         self.game_map = [[1, 1, 1],
                          [0, 1, 0],
                          [0, 1, 1]]
+        
         self.map_w = len(self.game_map[0])
         self.map_h = len(self.game_map)
         # these are starting coords for character when it goes to a new room
@@ -39,16 +46,16 @@ class UwrManager:
         if direction == 3:
             new_pos[0] += 1
 
-        if  0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
+        if 0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
             if self.game_map[new_pos[1]][new_pos[0]] == 1:
-                print(f'moved to a new room:')
+                #print(f'moved to a new room:')
                 self.pos_in_maze = new_pos
                 return True
             else:
-                print('there is no room there')
+                ##print('there is no room there')
                 return False
         else:
-            print('you can not go outside of map')
+            #print('you can not go outside of map')
             return False
 
 class MapScene(BaseScene):

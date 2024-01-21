@@ -83,11 +83,19 @@ class Generator:
             for i in range(len(self.valuation)): # drawing value for each variable
                 self.valuation[i] = choice([-1, 1])
                 var_used[i][0] = 0 # how many times a variable has been used in the whole set
-                var_used[i][1] = 0 # what is the advantage for the variable (how many more times has this variable been used in the positive (+1) vs negation (-1) form)
+                var_used[i][1] = 0 # what is the advantage for the variable (how many more times has this variable been used in the positive (+1)vs negation (-1) form)
+
+            used_to_satisfy = [False for i in range(max_variable_number)] # to ensure that one variable is not used to provide satisfiability for more than one set. After that is it up to the advantage mechanic to ensure that one variable does not occure in the same state to frequently in the set
+
             for formula in self.formulas:
-                initialized = [False for i in range(max_variable_number)]
+                # draw a variable which provides satisfiabilty
                 sat_var = randint(0, formula.size - 1)
+                while used_to_satisfy[sat_var] == True:
+                    sat_var = randint(0, formula.size - 1)
+
+                initialized = [False for i in range(max_variable_number)]
                 initialized[sat_var] = True
+                used_to_satisfy[sat_var] = True
                 var_used[sat_var][0] += 1
                 var_used[sat_var][1] += self.valuation[sat_var]
                 formula.variables[sat_var] = self.valuation[sat_var]

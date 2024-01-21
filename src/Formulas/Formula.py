@@ -27,6 +27,8 @@ class Symbol(pygame.sprite.Sprite):
         self.height = size[1]
         self.x=pos[0]
         self.y=pos[1]
+        self.variable_index = None
+        self.type = type
         #assigning image to symbol according to num value. 0 is alternate, -1 is negate. 2nd row is a placeholder for colored icons(hovered)
         match type:
             case Symbol_Type.ALTERNATIVE:
@@ -35,6 +37,7 @@ class Symbol(pygame.sprite.Sprite):
                 self.symbol = [pygame.image.load(ASSETS_DIR + "/not.png").convert_alpha(), pygame.image.load(ASSETS_DIR + "/not_h.png").convert_alpha()]
             case Symbol_Type.VARIABLE:
                 self.symbol = [pygame.image.load(non_hover_symbol_list[kwargs['variable_index']]).convert_alpha(), pygame.image.load(hover_symbol_list[kwargs['variable_index']]).convert_alpha()]
+                self.variable_index = kwargs['variable_index']
         
         self.surface = pygame.transform.scale(self.symbol[0], (self.width, self.height))
         self.symbol_rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -88,6 +91,13 @@ class Formula(pygame.sprite.Sprite):
                 counter=counter+1
                 self.symbols.append(Symbol((self.width, self.height), Symbol_Type.VARIABLE, (pos[0]+counter*self.width, pos[1]), variable_index=i))
                 counter=counter+1
+    
+    def get_variable_set(self):
+        variables = set()
+        for symbol in self.symbols:
+            if (symbol.type == Symbol_Type.VARIABLE):
+                variables.add(symbol.variable_index)
+        return variables
     def render(self, screen):
         #fill with transparent and blit all of the symbols stored in "tab"
         self.get_surface().fill((0,0,0,0))

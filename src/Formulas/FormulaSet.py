@@ -24,9 +24,15 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.y=pos[1]
         self.formulas=[]
         self.state=0
+        self.variables = set()
         #adding formulas given by the generator. Still uses generator prototype.
         for i in range(len(list_of_formulas)):
            self.formulas.append(Formula((25,25), (self.x, self.y+i*25), list_of_formulas[i].variables, self.width, True))
+        for formula in self.formulas:
+            self.variables = self.variables.union(formula.get_variable_set())
+    
+    def get_variable_set(self):
+        return self.variables
     def button_clicked(self, *args):
         #if player selected less than 2 formulas
         if self.selected[0].symbols==[] or self.selected[1].symbols==[]:
@@ -128,3 +134,21 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.selected_index[num]=-1
         self.selected[num].symbols=[]
         self.selected[num].content=[]
+    def evaluate(self, valuation_dict):
+        print(f'[Log][Formula set]: requested evaluation at {valuation_dict}')
+        valuation_list = sorted(valuation_dict.items())
+        valuation_katafiasz_normal_form = [1 if x[1] else -1 for x in valuation_list]
+        global_satisfied = True
+        for formula in self.formulas:
+            formula_katafiasz_normal_form = formula.content
+            satisfied = False
+            for i in range(len(valuation_katafiasz_normal_form)):
+                if (valuation_katafiasz_normal_form[i] == formula_katafiasz_normal_form[i]):
+                    satisfied = True
+                    break
+            global_satisfied = global_satisfied and satisfied
+        if (global_satisfied):
+            print(f"[Log][Formula set]: valuation is correct")
+            self.state = 1
+        else:
+            print(f"[Log][Formula set]: valuation is incorrect")

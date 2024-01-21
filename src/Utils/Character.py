@@ -8,6 +8,10 @@ from Config.definitnios import ASSETS_DIR
 
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
+KEYS = {pygame.K_w : 'w', 
+        pygame.K_s : 's',
+        pygame.K_a : 'a',
+        pygame.K_d : 'd'}
 
 def save_as(dict, image, path, name):
     new_path = os.path.join(os.path.dirname(path), name + ".png")
@@ -48,7 +52,7 @@ class Player:
         self.obstacles.append(((752,670), (2000, 30)))
 
         self.frames = {}
-
+        self.pressed = {v : False for k, v in KEYS.items()}
 
         #nie wiem
 
@@ -114,37 +118,52 @@ class Player:
         self.velocity[0] = 0
         self.velocity[1] = 0
         self.active = False
+        for k, v in self.pressed.items():
+            self.pressed[k] = False
 
     def process_input(self, events,mouse, *args):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
-                    self.velocity[1] += -1  
-                elif event.key == pygame.K_s:
-                    self.velocity[1] += 1   
-                elif event.key == pygame.K_a:
-                    self.velocity[0] += -1  
-                elif event.key == pygame.K_d:
-                    self.velocity[0] += 1   
+                if event.key in KEYS and KEYS[event.key] in self.pressed:
+                    self.pressed[KEYS[event.key]] = True
+            
+            if event.type == pygame.KEYUP:
+                if event.key in KEYS and KEYS[event.key] in self.pressed:
+                    self.pressed[KEYS[event.key]] = False
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_w:
+            #         self.velocity[1] += -1
+            #     elif event.key == pygame.K_s:
+            #         self.velocity[1] += 1   
+            #     elif event.key == pygame.K_a:
+            #         self.velocity[0] += -1  
+            #     elif event.key == pygame.K_d:
+            #         self.velocity[0] += 1   
                     
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_w:
-                    self.velocity[1] -= -1
-                elif event.key == pygame.K_s:
-                    self.velocity[1] -= 1
-                elif event.key == pygame.K_a:
-                    self.velocity[0] -= -1  
-                elif event.key == pygame.K_d:
-                    self.velocity[0] -= 1 
+            # elif event.type == pygame.KEYUP:
+            #     if event.key == pygame.K_w:
+            #         self.velocity[1] -= -1
+            #     elif event.key == pygame.K_s:
+            #         self.velocity[1] -= 1
+            #     elif event.key == pygame.K_a:
+            #         self.velocity[0] -= -1  
+            #     elif event.key == pygame.K_d:
+            #         self.velocity[0] -= 1 
 
-        if self.velocity[1] == 1:
-            self.state = "s"
+        self.velocity = np.array([0,0])     
+        if self.pressed['w']: self.velocity[1] += -1
+        if self.pressed['s']: self.velocity[1] += 1
+        if self.pressed['a']: self.velocity[0] += -1
+        if self.pressed['d']: self.velocity[0] += 1
+
         if self.velocity[1] == -1:
             self.state = "w"
-        if self.velocity[0] == 1:
-            self.state = "d"
+        if self.velocity[1] == 1:
+            self.state = "s"
         if self.velocity[0] == -1:
             self.state = "a"
+        if self.velocity[0] == 1:
+            self.state = "d"
 
         if self.velocity[0] == 0 and self.velocity[1] == 0:
             self.animation = False

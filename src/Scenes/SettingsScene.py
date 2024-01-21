@@ -21,11 +21,11 @@ class SettingsScene(BaseScene):
         #settings_pos = [i]
         help_text_color = (166, 54, 54)
         self.slider_text = Button((340, 180), (600, 50), None, help_text_color, help_text_color, help_text_color)
-        self.slider_text.init_text(None, 36, (0,0,0), "Volume: ")
+        self.slider_text.init_text(None, 36, (0,0,0), "Volume: ", False, True)
         self.slider = Volume_slider((650, 180+25-10), (200, 20), 0.5,0,100,'red','grey',50)
         self.add_ui_element(self.slider_text)
         self.add_ui_element(self.slider)
 
         self.back_to_menu_button = setup_button(gameStateManager, 'start', (1060, 600))
-        self.back_to_menu_button.init_text(text="return to menu")
+        self.back_to_menu_button.init_text(text="return to menu", align_center_h=True, align_center_w=True)
         self.add_ui_element(self.back_to_menu_button)

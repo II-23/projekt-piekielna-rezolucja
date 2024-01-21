@@ -17,6 +17,8 @@ class UwrManager:
         self.game_map = [[1, 1, 1],
                          [0, 1, 0],
                          [0, 1, 1]]
+        self.map_w = len(self.game_map[0])
+        self.map_h = len(self.game_map)
         # these are starting coords for character when it goes to a new room
         # bottom (1), top (0), left (2), right (3)
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
@@ -27,7 +29,7 @@ class UwrManager:
         return self.starting_positions[direction]
     
     def move_on_map(self, direction):
-        new_pos = self.pos_in_maze
+        new_pos = self.pos_in_maze.copy()
         if direction == 0:
             new_pos[1] -= 1
         if direction == 1:
@@ -37,13 +39,23 @@ class UwrManager:
         if direction == 3:
             new_pos[0] += 1
 
-
+        if  0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
+            if self.game_map[new_pos[1]][new_pos[0]] == 1:
+                print(f'moved to a new room:')
+                self.pos_in_maze = new_pos
+                return True
+            else:
+                print('there is no room there')
+                return False
+        else:
+            print('you can not go outside of map')
+            return False
 
 class MapScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''A scene for map of the game, player will walk around and fight monsters'''
-
+        # a class to manage the map of the game
         self.uwu = UwrManager()
 
         background_img = pygame.image.load(ASSETS_DIR + "/emptyroom.png")
@@ -64,8 +76,8 @@ class MapScene(BaseScene):
         self.doors.append(Area((1320, 360),(5,100),None))
 
         def enter_room(args):
-            print(args['d'])
-            self.character.pos = self.uwu.set_character_position(args['d'])
+            if self.uwu.move_on_map(args['d']):
+                self.character.pos = self.uwu.set_character_position(args['d'])
 
         def go_to_scene(args):
             #gameStateManager.set_state('level', {})

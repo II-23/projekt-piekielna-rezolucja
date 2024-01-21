@@ -1,8 +1,9 @@
 import pygame
 import numpy as np
+import os
 from enum import Enum
 from Config.definitnios import ASSETS_DIR, VARIABLES
-from Utils.EvaluateButton import EvaluateButton
+from Utils.ImageButton import ImageButton
 #from main_window import RESOLUTION
 
 pygame.font.init()
@@ -41,7 +42,8 @@ class Slider_Bar(pygame.sprite.Sprite):
             self.add_slider(VARIABLES[i])
         evaluate_button_position = (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN)
         evaluate_button_size = (self.width - 2*self.LEFT_MARGIN, 60)
-        self.evaluate_button = EvaluateButton(evaluate_button_position, evaluate_button_size, self.request_evaluation)
+        self.evaluate_button = ImageButton(evaluate_button_position, evaluate_button_size, os.path.join(ASSETS_DIR, "evaluate_button.png"), os.path.join(ASSETS_DIR, "evaluate_button_hover.png"), self.request_evaluation)
+        self.evaluate_button.init_text(text="SPRAWDŹ")
         self.evalutation_requested = False
         
     def request_evaluation(self, *args):

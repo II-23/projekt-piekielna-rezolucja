@@ -36,21 +36,14 @@ class Button():
         self.align_center_h = align_center_h
         self.update_text(text,color)
     
-    def cursor_over_button(self, mouse):
-        mouse_pos = mouse.get_pos()
+    def cursor_over_button(self, mouse, offset = (0,0)):
+        mouse_pos = (mouse.get_pos()[0] + offset[0], mouse.get_pos()[1] + offset[1])
         return self.position[0] <= mouse_pos[0] <= self.position[0] + self.size[0] and \
         self.position[1] <= mouse_pos[1] <= self.position[1] + self.size[1]
 
-    def render(self, screen):
-        color = self.idle_color
-        if self.status == Status.HOWER:
-            color = self.hower_color
-        elif self.status == Status.CLICKED:
-            color = self.click_color
-        
+    def render_text(self, screen):
         '''I'm not 100% positive that this is the correct way to display a text in pygame.
         Let me know if I should change something - Adam Dziwi'''
-        pygame.draw.rect(screen, color, pygame.Rect(*self.position, *self.size))
         if self.text is not None:
             if not self.align_center_h and not self.align_center_w:
                 t_y = self.position[1]+self.size[1]*self.text_margin
@@ -70,10 +63,22 @@ class Button():
                     pos[1] = self.position[1] + self.size[1]/2 - fh/2
                 screen.blit(text_line, tuple(pos))
 
+    def render(self, screen):
+        color = self.idle_color
+        if self.status == Status.HOWER:
+            color = self.hower_color
+        elif self.status == Status.CLICKED:
+            color = self.click_color
+        pygame.draw.rect(screen, color, pygame.Rect(*self.position, *self.size))
+        self.render_text(screen)
+
     def process_input(self, events, mouse, *args):
+        offset = (0, 0)
+        if (len(args) >= 2):
+            offset = (args[0], args[1])
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if self.cursor_over_button(mouse):
+                if self.cursor_over_button(mouse, offset):
                     self.status = Status.CLICKED
                 else:
                     self.status = Status.IDLE
@@ -82,15 +87,15 @@ class Button():
                 if self.status == Status.CLICKED:
                     self.trigger_event(*args)
 
-                if self.cursor_over_button(mouse):
+                if self.cursor_over_button(mouse, offset):
                     self.status = Status.HOWER
                 else:
                     self.status = Status.IDLE
 
-    def update(self, mouse=pygame.mouse):
+    def update(self, mouse=pygame.mouse, offset = (0,0)):
         if self.status == Status.CLICKED:
             return
-        if not self.cursor_over_button(mouse):
+        if not self.cursor_over_button(mouse, offset):
             self.status = Status.IDLE
         else:
             self.status = Status.HOWER

@@ -28,7 +28,7 @@ class UwrManager:
     def __init__(self, enemy_action) -> None:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         # setting up a character and things they can interact with
-        self.character = Player((550, 300), 150, "player/player.png")
+        self.character = Player([550, 300], 150, "player/player.png")
 
         self.game_map = [[1, 1, 1],
                          [0, 1, 0],

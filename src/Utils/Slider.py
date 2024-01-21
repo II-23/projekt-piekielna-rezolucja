@@ -1,7 +1,9 @@
 import pygame
 import numpy as np
+import os
 from enum import Enum
-from Config.definitnios import ASSETS_DIR
+from Config.definitnios import ASSETS_DIR, VARIABLES
+from Utils.ImageButton import ImageButton
 #from main_window import RESOLUTION
 
 pygame.font.init()
@@ -19,8 +21,10 @@ class Status(Enum):
     IDLE = 0
     HOWER = 1
 
+
+
 class Slider_Bar(pygame.sprite.Sprite):
-    def __init__(self, size):
+    def __init__(self, size, indicies_of_variables):
         self.size = self.width, self.height = size
         loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self._surface = pygame.transform.scale(loaded_bar, size)
@@ -32,7 +36,19 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2
         self.parent_rect = None
         self.variable_font = pygame.font.Font(None, round(55 * RESOLUTION[0]/1280))
+        if (max(indicies_of_variables) >= len(VARIABLES)):
+            raise ValueError(f"No assset for variable index {max(indicies_of_variables)}. If this is not correct, please check if VARIABLES list in Config.definitions is up to date.")
+        for index in sorted(indicies_of_variables):
+            self.add_slider(VARIABLES[index])
+        evaluate_button_position = (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN)
+        evaluate_button_size = (self.width - 2*self.LEFT_MARGIN, 60)
+        self.evaluate_button = ImageButton(evaluate_button_position, evaluate_button_size, os.path.join(ASSETS_DIR, "evaluate_button.png"), os.path.join(ASSETS_DIR, "evaluate_button_hover.png"), self.request_evaluation)
+        self.evaluate_button.init_text(text="SPRAWDŹ")
+        self.evalutation_requested = False
         
+    def request_evaluation(self, *args):
+        self.evalutation_requested = True
+
     def get_surface(self):
         return self._surface
     
@@ -48,25 +64,31 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.variable_dict[variable] = len(self.sliders)
         self.sliders.append(new_slider)
         
-    def update(self, mouse=pygame.mouse):
-        for slider in self.sliders:
-            slider.update()
-            
     def render(self, screen):
         i = 0
         for slider in self.sliders:
             slider.render()
             self.get_surface().blit(slider.get_surface(), (self.LEFT_MARGIN + self.SLIDER_OFFSET, (SLIDER_SIZE[1] + self.INTERLINE) * i + self.TOP_MARGIN))
             i += 1
-            
+        self.evaluate_button.render(self.get_surface())
+
     def process_input(self, events, mouse, *args):
         for slider in self.sliders:
             slider.process_input(events, (mouse.get_pos()[0] - self.parent_rect[0], mouse.get_pos()[1] - self.parent_rect[1]))
+        self.evaluate_button.process_input(events, mouse, -self.parent_rect[0], -self.parent_rect[1])
             
     def update(self, mouse=pygame.mouse):
+        mouse_offset = (-self.parent_rect[0], -self.parent_rect[1])
         rel_coord = (mouse.get_pos()[0] - self.parent_rect[0], mouse.get_pos()[1] - self.parent_rect[1])
+        self.evaluate_button.update(mouse, mouse_offset)
         for slider in self.sliders:
             slider.update(rel_coord)
+
+    def get_valuation(self):
+        valuation = {}
+        for variable in self.variable_dict:
+            valuation[variable] = self.sliders[self.variable_dict[variable]].get_state()
+        return valuation
 
 
 class Slider(pygame.sprite.Sprite):
@@ -85,6 +107,9 @@ class Slider(pygame.sprite.Sprite):
         self.true_sign = self.true_false_font.render("T", True, TRUE_FALSE_COLOR)
         self.false_sign = self.true_false_font.render("F", True, TRUE_FALSE_COLOR)
         
+    def get_state(self):
+        return self.state
+
     def set_parent_rect(self, parent_rect):
         self.parent_rect = parent_rect
         

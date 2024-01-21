@@ -171,7 +171,7 @@ class MapScene(BaseScene):
         self.add_ui_element(self.uwu.character)
         self.add_ui_element(self.uwu)
         
-    def on_entry(self, *args):
+    def on_entry(self, *args, prev_state):
         '''TODO probalby here will be something to reset player position'''
         self.uwu.character.reset()
         self.uwu.character.pos = (550, 300)

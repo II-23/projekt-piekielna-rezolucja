@@ -3,6 +3,7 @@ from Utils.Button import Button
 from Config.definitnios import ASSETS_DIR
 from enum import Enum
 import os
+from soundtrackmanager import SoundtrackManager
 
 non_hover_symbol_list = sorted([os.path.join(ASSETS_DIR,"variables","non_hover",variable_asset) for variable_asset in os.listdir(os.path.join(ASSETS_DIR,"variables","non_hover"))])
 hover_symbol_list = sorted([os.path.join(ASSETS_DIR,"variables","hover",variable_asset) for variable_asset in os.listdir(os.path.join(ASSETS_DIR,"variables","hover"))])
@@ -140,8 +141,10 @@ class Formula(pygame.sprite.Sprite):
             if event.type == pygame.MOUSEBUTTONDOWN and self.cursor_over_formula(pos) and self.clickable:
                 if self.state==Formula_State.HOVER:
                     self.state=Formula_State.CLICKED_NOT_ASSIGNED
+                    SoundtrackManager.playSound("CSItemPickup")
                 else:
                     self.state=Formula_State.HOVER
+                    SoundtrackManager.playSound("CSItemPickup")
     def get_surface(self):
         return self.surface
     def get_rect(self):

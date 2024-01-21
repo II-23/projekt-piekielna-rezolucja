@@ -7,5 +7,6 @@ SOUNDS = {
     "ReverbFart" : "reverb-fart.wav",
     "Yippee!" : "yippee-tbh.wav",
     "WritingEffect" : "writing_sound_effect.wav",
-    "MinecraftClick" : "Minecraft_Button_Sound_Effect.wav"
+    "MinecraftClick" : "Minecraft_Button_Sound_Effect.wav",
+    "CSItemPickup" : "CSItemPickup.wav"
 }

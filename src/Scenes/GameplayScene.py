@@ -29,20 +29,20 @@ class GameplayScene(BaseScene):
         #
 
 
-        formula_set=Set_of_formulas((500,500), (500,150), formulas)
+        self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
 
-        self.add_ui_element(formula_set)
-        self.add_ui_element(formula_set.selected[0])
-        self.add_ui_element(formula_set.selected[1])
-        self.add_ui_element(formula_set.button)
-        scorescreen=Game_over_window((500,500),(200,200),1, formula_set)
+        self.add_ui_element(self.formula_set)
+        self.add_ui_element(self.formula_set.selected[0])
+        self.add_ui_element(self.formula_set.selected[1])
+        self.add_ui_element(self.formula_set.button)
+        scorescreen=Game_over_window((500,500),(200,200),1, self.formula_set)
         self.add_ui_element(scorescreen)
         clock=Clock((100,100), (300,300), 60)
         self.add_ui_element(clock)
         #
 
         # creating the slider_bar
-        number_of_variables = len(formula_set.get_variable_set())
+        number_of_variables = len(self.formula_set.get_variable_set())
         self.slider_bar = Slider_Bar((0.18 * self.width, self.height), number_of_variables)
         self.slider_bar_rect = self.display.blit(self.slider_bar.get_surface(), (self.width - self.slider_bar.get_surface().get_width(), 0))
         self.slider_bar.set_parent_rect(self.slider_bar_rect)
@@ -60,3 +60,9 @@ class GameplayScene(BaseScene):
     def on_exit(self, *args):
         super().on_exit(*args)
         self.soundtrackmanager.stopMusic()
+
+    def update(self, mouse=pygame.mouse):
+        super().update(mouse)
+        if (self.slider_bar.evalutation_requested):
+            self.formula_set.evaluate(self.slider_bar.get_valuation())
+            self.slider_bar.evalutation_requested = False

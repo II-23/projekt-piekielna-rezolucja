@@ -21,7 +21,6 @@ class EvaluateButton(Button, pygame.sprite.Sprite):
 
     def render(self, screen):
         if (self.status == Status.HOWER):
-            print("DDDUPA")
             screen.blit(self.hover_background, self.get_rect())
         else:
             screen.blit(self.background, self.get_rect())

@@ -44,7 +44,7 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.evaluate_button = EvaluateButton(evaluate_button_position, evaluate_button_size, self.request_evaluation)
         self.evalutation_requested = False
         
-    def request_evaluation(self):
+    def request_evaluation(self, *args):
         self.evalutation_requested = True
 
     def get_surface(self):
@@ -73,6 +73,7 @@ class Slider_Bar(pygame.sprite.Sprite):
     def process_input(self, events, mouse, *args):
         for slider in self.sliders:
             slider.process_input(events, (mouse.get_pos()[0] - self.parent_rect[0], mouse.get_pos()[1] - self.parent_rect[1]))
+        self.evaluate_button.process_input(events, mouse, -self.parent_rect[0], -self.parent_rect[1])
             
     def update(self, mouse=pygame.mouse):
         mouse_offset = (-self.parent_rect[0], -self.parent_rect[1])
@@ -80,6 +81,12 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.evaluate_button.update(mouse, mouse_offset)
         for slider in self.sliders:
             slider.update(rel_coord)
+
+    def get_valuation(self):
+        valuation = {}
+        for variable in self.variable_dict:
+            valuation[variable] = self.sliders[self.variable_dict[variable]].get_state()
+        return valuation
 
 
 class Slider(pygame.sprite.Sprite):
@@ -98,6 +105,9 @@ class Slider(pygame.sprite.Sprite):
         self.true_sign = self.true_false_font.render("T", True, TRUE_FALSE_COLOR)
         self.false_sign = self.true_false_font.render("F", True, TRUE_FALSE_COLOR)
         
+    def get_state(self):
+        return self.state
+
     def set_parent_rect(self, parent_rect):
         self.parent_rect = parent_rect
         

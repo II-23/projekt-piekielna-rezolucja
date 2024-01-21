@@ -60,9 +60,12 @@ class Button():
         self.render_text(screen)
 
     def process_input(self, events, mouse, *args):
+        offset = (0, 0)
+        if (len(args) >= 2):
+            offset = (args[0], args[1])
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if self.cursor_over_button(mouse):
+                if self.cursor_over_button(mouse, offset):
                     self.status = Status.CLICKED
                 else:
                     self.status = Status.IDLE
@@ -71,7 +74,7 @@ class Button():
                 if self.status == Status.CLICKED:
                     self.trigger_event(*args)
 
-                if self.cursor_over_button(mouse):
+                if self.cursor_over_button(mouse, offset):
                     self.status = Status.HOWER
                 else:
                     self.status = Status.IDLE

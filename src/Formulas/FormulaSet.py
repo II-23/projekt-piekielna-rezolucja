@@ -134,3 +134,5 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.selected_index[num]=-1
         self.selected[num].symbols=[]
         self.selected[num].content=[]
+    def evaluate(self, valuation):
+        print(valuation)

@@ -1,6 +1,7 @@
 from Scenes.BaseScene import BaseScene, setup_button
 from Utils.Character import Player
 from Utils.Area import Area
+from Utils.ImageButton import ImageButton
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 from Utils.ResolutionButton import ResolutionButton
@@ -8,13 +9,26 @@ import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from Utils.Enemy import Enemy
+import copy
+import os
 
 class Room():
     def __init__(self, pos: tuple, enemy_action) -> None:
         self.position_on_map = pos
         self.enemy_action = enemy_action
-        # bottom (1), top (0), left (2), right (3)
-        self.doors = [0 for _ in range(4)]
+        p = 'closed_door.png'
+        image_path = os.path.join(ASSETS_DIR, p)
+        # bottom (0), top (1), left (2), right (3)
+        self.door_exists = [False, False, False, False]
+        self.doors = []
+        # bottom door
+        self.doors.append(ImageButton((564, 689), (715-560, 200), image_path, image_path, None))
+        # top door 
+        self.doors.append(ImageButton((545, -150), (700-543, 200), image_path, image_path, None))
+        # left door
+        self.doors.append(ImageButton((16-200, 190), (200, 472-190+4), image_path, image_path, None))
+        # right door 
+        self.doors.append(ImageButton((1252, 188), (200, 475-188+4), image_path, image_path, None))
         self.entities = []
 
     def add_enemy(self, position, size):
@@ -29,21 +43,23 @@ class UwrManager:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         # setting up a character and things they can interact with
         self.character = Player([550, 300]  , 150, "player/player.png")
-
-        self.game_map = [[1, 1, 1],
-                         [0, 1, 0],
-                         [0, 1, 1]]
+        mapa = [[0, 1, 0],
+                [0, 1, 0],
+                [0, 1, 1]]
+        self.game_map = copy.deepcopy(mapa) # map with numbers
         self.map_w = len(self.game_map[0])
         self.map_h = len(self.game_map)
-        self.rooms = [[1, 1, 1],
-                      [0, 1, 0],
-                      [0, 1, 1]]
-        
+        self.rooms = copy.deepcopy(mapa) # map with references to rooms
+        # i = y, j = x
         for i in range(self.map_h):
             for j in range(self.map_w):
                 if self.game_map[i][j] == 1:
                     room = Room((j, i), enemy_action)
-                    #room.add_enemy((200,200), (50,50))
+                    # bottom (0), top (1), left (2), right (3)
+                    room.door_exists[0] = False if i + 1 >= 3 else False if self.game_map[i + 1][j] == 0 else True 
+                    room.door_exists[1] = False if i - 1 < 0 else False if self.game_map[i - 1][j] == 0  else True 
+                    room.door_exists[2] = False if j - 1 < 0 else False if self.game_map[i][j - 1] == 0 else True 
+                    room.door_exists[3] = False if j + 1 >= 3 else False if self.game_map[i][j + 1] == 0 else True 
                     self.rooms[i][j] = room
 
         # these are starting coords for character when it goes to a new room
@@ -52,7 +68,7 @@ class UwrManager:
         # position of player in the labirynth
         self.pos_in_maze = [1, 1]
         self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
-        self.current_room.add_enemy((200,200), (100,100))
+        #self.current_room.add_enemy((200,200), (100,100))
         self.current_room.change_enemy_activity(True)
 
     def set_character_position(self, direction):
@@ -62,6 +78,7 @@ class UwrManager:
         self.rooms[room_pos[1]][room_pos[0]].add_enemy(enemy_pos, (100,100))
 
     def move_on_map(self, direction):
+        '''Used to move character to a new room'''
         new_pos = self.pos_in_maze.copy()
         if direction == 0:
             new_pos[1] -= 1
@@ -73,9 +90,12 @@ class UwrManager:
             new_pos[0] += 1
 
         if 0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
+            print('huda')
+            print(self.game_map)
             if self.game_map[new_pos[1]][new_pos[0]] == 1:
+                print('fghj')
                 self.pos_in_maze = new_pos
-                self.current_room = self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
+                self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
                 self.current_room.change_enemy_activity(True)
                 return True
             else:
@@ -97,6 +117,10 @@ class UwrManager:
         # render entities on a map (enemies)
         for entity in self.current_room.entities:
             entity.render(screen)
+        # render doors
+        for i in range(4):
+            if not self.current_room.door_exists[i]:
+                self.current_room.doors[i].render(screen)
 
 class MapScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
@@ -107,11 +131,18 @@ class MapScene(BaseScene):
         
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene)
+        #adding enemies to the map
+        self.uwu.add_enemy_to_room((1, 1), (200, 200))
+        self.uwu.add_enemy_to_room((1, 0), (500, 200))
+        self.uwu.add_enemy_to_room((1, 2), (200, 400))
+        self.uwu.current_room.change_enemy_activity(True) # set activity of current room to True
         
         background_img = pygame.image.load(ASSETS_DIR + "/emptyroom.png")
         background_img = pygame.transform.scale(background_img, (1300,730))
         self.add_background_image(background_img)
         
+        '''These are areas for doors, used for checking if player touched them. They are unique and stored 
+        in character class'''
         self.doors = [] # order of these must be the same as starting positions in UwrManager
         # top area
         self.doors.append(Area((600, -50),(100,5),None))
@@ -123,10 +154,8 @@ class MapScene(BaseScene):
         self.doors.append(Area((1320, 360),(5,100),None))
 
         def enter_room(args):
-            print('checking')
             if self.uwu.move_on_map(args['d']):
                 self.uwu.character.pos = self.uwu.set_character_position(args['d'])
-
         
         self.area = Area((600,700),(100,100),None)
         self.area.on_enter_event = go_to_scene

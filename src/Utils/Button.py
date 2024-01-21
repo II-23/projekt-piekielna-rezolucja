@@ -39,16 +39,9 @@ class Button():
         return self.position[0] <= mouse_pos[0] <= self.position[0] + self.size[0] and \
         self.position[1] <= mouse_pos[1] <= self.position[1] + self.size[1]
 
-    def render(self, screen):
-        color = self.idle_color
-        if self.status == Status.HOWER:
-            color = self.hower_color
-        elif self.status == Status.CLICKED:
-            color = self.click_color
-        
+    def render_text(self, screen):
         '''I'm not 100% positive that this is the correct way to display a text in pygame.
         Let me know if I should change something - Adam Dziwi'''
-        pygame.draw.rect(screen, color, pygame.Rect(*self.position, *self.size))
         if self.text is not None:
             t_y = self.position[1]+self.size[1]*self.text_margin
             for line in self.text_printing_format[self.page]:
@@ -56,6 +49,15 @@ class Button():
                 text_line = self.font.render(line, True, self.text_color)
                 screen.blit(text_line, (self.position[0]+self.text_margin*self.size[0], t_y))
                 t_y += fh 
+
+    def render(self, screen):
+        color = self.idle_color
+        if self.status == Status.HOWER:
+            color = self.hower_color
+        elif self.status == Status.CLICKED:
+            color = self.click_color
+        pygame.draw.rect(screen, color, pygame.Rect(*self.position, *self.size))
+        self.render_text(screen)
 
     def process_input(self, events, mouse, *args):
         for event in events:

@@ -18,7 +18,7 @@ class Room():
         self.entities = []
 
     def add_enemy(self, position, size):
-        self.entities.append(Enemy(position, size, self.enemy_action))
+        self.entities.append(Enemy(position, size, self.enemy_action, 'ghost.png'))
 
     def change_enemy_activity(self, active):
         for enemy in self.entities:
@@ -28,7 +28,7 @@ class UwrManager:
     def __init__(self, enemy_action) -> None:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         # setting up a character and things they can interact with
-        self.character = Player([550, 300], 150, "player/player.png")
+        self.character = Player([550, 300]  , 150, "player/player.png")
 
         self.game_map = [[1, 1, 1],
                          [0, 1, 0],
@@ -52,12 +52,14 @@ class UwrManager:
         # position of player in the labirynth
         self.pos_in_maze = [1, 1]
         self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
-        self.current_room.add_enemy((200,200), (50,50))
+        self.current_room.add_enemy((200,200), (100,100))
+        self.current_room.change_enemy_activity(True)
 
     def set_character_position(self, direction):
         return self.starting_positions[direction]
     
-    
+    def add_enemy_to_room(self, room_pos, enemy_pos):
+        self.rooms[room_pos[1]][room_pos[0]].add_enemy(enemy_pos, (100,100))
 
     def move_on_map(self, direction):
         new_pos = self.pos_in_maze.copy()
@@ -73,6 +75,8 @@ class UwrManager:
         if 0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
             if self.game_map[new_pos[1]][new_pos[0]] == 1:
                 self.pos_in_maze = new_pos
+                self.current_room = self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
+                self.current_room.change_enemy_activity(True)
                 return True
             else:
                 return False
@@ -86,13 +90,13 @@ class UwrManager:
         # colissions
         for entity in self.current_room.entities:
             if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
-                                              entity.position, entity.size):
+                                              entity.position, entity.size) and entity.active:
                 entity.on_enter_event({})
-        pass
 
     def render(self, screen):
         # render entities on a map (enemies)
-        pass
+        for entity in self.current_room.entities:
+            entity.render(screen)
 
 class MapScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
@@ -100,10 +104,10 @@ class MapScene(BaseScene):
         '''A scene for map of the game, player will walk around and fight monsters'''
         def go_to_scene(args): # function that goes to level scene
             gameStateManager.set_state('level', {})
-
+        
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene)
-
+        
         background_img = pygame.image.load(ASSETS_DIR + "/emptyroom.png")
         background_img = pygame.transform.scale(background_img, (1300,730))
         self.add_background_image(background_img)

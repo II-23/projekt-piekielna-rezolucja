@@ -52,12 +52,12 @@ class GameplayScene(BaseScene):
         self.add_ui_element(self.start_screen_button)
         self.soundtrackmanager = SoundtrackManager
         
-    def on_entry(self, *args):
+    def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''
         super().on_entry(*args)
         self.soundtrackmanager.playMusic("GameplayMusic")
     
-    def on_exit(self, *args):
+    def on_exit(self, *args, **kwargs):
         super().on_exit(*args)
         self.soundtrackmanager.stopMusic()
 

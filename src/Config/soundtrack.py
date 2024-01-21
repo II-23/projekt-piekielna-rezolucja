@@ -1,5 +1,6 @@
 MUSIC = {
-    "GameplayMusic" : "Father of the Booze Cruise.wav"
+    "GameplayMusic" : "Father of the Booze Cruise.wav",
+    "MainMenuTheme" : "main_menu_theme.wav"
 }
 
 SOUNDS = {

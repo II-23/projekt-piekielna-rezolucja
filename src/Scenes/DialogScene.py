@@ -110,7 +110,7 @@ class DialogScene(BaseScene):
         self.gp_scene_button.init_text(font=None, color=(255, 77, 131), text='Play!', align_center_h=True, align_center_w=True)
         self.add_ui_element(self.gp_scene_button)
         
-    def on_entry(self, *args):
+    def on_entry(self, *args, **kwargs):
         super().on_entry(*args)
         #print('entering dialog scene')
         #print(f'current dialog {args[0]["scene"]}')

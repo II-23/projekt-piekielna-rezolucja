@@ -36,6 +36,11 @@ class Main_Window:
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.gameplay_intro = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro}
+
+        try:
+            pygame.mixer.init()
+        except:
+            print("Unable to initialize pygame.mixer, music and sounds will not play.")
         
     def on_event(self, event):
         button_clicks = []

@@ -45,6 +45,7 @@ class Main_Window:
 
         try:
             pygame.mixer.init()
+            pygame.mixer.music.set_volume(0.5) # Default Volume bar setting
         except:
             print("Unable to initialize pygame.mixer, music and sounds will not play.")
         

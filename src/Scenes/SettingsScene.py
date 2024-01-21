@@ -7,6 +7,7 @@ from Utils.Button import Button
 from Config.definitnios import ASSETS_DIR
 from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
 from Config.graphics import RESOLUTION
+from soundtrackmanager import SoundtrackManager
 
 import pygame
 import os
@@ -23,6 +24,7 @@ class SettingsScene(BaseScene):
         self.slider_text = Button((340, 180), (600, 50), None, help_text_color, help_text_color, help_text_color)
         self.slider_text.init_text(None, 36, (0,0,0), "Volume: ", False, True)
         self.slider = Volume_slider((650, 180+25-10), (200, 20), 0.5,0,100,'red','grey',50)
+        self.slider.observer_functions.append(SoundtrackManager.setVolume)
         self.add_ui_element(self.slider_text)
         self.add_ui_element(self.slider)
 

@@ -24,9 +24,13 @@ class Volume_slider:
         self.status = Status.IDLE
         self.button_colr=button_colr
         self.bar_colr=bar_colr
+        self.observer_functions = []
+
     def move_slider(self, mouse_pos):
         new_x = max(self.slider_left_pos+self.button_width/2, min(mouse_pos[0], self.slider_right_pos-self.button_width/2))
         self.button_rect.centerx = new_x
+        for func in self.observer_functions:
+            func(self.get_value())
 
     def cursor_over_button(self, mouse_pos):
         return self.button_rect.collidepoint(mouse_pos)

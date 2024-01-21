@@ -37,7 +37,7 @@ class GameplayScene(BaseScene):
         # creating button to go to start scene
         self.start_screen_button = setup_button(self.gameStateManager, 'start', (100, 300))
         self.add_ui_element(self.start_screen_button)
-        self.soundtrackmanager = SoundtrackManager()
+        self.soundtrackmanager = SoundtrackManager
         
         #
         formula_generator = Generator(5, 6)   

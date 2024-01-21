@@ -6,6 +6,8 @@ from Formulas.Formula import Formula_State
 from Utils.ResolutionButton import ResolutionButton
 from Config.graphics import RESOLUTION
 from soundtrackmanager import SoundtrackManager
+from Formulas.FormulaGenerator import max_variable_number
+from Config.definitnios import VARIABLES
 
 class Set_of_formulas(pygame.sprite.Sprite):
     def __init__(self, size, pos, list_of_formulas):
@@ -139,14 +141,14 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.selected[num].content=[]
     def evaluate(self, valuation_dict):
         print(f'[Log][Formula set]: requested evaluation at {valuation_dict}')
-        valuation_list = sorted(valuation_dict.items())
-        valuation_katafiasz_normal_form = [1 if x[1] else -1 for x in valuation_list]
+        variable_names = sorted([VARIABLES[i] for i in range(max_variable_number)])
+        valuation_katafiasz_normal_form = [0 if x not in valuation_dict else 1 if valuation_dict[x] else -1 for x in variable_names]
         global_satisfied = True
         for formula in self.formulas:
             formula_katafiasz_normal_form = formula.content
             satisfied = False
             for i in range(len(valuation_katafiasz_normal_form)):
-                if (valuation_katafiasz_normal_form[i] == formula_katafiasz_normal_form[i]):
+                if (valuation_katafiasz_normal_form[i] != 0 and valuation_katafiasz_normal_form[i] == formula_katafiasz_normal_form[i]):
                     satisfied = True
                     break
             global_satisfied = global_satisfied and satisfied

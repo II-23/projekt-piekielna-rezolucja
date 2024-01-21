@@ -8,6 +8,7 @@ from Utils.ResolutionButton import ResolutionButton
 import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
+from soundtrackmanager import SoundtrackManager
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
@@ -36,6 +37,7 @@ class GameplayScene(BaseScene):
         # creating button to go to start scene
         self.start_screen_button = setup_button(self.gameStateManager, 'start', (100, 300))
         self.add_ui_element(self.start_screen_button)
+        self.soundtrackmanager = SoundtrackManager
         
         #
         formula_generator = Generator(5, 6)   
@@ -58,4 +60,8 @@ class GameplayScene(BaseScene):
     def on_entry(self, *args):
         '''TODO probalby here will be something to reset the score/formulas'''
         super().on_entry(*args)
-        
+        self.soundtrackmanager.playMusic("GameplayMusic")
+    
+    def on_exit(self, *args):
+        super().on_exit(*args)
+        self.soundtrackmanager.stopMusic()

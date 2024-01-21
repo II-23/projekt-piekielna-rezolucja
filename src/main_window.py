@@ -3,6 +3,7 @@ from pygame.locals import *
 import numpy
 import math
 from gamestatemanager import GameStateManager
+from soundtrackmanager import SoundtrackManager
 from Scenes.BaseScene import * # this also imports slider stuff
 from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
@@ -39,6 +40,11 @@ class Main_Window:
         self.settings = SettingsScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro, 
                                         'settings': self.settings}
+
+        try:
+            pygame.mixer.init()
+        except:
+            print("Unable to initialize pygame.mixer, music and sounds will not play.")
         
     def on_event(self, event):
         button_clicks = []

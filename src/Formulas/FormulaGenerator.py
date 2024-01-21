@@ -86,6 +86,12 @@ class Generator:
                 var_used[i][1] = 0 # what is the advantage for the variable (how many more times has this variable been used in the positive (+1) vs negation (-1) form)
             for formula in self.formulas:
                 initialized = [False for i in range(max_variable_number)]
+                sat_var = randint(0, formula.size - 1)
+                initialized[sat_var] = True
+                var_used[sat_var][0] += 1
+                var_used[sat_var][1] += self.valuation[sat_var]
+                formula.variables[sat_var] = self.valuation[sat_var]
+                formula.length += 1
                 length = randint(1, max_len) # drawing a length of the current formula
                 while formula.length < length:
                     var = 0;

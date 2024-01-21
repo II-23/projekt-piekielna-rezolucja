@@ -83,7 +83,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
                         x.state=Formula_State.HOVER
                 else:
                     print("znaleziono sprzeczność")
-                    SoundtrackManager.playSound("Yippee!")
+                    SoundtrackManager.stopMusic()
+                    SoundtrackManager.playSound("MarioLevelComplete")
                     self.state=1
     def render(self, screen):
         #fills with transparent and blits formulas
@@ -152,7 +153,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
             global_satisfied = global_satisfied and satisfied
         if (global_satisfied):
             print(f"[Log][Formula set]: valuation is correct")
-            SoundtrackManager.playSound("Yippee!")
+            SoundtrackManager.stopMusic()
+            SoundtrackManager.playSound("MarioLevelComplete")
             self.state = 1
         else:
             print(f"[Log][Formula set]: valuation is incorrect")

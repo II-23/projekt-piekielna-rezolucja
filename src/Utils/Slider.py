@@ -24,7 +24,7 @@ class Status(Enum):
 
 
 class Slider_Bar(pygame.sprite.Sprite):
-    def __init__(self, size, numer_of_variables):
+    def __init__(self, size, indicies_of_variables):
         self.size = self.width, self.height = size
         loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self._surface = pygame.transform.scale(loaded_bar, size)
@@ -36,10 +36,10 @@ class Slider_Bar(pygame.sprite.Sprite):
         self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2
         self.parent_rect = None
         self.variable_font = pygame.font.Font(None, round(55 * RESOLUTION[0]/1280))
-        if (numer_of_variables > len(VARIABLES)):
-            raise ValueError(f"Number of variables is {numer_of_variables}, which is greater than number of variable assets ({len(VARIABLES)}). If this is not correct, please check if VARIABLES list in Config.definitions is up to date.")
-        for i in range(numer_of_variables):
-            self.add_slider(VARIABLES[i])
+        if (max(indicies_of_variables) >= len(VARIABLES)):
+            raise ValueError(f"No assset for variable index {max(indicies_of_variables)}. If this is not correct, please check if VARIABLES list in Config.definitions is up to date.")
+        for index in sorted(indicies_of_variables):
+            self.add_slider(VARIABLES[index])
         evaluate_button_position = (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN)
         evaluate_button_size = (self.width - 2*self.LEFT_MARGIN, 60)
         self.evaluate_button = ImageButton(evaluate_button_position, evaluate_button_size, os.path.join(ASSETS_DIR, "evaluate_button.png"), os.path.join(ASSETS_DIR, "evaluate_button_hover.png"), self.request_evaluation)

@@ -42,8 +42,8 @@ class GameplayScene(BaseScene):
         #
 
         # creating the slider_bar
-        number_of_variables = len(self.formula_set.get_variable_set())
-        self.slider_bar = Slider_Bar((0.18 * self.width, self.height), number_of_variables)
+        indicies_of_variables = self.formula_set.get_variable_set()
+        self.slider_bar = Slider_Bar((0.18 * self.width, self.height), indicies_of_variables)
         self.slider_bar_rect = self.display.blit(self.slider_bar.get_surface(), (self.width - self.slider_bar.get_surface().get_width(), 0))
         self.slider_bar.set_parent_rect(self.slider_bar_rect)
         self.add_ui_element(self.slider_bar)

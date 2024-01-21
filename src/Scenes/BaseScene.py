@@ -11,11 +11,11 @@ from Config.graphics import RESOLUTION
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-def setup_button(gameStateManager, to_change, position):
+def setup_button(gameStateManager, to_change, position, **kwargs):
     '''This is a function that is used for creating a button that will switch current scene.'''
     def test2(args):
         gameStateManager.set_state(to_change, args)
-    button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200))
+    button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200), **kwargs)
     return button2
 
 class BaseScene:
@@ -42,13 +42,13 @@ class BaseScene:
         self.up_opacity = False
           
         
-    def on_entry(self, *args):
+    def on_entry(self, *args, **kwargs):
         '''This is the method that is executed when GameStateManager changes to a scene. For example you can use it 
         to reset gameplay, generate new formulas etc. Override it in each scene, with your own code, if you want to use it.'''
         self.lower_opacity = True
         self.pause = True
     
-    def on_exit(self):
+    def on_exit(self, **kwargs):
         '''This is a method that is executed when leaving a scene'''
         self.up_opacity = True
         self.pause = True

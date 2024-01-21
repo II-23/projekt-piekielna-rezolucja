@@ -4,6 +4,8 @@ import os
 from enum import Enum
 from Config.definitnios import ASSETS_DIR, VARIABLES
 from Utils.ImageButton import ImageButton
+from soundtrackmanager import SoundtrackManager
+
 #from main_window import RESOLUTION
 
 pygame.font.init()
@@ -42,7 +44,7 @@ class Slider_Bar(pygame.sprite.Sprite):
             self.add_slider(VARIABLES[index])
         evaluate_button_position = (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN)
         evaluate_button_size = (self.width - 2*self.LEFT_MARGIN, 60)
-        self.evaluate_button = ImageButton(evaluate_button_position, evaluate_button_size, os.path.join(ASSETS_DIR, "evaluate_button.png"), os.path.join(ASSETS_DIR, "evaluate_button_hover.png"), self.request_evaluation)
+        self.evaluate_button = ImageButton(evaluate_button_position, evaluate_button_size, os.path.join(ASSETS_DIR, "evaluate_button.png"), os.path.join(ASSETS_DIR, "evaluate_button_hover.png"), self.request_evaluation, sound_on_click='MinecraftClick')
         self.evaluate_button.init_text(text="SPRAWDŹ")
         self.evalutation_requested = False
         
@@ -127,6 +129,7 @@ class Slider(pygame.sprite.Sprite):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.cursor_over_button(pos):
+                    SoundtrackManager.playSound("MinecraftClick")
                     self.change_state()
                     
     def update(self, pos):

@@ -34,12 +34,13 @@ class Main_Window:
         # so this space here, in main_window, can stay clean. If you want to create your own scene or add some
         # buttons/sliders/whatever check out .py files of these scenes (and BaseScene) here and take inspirations.  
         self.start = MainMenuScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
-        self.start.screen_saver_alpha = 0
+        #self.start.screen_saver_alpha = 0
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.gameplay_intro = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.settings = SettingsScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro, 
                                         'settings': self.settings}
+        self.gameStateManager.set_state('start', {})
 
         try:
             pygame.mixer.init()

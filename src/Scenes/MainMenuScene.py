@@ -7,6 +7,7 @@ from Utils.Button import Button
 from Config.definitnios import ASSETS_DIR
 from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
 from Config.graphics import RESOLUTION
+from soundtrackmanager import SoundtrackManager
 
 import pygame
 import os
@@ -54,7 +55,13 @@ class MainMenuScene(BaseScene):
 
         self.add_ui_element(self.character)
   
-    def on_entry(self, *args):
+    def on_entry(self, *args, **kwargs):
         self.character.reset()
+        if (kwargs['prev_state'] != 'settings'):
+            SoundtrackManager.playMusic("MainMenuTheme", loops=-1)
         super().on_entry(*args)
+
+    def on_exity(self, *args, **kwargs):
+        SoundtrackManager.stopMusic()
+        super().on_exit(*args)
 

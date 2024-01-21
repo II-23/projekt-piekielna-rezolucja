@@ -14,8 +14,9 @@ class GameStateManager:
     def transition_to_new_state(self):
         '''if last scene finished its on_exit method it switches to a new scene'''
         if not self.states[self.get_state()].pause and self.new_state: 
+            prev_state = self.get_state()
             self.currentState=self.new_state
-            self.states[self.get_state()].on_entry(self.args)
+            self.states[self.get_state()].on_entry(self.args, prev_state=prev_state)
             self.new_state = None
             self.args = None
             

@@ -40,11 +40,12 @@ class Player:
         self.obstacles.append(((1230,470), (50, 200)))
 
         # top border
-        self.obstacles.append(((0,0), (2000, 30)))
+        self.obstacles.append(((0,0), (520, 30)))
+        self.obstacles.append(((735,0), (2000, 30)))
 
         # bottom border
-        self.obstacles.append(((0,670), (540, 30)))
-        self.obstacles.append(((740,670), (2000, 30)))
+        self.obstacles.append(((0,670), (530, 30)))
+        self.obstacles.append(((752,670), (2000, 30)))
 
         self.frames = {}
 
@@ -115,7 +116,7 @@ class Player:
         self.active = False
 
     def process_input(self, events,mouse, *args):
-
+        #print(self.pos)
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:

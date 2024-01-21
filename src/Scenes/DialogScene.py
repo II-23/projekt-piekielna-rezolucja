@@ -106,7 +106,7 @@ class DialogScene(BaseScene):
         
         '''This is a button that redirects to the GameplayScene'''
         #TODO better way to create buttons that go to the next scenes
-        self.gp_scene_button = setup_button(gameStateManager, 'level', (1050, 610))
+        self.gp_scene_button = setup_button(gameStateManager, 'level', (1050, 610), sound_on_click="ReverbFart")
         self.gp_scene_button.init_text(font=None, color=(255, 77, 131), text='Play!', align_center_h=True, align_center_w=True)
         self.add_ui_element(self.gp_scene_button)
         

@@ -11,11 +11,11 @@ from Config.graphics import RESOLUTION
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-def setup_button(gameStateManager, to_change, position):
+def setup_button(gameStateManager, to_change, position, **kwargs):
     '''This is a function that is used for creating a button that will switch current scene.'''
     def test2(args):
         gameStateManager.set_state(to_change, args)
-    button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200))
+    button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200), **kwargs)
     return button2
 
 class BaseScene:

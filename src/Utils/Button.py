@@ -1,6 +1,7 @@
 # Author : Krzysztof Olejnik
 from enum import Enum
 import pygame
+from soundtrackmanager import SoundtrackManager
 
 class Status(Enum):
     IDLE = 0
@@ -8,7 +9,7 @@ class Status(Enum):
     CLICKED = 2,  
 
 class Button():
-    def __init__(self, position, size, on_click_event, idle_color, hower_color, click_color):
+    def __init__(self, position, size, on_click_event, idle_color, hower_color, click_color, **kwargs):
         self.position = position
         self.size = size
         self.idle_color = idle_color
@@ -16,6 +17,9 @@ class Button():
         self.click_color = click_color
         self.on_click_event = on_click_event
         self.status = Status.IDLE
+        self.sound_on_click = None
+        if ('sound_on_click' in kwargs):
+            self.sound_on_click = kwargs['sound_on_click']
         # text variables
         self.text = None # This is the pygame text, kinda used like a flag to check if the button has any text
         self.text_str = None # This is the string format of the text
@@ -86,6 +90,8 @@ class Button():
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 if self.status == Status.CLICKED:
                     self.trigger_event(*args)
+                    if (self.sound_on_click != None):
+                        SoundtrackManager.playSound(self.sound_on_click)
 
                 if self.cursor_over_button(mouse, offset):
                     self.status = Status.HOWER

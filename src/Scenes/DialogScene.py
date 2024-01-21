@@ -1,8 +1,10 @@
 from Scenes.BaseScene import BaseScene, setup_button, Button
 from Utils.Slider import Slider_Bar
 from Config.graphics import RESOLUTION
+from Config.definitnios import SRC_DIR
 from enum import Enum
 import pygame
+import os
 
 class Side(Enum):
     LEFT = -1
@@ -48,7 +50,7 @@ class DialogManager():
         self.current_dialog = dialog_name
 
     def load_dialog(self, filename, dialog_name):
-        path = 'src/Scenes/'+filename
+        path = os.path.join(SRC_DIR, "Scenes", filename)
         with open(path,'r') as file:
             dialog = file.read()
         text = split_dialog(dialog, 'Left:', 'Right:')

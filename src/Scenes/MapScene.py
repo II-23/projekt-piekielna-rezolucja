@@ -1,40 +1,64 @@
 from Scenes.BaseScene import BaseScene, setup_button
 from Utils.Character import Player
 from Utils.Area import Area
-from Utils.Slider import Slider_Bar
-from Formulas.Formula import Symbol, Formula
-from Formulas.FormulaSet import Set_of_formulas
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 from Utils.ResolutionButton import ResolutionButton
 import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
+from Utils.Enemy import Enemy
 
 class Room():
-    def __init__(self, pos: tuple) -> None:
+    def __init__(self, pos: tuple, enemy_action) -> None:
         self.position_on_map = pos
+        self.enemy_action = enemy_action
         # bottom (1), top (0), left (2), right (3)
         self.doors = [0 for _ in range(3)]
+        self.entities = []
+
+    def add_enemy(self, position, size):
+        self.entities.append(Enemy(position, size, self.enemy_action))
+
+    def change_enemy_activity(self, active):
+        for enemy in self.entities:
+            enemy.active = active
 
 class UwrManager:
-    def __init__(self) -> None:
+    def __init__(self, enemy_action) -> None:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
+        # setting up a character and things they can interact with
+        self.character = Player((550, 300), 150, "player/player.png")
+
         self.game_map = [[1, 1, 1],
                          [0, 1, 0],
                          [0, 1, 1]]
-        
         self.map_w = len(self.game_map[0])
         self.map_h = len(self.game_map)
+        self.rooms = [[1, 1, 1],
+                      [0, 1, 0],
+                      [0, 1, 1]]
+        
+        for i in range(self.map_h):
+            for j in range(self.map_w):
+                if self.game_map[i][j] == 1:
+                    room = Room((j, i), enemy_action)
+                    #room.add_enemy((200,200), (50,50))
+                    self.rooms[i][j] = room
+
         # these are starting coords for character when it goes to a new room
         # bottom (1), top (0), left (2), right (3)
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
         # position of player in the labirynth
         self.pos_in_maze = [1, 1]
+        self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
+        self.current_room.add_enemy((200,200), (50,50))
 
     def set_character_position(self, direction):
         return self.starting_positions[direction]
     
+    
+
     def move_on_map(self, direction):
         new_pos = self.pos_in_maze.copy()
         if direction == 0:
@@ -48,30 +72,42 @@ class UwrManager:
 
         if 0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
             if self.game_map[new_pos[1]][new_pos[0]] == 1:
-                #print(f'moved to a new room:')
                 self.pos_in_maze = new_pos
                 return True
             else:
-                ##print('there is no room there')
                 return False
         else:
-            #print('you can not go outside of map')
             return False
+        
+    def process_input(self, events, mouse, *args):
+        pass
+
+    def update(self, mouse=pygame.mouse):
+        # colissions
+        for entity in self.current_room.entities:
+            if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
+                                              entity.position, entity.size):
+                entity.on_enter_event({})
+        pass
+
+    def render(self, screen):
+        # render entities on a map (enemies)
+        pass
 
 class MapScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''A scene for map of the game, player will walk around and fight monsters'''
+        def go_to_scene(args): # function that goes to level scene
+            gameStateManager.set_state('level', {})
+
         # a class to manage the map of the game
-        self.uwu = UwrManager()
+        self.uwu = UwrManager(go_to_scene)
 
         background_img = pygame.image.load(ASSETS_DIR + "/emptyroom.png")
         background_img = pygame.transform.scale(background_img, (1300,730))
         self.add_background_image(background_img)
         
-        # setting up a character and things they can interact with
-        self.character = Player((550, 300), 150, "player/player.png")
-
         self.doors = [] # order of these must be the same as starting positions in UwrManager
         # top area
         self.doors.append(Area((600, -50),(100,5),None))
@@ -84,11 +120,9 @@ class MapScene(BaseScene):
 
         def enter_room(args):
             if self.uwu.move_on_map(args['d']):
-                self.character.pos = self.uwu.set_character_position(args['d'])
+                self.uwu.character.pos = self.uwu.set_character_position(args['d'])
 
-        def go_to_scene(args):
-            #gameStateManager.set_state('level', {})
-            print('entered')
+        
         self.area = Area((600,700),(100,100),None)
         self.area.on_enter_event = go_to_scene
         #self.character.areas.append(self.area)
@@ -98,10 +132,13 @@ class MapScene(BaseScene):
             door.destination = i
             door.on_enter_event = enter_room
             i += 1
-            self.character.areas.append(door) 
-        self.add_ui_element(self.character)
+            self.uwu.character.areas.append(door) 
+        self.add_ui_element(self.uwu.character)
+        self.add_ui_element(self.uwu)
         
     def on_entry(self, *args):
-        '''TODO probalby here will be something to reset the score/formulas'''
+        '''TODO probalby here will be something to reset player position'''
+        self.uwu.character.reset()
+        self.uwu.character.pos = (550, 300)
         super().on_entry(*args)
         

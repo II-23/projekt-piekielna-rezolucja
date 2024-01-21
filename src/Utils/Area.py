@@ -17,11 +17,11 @@ class Area():
         pygame.draw.rect(screen,(255,0,100), rect)
 
     def process_input(self, events, mouse, *args):
-        if not self.is_door:
-            self.trigger_event(*args)
-        else:
+        if self.is_door:
             self.trigger_event({'d': self.destination})
-
+        else:
+            self.trigger_event(*args)
+            
     def update(self, mouse=pygame.mouse):
         pass
 

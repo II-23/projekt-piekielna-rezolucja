@@ -14,7 +14,7 @@ class Room():
         self.position_on_map = pos
         self.enemy_action = enemy_action
         # bottom (1), top (0), left (2), right (3)
-        self.doors = [0 for _ in range(3)]
+        self.doors = [0 for _ in range(4)]
         self.entities = []
 
     def add_enemy(self, position, size):
@@ -123,6 +123,7 @@ class MapScene(BaseScene):
         self.doors.append(Area((1320, 360),(5,100),None))
 
         def enter_room(args):
+            print('checking')
             if self.uwu.move_on_map(args['d']):
                 self.uwu.character.pos = self.uwu.set_character_position(args['d'])
 
@@ -137,6 +138,7 @@ class MapScene(BaseScene):
             door.on_enter_event = enter_room
             i += 1
             self.uwu.character.areas.append(door) 
+            self.uwu.character.obstacles.append(door)
         self.add_ui_element(self.uwu.character)
         self.add_ui_element(self.uwu)
         

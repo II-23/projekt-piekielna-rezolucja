@@ -5,6 +5,7 @@ import numpy as np
 from PIL import Image, ImageOps
 import os
 from Config.definitnios import ASSETS_DIR
+from Utils.Area import Area
 
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
@@ -175,10 +176,15 @@ class Player:
         collision = False
         dummy_pos = (self.pos[0] + self.velocity[0] * self.speed, self.pos[1])
 
-        for pos2, size2 in self.obstacles:
-            if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
-                collision = True
-
+        for obstacle in self.obstacles:
+            if isinstance(obstacle, tuple):
+                pos2, size2 = obstacle
+                if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
+                    collision = True
+            elif isinstance(obstacle, Area):
+                if self.check_collision(dummy_pos, (self.size, self.size), obstacle.pos, obstacle.size):
+                    collision = True
+                    
         if not collision:
             self.pos = list(self.pos)
             self.pos[0] += self.velocity[0] * self.speed
@@ -190,9 +196,14 @@ class Player:
         collision = False
         dummy_pos = (self.pos[0], self.pos[1] + self.velocity[1] * self.speed)
 
-        for pos2, size2 in self.obstacles:
-            if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
-                collision = True
+        for obstacle in self.obstacles:
+            if isinstance(obstacle, tuple):
+                pos2, size2 = obstacle
+                if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
+                    collision = True
+            elif isinstance(obstacle, Area):
+                if self.check_collision(dummy_pos, (self.size, self.size), obstacle.pos, obstacle.size):
+                    collision = True
             
         if not collision:
             self.pos = list(self.pos)

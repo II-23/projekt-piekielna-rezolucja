@@ -10,6 +10,7 @@ import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from Utils.Enemy import Enemy
+from Utils.IsaacMapGenerator import MapGenerator
 import copy
 import os
 
@@ -42,34 +43,36 @@ class Room():
             enemy.active = active
 
 class UwrManager:
-    def __init__(self, enemy_action) -> None:
+    def __init__(self, enemy_action, difficulty) -> None:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         # setting up a character and things they can interact with
         self.character = Player([550, 300]  , 150, "player/player.png")
-        mapa = [[0, 1, 0],
-                [0, 1, 1],
-                [0, 1, 1]]
-        self.game_map = copy.deepcopy(mapa) # map with numbers
+        self.pos_in_maze = [1, 0]
+        self.mapa = []
+        self.generate_map(difficulty)
+        # mapa = [[0, 1, 0],
+        #         [0, 1, 1],
+        #         [0, 1, 1]]
+        self.game_map = copy.deepcopy(self.mapa) # map with numbers
         self.map_w = len(self.game_map[0])
         self.map_h = len(self.game_map)
-        self.rooms = copy.deepcopy(mapa) # map with references to rooms
+        self.rooms = copy.deepcopy(self.mapa) # map with references to rooms
         # i = y, j = x
         for i in range(self.map_h):
             for j in range(self.map_w):
                 if self.game_map[i][j] == 1:
                     room = Room((j, i), enemy_action)
                     # bottom (0), top (1), left (2), right (3)
-                    room.door_exists[0] = False if i + 1 >= 3 else False if self.game_map[i + 1][j] == 0 else True 
+                    room.door_exists[0] = False if i + 1 >= self.map_h else False if self.game_map[i + 1][j] == 0 else True 
                     room.door_exists[1] = False if i - 1 < 0 else False if self.game_map[i - 1][j] == 0  else True 
                     room.door_exists[2] = False if j - 1 < 0 else False if self.game_map[i][j - 1] == 0 else True 
-                    room.door_exists[3] = False if j + 1 >= 3 else False if self.game_map[i][j + 1] == 0 else True 
+                    room.door_exists[3] = False if j + 1 >= self.map_w else False if self.game_map[i][j + 1] == 0 else True 
                     self.rooms[i][j] = room
 
         # these are starting coords for character when it goes to a new room
         # bottom (1), top (0), left (2), right (3)
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
         # position of player in the labirynth
-        self.pos_in_maze = [1, 0]
         self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
         #self.current_room.add_enemy((200,200), (100,100))
         self.current_room.change_enemy_activity(True)
@@ -132,6 +135,12 @@ class UwrManager:
             if not self.current_room.door_exists[i]:
                 self.current_room.doors[i].render(screen)
 
+    def generate_map(self, difficulty):
+        MapGenerator.generate(difficulty)
+        self.mapa = copy.deepcopy(MapGenerator.mapArr)
+        self.pos_in_maze = list(MapGenerator.start)
+        print(self.mapa)
+
 class MapScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
@@ -146,12 +155,12 @@ class MapScene(BaseScene):
             self.pause = True
         
         # a class to manage the map of the game
-        self.uwu = UwrManager(go_to_scene)
+        self.uwu = UwrManager(go_to_scene, 5)
         #adding enemies to the map
-        self.uwu.add_enemy_to_room((1, 1), (200, 200))
-        self.uwu.add_enemy_to_room((1, 0), (500, 200))
-        self.uwu.add_enemy_to_room((1, 2), (200, 400))
-        self.uwu.current_room.change_enemy_activity(True) # set activity of current room to True
+        # self.uwu.add_enemy_to_room((1, 1), (200, 200))
+        # self.uwu.add_enemy_to_room((1, 0), (500, 200))
+        # self.uwu.add_enemy_to_room((1, 2), (200, 400))
+        #self.uwu.current_room.change_enemy_activity(True) # set activity of current room to True
         
         background_img = pygame.image.load(ASSETS_DIR + "/emptyroom.png")
         background_img = pygame.transform.scale(background_img, (1300,730))

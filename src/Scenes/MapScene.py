@@ -11,6 +11,7 @@ from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from Utils.Enemy import Enemy
 from Utils.IsaacMapGenerator import MapGenerator
+from random import randint, choice
 import copy
 import os
 
@@ -61,7 +62,7 @@ class UwrManager:
         for i in range(self.map_h):
             for j in range(self.map_w):
                 if self.game_map[i][j] == 1:
-                    room = Room((j, i), enemy_action)
+                    room = Room((i, j), enemy_action)
                     # bottom (0), top (1), left (2), right (3)
                     room.door_exists[0] = False if i + 1 >= self.map_h else False if self.game_map[i + 1][j] == 0 else True 
                     room.door_exists[1] = False if i - 1 < 0 else False if self.game_map[i - 1][j] == 0  else True 
@@ -69,37 +70,46 @@ class UwrManager:
                     room.door_exists[3] = False if j + 1 >= self.map_w else False if self.game_map[i][j + 1] == 0 else True 
                     self.rooms[i][j] = room
 
+        self.enemiesNum = (difficulty+1)//2
+        for _ in range(self.enemiesNum):
+            chosenRoom = choice(MapGenerator.mapList)
+            while chosenRoom == MapGenerator.start or chosenRoom == MapGenerator.end:
+                chosenRoom = choice(MapGenerator.mapList)
+            self.add_enemy_to_room(chosenRoom, (randint(100,1080),randint(100,520)))
+        for _ in range(1 + (difficulty >= 3)):
+            self.add_enemy_to_room(MapGenerator.end, (randint(100,1080),randint(100,520)))
+
         # these are starting coords for character when it goes to a new room
         # bottom (1), top (0), left (2), right (3)
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
         # position of player in the labirynth
-        self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
+        self.current_room = self.rooms[self.pos_in_maze[0]][self.pos_in_maze[1]]
         #self.current_room.add_enemy((200,200), (100,100))
-        self.current_room.change_enemy_activity(True)
+        #self.current_room.change_enemy_activity(True)
 
     def set_character_position(self, direction):
         return self.starting_positions[direction]
     
     def add_enemy_to_room(self, room_pos, enemy_pos):
-        self.rooms[room_pos[1]][room_pos[0]].add_enemy(enemy_pos, (100,100))
+        self.rooms[room_pos[0]][room_pos[1]].add_enemy(enemy_pos, (100,100))
 
     def move_on_map(self, direction):
         '''Used to move character to a new room'''
         new_pos = self.pos_in_maze.copy()
         if direction == 0:
-            new_pos[1] -= 1
-        if direction == 1:
-            new_pos[1] += 1
-        if direction == 2:
             new_pos[0] -= 1
-        if direction == 3:
+        if direction == 1:
             new_pos[0] += 1
+        if direction == 2:
+            new_pos[1] -= 1
+        if direction == 3:
+            new_pos[1] += 1
 
         if 0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
-            if self.game_map[new_pos[1]][new_pos[0]] == 1:
+            if self.game_map[new_pos[0]][new_pos[1]] == 1:
                 self.current_room.change_enemy_activity(False)
                 self.pos_in_maze = new_pos
-                self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
+                self.current_room = self.rooms[self.pos_in_maze[0]][self.pos_in_maze[1]]
                 self.current_room.change_enemy_activity(True)
                 return True
             else:

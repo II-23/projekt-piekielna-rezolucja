@@ -7,7 +7,6 @@ class Health_and_points:
         self.health=self.player.health
         self.points=self.player.points
         self.difficulty=difficulty
-
         self.pos=pos
         self.size=size
         self.col_bar=col_bar
@@ -16,6 +15,16 @@ class Health_and_points:
         self.button_rect=pygame.Rect(self.pos[0],self.pos[1],self.size[0],self.size[1])
         if difficulty==None :
             self.text=f'Health:{self.health} Points{self.points}'
+
+    def set_difficulty(self, new_difficulty):
+        self.difficulty = new_difficulty
+        self.update_text()
+
+    def update_text(self):
+        if self.difficulty is None:
+            self.text = f'Health: {self.health} Points: {self.points}'
+        else:
+            self.text = f'Health: {self.health} Points: {self.points} Difficulty: {self.difficulty}'
 
     def render(self,screen):
         pygame.draw.rect(screen, self.col_bar, self.button_rect)
@@ -31,8 +40,5 @@ class Health_and_points:
     def update(self,screen):
         self.health = self.player.health
         self.points = self.player.points
-        if self.difficulty==None :
-            self.text=f'Health:{self.health} Points{self.points}'
-        else:
-            self.text = f'Health: {self.health} Points: {self.points} Difficulty: {self.difficulty}'
+        self.update_text()
 

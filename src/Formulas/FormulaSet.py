@@ -9,13 +9,17 @@ from soundtrackmanager import SoundtrackManager
 from Formulas.FormulaGenerator import max_variable_number
 from Config.definitnios import VARIABLES
 
+LINE_HEIGHT = 32
+
 class Set_of_formulas(pygame.sprite.Sprite):
     def __init__(self, size, pos, list_of_formulas):
         #once we start fixing layout of stuff on the screen, line below needs to use variables passed from init.
         #for now it acts as placeholder
-        self.selected=[Formula((25,25), (500,100), [], 500, False),Formula((25,25), (800,100), [], 500, True)]
-        #self.button=Button((500,120), (100,20), self.button_clicked, "red", "green", "blue")
-        self.button = ResolutionButton((0.339* RESOLUTION[0],0), self.button_clicked)
+        #self.selected=[Formula((25,25), (500,100), [], 500, False),Formula((25,25), (800,100), [], 500, True)]
+        self.selected=[Formula((25,25), (4000,0), [], 500, False),Formula((25,25), (4000,0), [], 500, True)]
+
+        self.button=Button((500,120), (100,20), self.button_clicked, "red", "green", "blue")
+        self.button = ResolutionButton((0.133* RESOLUTION[0],0), self.button_clicked)
         loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self.surface=pygame.transform.scale(loaded_bar, size).convert_alpha()
         self.set_rect = pygame.Rect(pos[0], pos[1], 500, 500)
@@ -30,7 +34,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.variables = set()
         #adding formulas given by the generator. Still uses generator prototype.
         for i in range(len(list_of_formulas)):
-           self.formulas.append(Formula((25,25), (self.x, self.y+i*25), list_of_formulas[i].variables, self.width, True))
+           self.formulas.append(Formula((25,25), (self.x, self.y+i*LINE_HEIGHT), list_of_formulas[i].variables, self.width, True))
         for formula in self.formulas:
             self.variables = self.variables.union(formula.get_variable_set())
     
@@ -78,7 +82,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
                         check=1
                 if check==1:
                     SoundtrackManager.playSound("WritingEffect")
-                    self.formulas.append(Formula((25,25), (self.x, self.y+len(self.formulas)*25), q3, self.width, True))
+                    self.formulas.append(Formula((25,25), (self.x, self.y+len(self.formulas)*LINE_HEIGHT), q3, self.width, True))
                     self.clear_selected(0)
                     self.clear_selected(1)
                     for x in self.formulas:
@@ -93,7 +97,9 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.get_surface().fill((0,0,0,0))
         for x in range(len(self.formulas)):
             self.formulas[x].render(screen)
-            self.get_surface().blit(self.formulas[x].get_surface(), (0,25*x))
+            self.get_surface().blit(self.formulas[x].get_surface(), (0,LINE_HEIGHT*x))
+
+
 
     def update(self, mouse=pygame.mouse):
         self.selected[0].state=Formula_State.CLICKED_NOT_ASSIGNED

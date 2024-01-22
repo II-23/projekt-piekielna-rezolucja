@@ -87,9 +87,8 @@ class UwrManager:
             while chosenRoom == MapGenerator.start or chosenRoom == MapGenerator.end:
                 chosenRoom = choice(MapGenerator.mapList)
             self.add_enemy_to_room(chosenRoom, (randint(200,980),randint(200,420)))
-        for _ in range(1 + (self.difficulty >= 3)):
-            self.add_enemy_to_room(MapGenerator.end, (270,310))
-            self.add_enemy_to_room(MapGenerator.end, (910,310))
+        self.add_enemy_to_room(MapGenerator.end, (270,310))
+        if self.difficulty >= 3: self.add_enemy_to_room(MapGenerator.end, (910,310))
 
         def new_room():
             self.difficulty += 1

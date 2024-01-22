@@ -6,6 +6,7 @@ from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 from Utils.ResolutionButton import ResolutionButton
 from Scenes.GameplayScene import GameplayScene
+from Utils.Health_and_points import Health_and_points
 import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
@@ -204,6 +205,7 @@ class MapScene(BaseScene):
             self.uwu.character.obstacles.append(door)
         self.add_ui_element(self.uwu.character)
         self.add_ui_element(self.uwu)
+        self.add_ui_element(Health_and_points(self.uwu.character,(230,50),(0,0),(74, 10, 6)))
         
     def on_entry(self, *args, prev_state):
         '''TODO probalby here will be something to reset player position'''

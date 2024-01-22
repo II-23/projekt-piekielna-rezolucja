@@ -78,6 +78,7 @@ class GameplayScene(BaseScene):
         print(self.won[0])
         if self.won[0]:
             self.enemy.health -= 1
+            self.player.points += 1000
         else:
             self.player.health -= 1 
         self.soundtrackmanager.stopMusic()

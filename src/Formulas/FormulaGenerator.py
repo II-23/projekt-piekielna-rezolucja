@@ -81,9 +81,9 @@ chance_for_satisfiable = {
 }
 
 satisfiable_levels = {
-    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4, lengths_probabilities = [10, 10, 10, 70]),
-    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3, lengths_probabilities = [10, 10, 80]),
-    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3, lengths_probabilities=[70, 15, 15])
+    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4, lengths_probabilities = [10, 15, 30, 40]),
+    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3, lengths_probabilities = [10, 30, 60]),
+    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3, lengths_probabilities=[15, 25, 60])
 }
 
 not_satisfiable_levels = {
@@ -269,7 +269,7 @@ def good_generate(difficulty):
     return abc
 
 if __name__ == '__main__':
-    diff = DifficultyLevels.MEDIUM
+    diff = DifficultyLevels.EASY
     abc = good_generate(diff)
     print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
     for formula in abc.formulas:

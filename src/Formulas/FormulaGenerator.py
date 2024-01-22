@@ -62,10 +62,6 @@ class Formula:
         return formula_copy
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 3cd6825 (Added some difficulty levels)
 class DifficultyLevels(Enum):
     EASY = 0,
     MEDIUM = 1,
@@ -76,14 +72,7 @@ class GeneratorParams:
     max_variable_number : int
     formulas_number : int
     max_len : int
-<<<<<<< HEAD
-<<<<<<< HEAD
     lengths_probabilities : list
-=======
->>>>>>> 3cd6825 (Added some difficulty levels)
-=======
-    lengths_probabilities : list
->>>>>>> 79a8ff0 (Added probabilities distributions for lengths of formulas in satisfiable sets)
 
 chance_for_satisfiable = {
     DifficultyLevels.EASY : 65,
@@ -92,8 +81,6 @@ chance_for_satisfiable = {
 }
 
 satisfiable_levels = {
-<<<<<<< HEAD
-<<<<<<< HEAD
     DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=6, max_len=4, lengths_probabilities = [0, 20, 40, 40]),
     DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=8, max_len=4, lengths_probabilities = [0, 20, 50, 30]),
     DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=10, max_len=3, lengths_probabilities=[0, 10, 90])
@@ -105,26 +92,6 @@ not_satisfiable_levels = {
     DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=10, max_len=7, lengths_probabilities=[])
 }
 
-=======
->>>>>>> main
-=======
-    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4),
-    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3),
-    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3)
-=======
-    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4, lengths_probabilities = [0, 10, 20, 30, 100]),
-    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3, lengths_probabilities = [0, 10, 100, 100]),
-    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3, lengths_probabilities=[0, 10, 20, 100])
->>>>>>> 79a8ff0 (Added probabilities distributions for lengths of formulas in satisfiable sets)
-}
-
-not_satisfiable_levels = {
-    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=3, lengths_probabilities=[]),
-    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=5, lengths_probabilities=[]),
-    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=8, lengths_probabilities=[])
-}
-
->>>>>>> 3cd6825 (Added some difficulty levels)
 class Generator:
     def __init__(self, difficulty):
         self.chance_for_satisfiable = chance_for_satisfiable[difficulty]
@@ -223,9 +190,11 @@ class Generator:
                 length_roll = randint(1, 100) # drawing a length of the current formula
                 length = -1
                 
-                for i in range(1, len(self.lengths_probabilities)):
-                    if length_roll <= self.lengths_probabilities[i]:
-                        length = i
+                sum = 0;
+                for i in range(0, len(self.lengths_probabilities)):
+                    sum += self.lengths_probabilities[i]
+                    if length_roll <= sum:
+                        length = i + 1
                         break
                 if length == -1:
                     length = max_len

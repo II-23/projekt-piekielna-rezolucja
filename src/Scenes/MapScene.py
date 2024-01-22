@@ -205,7 +205,7 @@ class MapScene(BaseScene):
             self.uwu.character.obstacles.append(door)
         self.add_ui_element(self.uwu.character)
         self.add_ui_element(self.uwu)
-        self.add_ui_element(Health_and_points(self.uwu.character,(230,50),(0,0),(74, 10, 6)))
+        self.add_ui_element(Health_and_points(self.uwu.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))
         
     def on_entry(self, *args, prev_state):
         '''TODO probalby here will be something to reset player position'''

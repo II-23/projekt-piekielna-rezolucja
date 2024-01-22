@@ -25,10 +25,8 @@ class GameplayScene(BaseScene):
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
         print('generacja')
-        abc = good_generate()
+        abc = good_generate(2)
         #
-        formula_generator = Generator(5, 6)   
-        formula_generator.fill(5, 6)
         formulas=abc.formulas
         #
         max_variables_number = abc.get_variables_number()

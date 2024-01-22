@@ -189,7 +189,7 @@ class UwrManager:
         MapGenerator.generate(difficulty)
         self.mapa = copy.deepcopy(MapGenerator.mapArr)
         self.pos_in_maze = list(MapGenerator.start)
-        print(self.mapa)
+        #print(self.mapa)
         
 
 class MapScene(BaseScene):

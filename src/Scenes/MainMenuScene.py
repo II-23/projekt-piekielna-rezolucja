@@ -20,6 +20,7 @@ class MainMenuScene(BaseScene):
         piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
         background_img = pygame.image.load(ASSETS_DIR + "/background.png")
         background_img = pygame.transform.scale(background_img, (1300,730))
+        
         '''button for going to da GAME
         Here I create the function for the button manually because I want to pass the additional arguments to it,
         (Probably will add better way to do this) that is the dialog that will be loaded when changed to dialog scene.'''
@@ -46,12 +47,17 @@ class MainMenuScene(BaseScene):
         self.area_intro.on_enter_event = go_to_scene
         self.character.areas.append(self.area_intro)
 
-        def go_to_settings(args):
+        def go_to_settings(*args):
             gameStateManager.set_state('settings', {})
         self.area_settings = Area((0, 360),(5,100),None)
         self.area_settings.on_enter_event = go_to_settings
         self.character.areas.append(self.area_settings)
 
+        def go_to_credits(*args):
+            gameStateManager.set_state('credits', {})
+        self.area_credits = Area((self.width, 360), (5,100), None)
+        self.area_credits.on_enter_event = go_to_credits
+        self.character.areas.append(self.area_credits)
 
         self.add_ui_element(self.character)
   

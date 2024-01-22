@@ -23,24 +23,30 @@ class Clock(pygame.sprite.Sprite):
                     if math.sqrt((x-self.size/2)**2+(y-self.size/2)**2)>=self.size/2*90/100:
                         self.get_surface().set_at((x, y), (1,1,1))
                     else:
-                        percentage=self.time_left/self.time_total*100
+                        percentage=max(0, self.time_left/self.time_total*100)
                         color=(255*(1-percentage/100),255*percentage/100,0)
-                        if percentage>75:
-                            #if not -1*PI/2*(percentage-75)/100>math.atan2(y-self.size/2,x-self.size/2)>-1*PI/2:
-                            if not -1*PI/2<math.atan2(y-self.size/2,x-self.size/2)<-1*PI/2*(percentage-75)/25:
-                                self.get_surface().set_at((x, y), (color))
-                            else:
-                                self.get_surface().set_at((x, y), (1,1,1))
-                        elif percentage>25:
-                            if not -1*PI/2<math.atan2(y-self.size/2,x-self.size/2)<PI*(percentage-75)/50*-1:
-                                self.get_surface().set_at((x, y), (color))
-                            else:
-                                self.get_surface().set_at((x, y), (1,1,1))
+                        angle = math.atan2(y-self.size/2,x-self.size/2) + PI/2
+                        if angle < 0 : angle += 2*PI
+                        if 2*PI-angle <= 2*PI*percentage/100:
+                            self.get_surface().set_at((x, y), (color))
                         else:
-                            if (not -1*PI/2<math.atan2(y-self.size/2,x-self.size/2)) and not math.atan2(y-self.size/2,x-self.size/2)<-1*PI/2-PI/2*percentage/25:
-                                self.get_surface().set_at((x, y), (color))
-                            else:
-                                self.get_surface().set_at((x, y), (1,1,1))
+                            self.get_surface().set_at((x, y), (1,1,1))
+                        # if percentage>75:
+                        #     #if not -1*PI/2*(percentage-75)/100>math.atan2(y-self.size/2,x-self.size/2)>-1*PI/2:
+                        #     if not -1*PI/2<math.atan2(y-self.size/2,x-self.size/2)<-1*PI/2*(percentage-75)/25:
+                        #         self.get_surface().set_at((x, y), (color))
+                        #     else:
+                        #         self.get_surface().set_at((x, y), (1,1,1))
+                        # elif percentage>25:
+                        #     if not -1*PI/2<math.atan2(y-self.size/2,x-self.size/2)<PI*(percentage-75)/50*-1:
+                        #         self.get_surface().set_at((x, y), (color))
+                        #     else:
+                        #         self.get_surface().set_at((x, y), (1,1,1))
+                        # else:
+                        #     if (not -1*PI/2<math.atan2(y-self.size/2,x-self.size/2)) and not math.atan2(y-self.size/2,x-self.size/2)<-1*PI/2-PI/2*percentage/25:
+                        #         self.get_surface().set_at((x, y), (color))
+                        #     else:
+                        #         self.get_surface().set_at((x, y), (1,1,1))
                     '''else:
                         self.get_surface().set_at((x, y), (100,100,100))'''
         self.get_surface().set_colorkey((0, 0, 0))

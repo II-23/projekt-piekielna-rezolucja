@@ -221,11 +221,9 @@ class Generator:
             self.formulas = formulas
 
 
-"""DEMO"""
 if __name__ == "__main__":
     difficulty = 4
-    abc = Generator(difficulty)   
-            
+    abc = Generator(difficulty)          
     print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
     for formula in abc.formulas:
         print(f"Formula: {formula.variables}, Length: {formula.length}")

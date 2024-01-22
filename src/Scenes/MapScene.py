@@ -21,8 +21,11 @@ class Room():
         self.enemy_action = enemy_action
         p = 'closed_door.png'
         image_path = os.path.join(ASSETS_DIR, p)
+        self.enemies_alive = 0
         # bottom (0), top (1), left (2), right (3)
         self.door_exists = [False, False, False, False]
+        self.door_placeholder = self.door_exists.copy()
+        self.door_empty_room = [False, False, False, False]
         self.doors = []
         # bottom door
         self.doors.append(ImageButton((564, 689), (715-560, 200), image_path, image_path, None))
@@ -36,6 +39,7 @@ class Room():
 
     def add_enemy(self, position, size):
         self.entities.append(Enemy(position, size, self.enemy_action, 'ghost.png'))
+        self.enemies_alive += 1
 
     def change_enemy_activity(self, active):
         for enemy in self.entities:
@@ -63,7 +67,9 @@ class UwrManager:
                     room.door_exists[1] = False if i - 1 < 0 else False if self.game_map[i - 1][j] == 0  else True 
                     room.door_exists[2] = False if j - 1 < 0 else False if self.game_map[i][j - 1] == 0 else True 
                     room.door_exists[3] = False if j + 1 >= 3 else False if self.game_map[i][j + 1] == 0 else True 
+                    room.door_placeholder = room.door_exists.copy()
                     self.rooms[i][j] = room
+
 
         # these are starting coords for character when it goes to a new room
         # bottom (1), top (0), left (2), right (3)
@@ -71,7 +77,6 @@ class UwrManager:
         # position of player in the labirynth
         self.pos_in_maze = [1, 0]
         self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
-        #self.current_room.add_enemy((200,200), (100,100))
         self.current_room.change_enemy_activity(True)
 
     def set_character_position(self, direction):
@@ -93,11 +98,13 @@ class UwrManager:
             new_pos[0] += 1
 
         if 0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
-            if self.game_map[new_pos[1]][new_pos[0]] == 1:
+            if self.game_map[new_pos[1]][new_pos[0]] == 1 and self.current_room.enemies_alive <= 0:
                 self.current_room.change_enemy_activity(False)
                 self.pos_in_maze = new_pos
                 self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
                 self.current_room.change_enemy_activity(True)
+                if self.current_room.enemies_alive > 0:
+                    self.current_room.door_exists = self.current_room.door_empty_room.copy()
                 return True
             else:
                 return False
@@ -118,10 +125,14 @@ class UwrManager:
 
             # checking health of enemies
             if entity.health <= 0:
-                self.current_room.entities.pop(i)
+                #self.current_room.entities.pop(i)
+                self.current_room.enemies_alive -= 1
 
         if self.character.health <= 0:
             self.character.on_death_event({})
+
+        if self.current_room.enemies_alive <= 0:
+            self.current_room.door_exists = self.current_room.door_placeholder.copy()
 
     def render(self, screen):
         # render entities on a map (enemies)
@@ -156,6 +167,8 @@ class MapScene(BaseScene):
         self.uwu.add_enemy_to_room((1, 0), (500, 200))
         self.uwu.add_enemy_to_room((1, 2), (200, 400))
         self.uwu.current_room.change_enemy_activity(True) # set activity of current room to True
+        if self.uwu.current_room.enemies_alive > 0:
+            self.uwu.current_room.door_exists = self.uwu.current_room.door_empty_room.copy()
         
         background_img = pygame.image.load(ASSETS_DIR + "/emptyroom.png")
         background_img = pygame.transform.scale(background_img, (1300,730))
@@ -198,7 +211,7 @@ class MapScene(BaseScene):
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
         else:
-            self.uwu.character.health = 1
+            self.uwu.character.health = 100
             #TODO create impostors
             self.uwu.character.pos = (550, 300)
         super().on_entry(*args)#

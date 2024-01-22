@@ -87,3 +87,11 @@ class GameplayScene(BaseScene):
         if (self.slider_bar.evalutation_requested):
             self.formula_set.evaluate(self.slider_bar.get_valuation())
             self.slider_bar.evalutation_requested = False
+
+    def process_input(self, events, pressed_keys):
+        super().process_input(events, pressed_keys)
+        KEYS = {pygame.K_q: 'q'} 
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key in KEYS:
+                    self.won[0] = True # CHEATING

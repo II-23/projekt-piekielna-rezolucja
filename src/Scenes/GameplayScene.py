@@ -23,6 +23,7 @@ class GameplayScene(BaseScene):
         self.player = player
         self.won = [False]
         self.time_finished = None
+        self.time_is_up = False
         paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
         paper_sheet = pygame.image.load(ASSETS_DIR + "/background_gameplay.png")
         #paper_sheet = pygame.transform.rotate(paper_sheet, 90)
@@ -93,7 +94,7 @@ class GameplayScene(BaseScene):
         print(self.won[0])
         if self.won[0]:
             self.enemy.health -= 1
-            self.player.points += 1000 + self.time_finished*100
+            self.player.points += 1000 + self.time_finished
         else:
             self.player.health -= 1 
         self.soundtrackmanager.stopMusic()
@@ -104,8 +105,10 @@ class GameplayScene(BaseScene):
             self.clock.stop_clock()
             self.time_finished = self.clock.time_left
 
-        if self.clock.check_time_up():
+        if self.clock.check_time_up() and not self.time_is_up:
             self.won[0] = False
+            self.time_is_up = True
+            self.start_screen_button.on_click_event({})
 
         if (self.slider_bar.evalutation_requested):
             self.formula_set.evaluate(self.slider_bar.get_valuation())

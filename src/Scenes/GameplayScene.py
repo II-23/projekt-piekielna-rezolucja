@@ -15,7 +15,7 @@ from Formulas.FormulaGenerator import DifficultyLevels
 import os
 
 class GameplayScene(BaseScene):
-    def __init__(self, display, gameStateManager, background_color=(255, 255, 255), enemy=0, player=0):
+    def __init__(self, display, gameStateManager, difficulty_level = DifficultyLevels.HARD, background_color=(255, 255, 255), enemy=0, player=0):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''Here you will learn how to add things to your scene. It's simple. Create the object and set its parameters so it fits your needs.
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
@@ -32,7 +32,7 @@ class GameplayScene(BaseScene):
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
         print('generacja')
-        abc = good_generate(DifficultyLevels.MEDIUM)
+        abc = good_generate(difficulty_level)
         #
         formulas=abc.formulas
         #

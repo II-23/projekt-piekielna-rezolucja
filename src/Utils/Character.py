@@ -29,6 +29,7 @@ class Player:
         self.speed = 6
         self.state = "s"
 
+        #STATYSTYKI
         self.health = 3
         self.points = 0
 

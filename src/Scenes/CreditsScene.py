@@ -31,16 +31,30 @@ class CreditsScene(BaseScene):
         self.left_margin = 0.05 * self.width
         self.init_y_offset = 0.6*self.height
         self.animation_speed = 0.001*self.height
+        self.paused = False
+
+    def process_input(self, events, pressed_keys):
+        for event in events:
+            if (event.type == pygame.KEYDOWN): 
+                if event.key == pygame.K_p:
+                    self.paused = not self.paused
+                if event.key == pygame.K_SPACE:
+                    self.animation_speed = 0.001 * 20 * self.height
+            if (event.type == pygame.KEYUP): 
+                if event.key == pygame.K_SPACE:
+                    self.animation_speed = 0.001 * self.height
+        super().process_input(events, pressed_keys)
 
 
     def update(self, mouse=pygame.mouse):
-        self.cnt += 1
-        if (self.cnt % 2 == 0):
-            for element in self.ui_elements:
-                if isinstance(element, FlameText) or isinstance(element, Image):
-                    element.pos_rect[1] -= self.animation_speed
-                    if (element.pos_rect[1] <= 0):
-                        element.pos_rect[1] -= 2*self.animation_speed
+        if (not self.paused):
+            self.cnt += 1
+            if (self.cnt % 2 == 0):
+                for element in self.ui_elements:
+                    if isinstance(element, FlameText) or isinstance(element, Image):
+                        element.pos_rect[1] -= self.animation_speed
+                        if (element.pos_rect[1] <= 0):
+                            element.pos_rect[1] -= 2*self.animation_speed
         super().update(mouse)
 
     def on_entry(self, *args, **kwargs):

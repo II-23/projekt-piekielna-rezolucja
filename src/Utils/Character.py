@@ -176,6 +176,15 @@ class Player:
         collision = False
         dummy_pos = (self.pos[0] + self.velocity[0] * self.speed, self.pos[1])
 
+        for x in self.areas:
+            if self.check_collision(dummy_pos, (self.size, self.size), x.pos, x.size):
+                if self.active:
+                    x.process_input(events,mouse, *args)
+                    self.velocity[0] = 0
+                    self.velocity[1] = 0
+                    self.active = False
+                collision = True
+
         for obstacle in self.obstacles:
             if isinstance(obstacle, tuple):
                 pos2, size2 = obstacle
@@ -214,14 +223,7 @@ class Player:
 
         collision = False
 
-        for x in self.areas:
-            if self.check_collision(dummy_pos, (self.size, self.size), x.pos, x.size):
-                if self.active:
-                    x.process_input(events,mouse, *args)
-                    self.velocity[0] = 0
-                    self.velocity[1] = 0
-                    self.active = False
-                collision = True
+        
 
         if not collision:
             self.active = True

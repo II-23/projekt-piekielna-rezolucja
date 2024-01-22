@@ -44,7 +44,7 @@ class UwrManager:
         # setting up a character and things they can interact with
         self.character = Player([550, 300]  , 150, "player/player.png")
         mapa = [[0, 1, 0],
-                [0, 1, 0],
+                [0, 1, 1],
                 [0, 1, 1]]
         self.game_map = copy.deepcopy(mapa) # map with numbers
         self.map_w = len(self.game_map[0])
@@ -90,10 +90,7 @@ class UwrManager:
             new_pos[0] += 1
 
         if 0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
-            print('huda')
-            print(self.game_map)
             if self.game_map[new_pos[1]][new_pos[0]] == 1:
-                print('fghj')
                 self.pos_in_maze = new_pos
                 self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
                 self.current_room.change_enemy_activity(True)
@@ -149,9 +146,9 @@ class MapScene(BaseScene):
         # bottom area
         self.doors.append(Area((600, 770),(100,100),None))
         # left area
-        self.doors.append(Area((-50, 360),(5,100),None))
+        self.doors.append(Area((-50, 360),(10, 100),None))
         # rigt area
-        self.doors.append(Area((1320, 360),(5,100),None))
+        self.doors.append(Area((1320, 360),(10,100),None))
 
         def enter_room(args):
             if self.uwu.move_on_map(args['d']):
@@ -167,6 +164,7 @@ class MapScene(BaseScene):
             door.on_enter_event = enter_room
             i += 1
             self.uwu.character.areas.append(door) 
+            door.size = (door.size[0]-5, door.size[1]-5)
             self.uwu.character.obstacles.append(door)
         self.add_ui_element(self.uwu.character)
         self.add_ui_element(self.uwu)

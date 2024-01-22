@@ -14,6 +14,7 @@ class MapGenerator():
     end = (0, 0)
     mapDict = set()
     mapArr = None
+    mapList = []
 
     @classmethod
     def getneigh(cls, pos):
@@ -29,6 +30,7 @@ class MapGenerator():
         while True:
             cls.mapDict = set()
             cls.mapDict.add((0, 0))
+            cls.start = (0, 0)
 
             attempts = 2 + randint(clamp((complexity-2)//3, 0, 2), clamp((complexity+2)//3, 0, 2))
             for _ in range(attempts):
@@ -44,10 +46,13 @@ class MapGenerator():
             possibleEnds = []
 
             for pos in cls.mapDict:
-                if cls.getneigh(pos) == 1:
+                if cls.getneigh(pos) == 1 and pos != cls.start:
                     possibleEnds.append(pos)
 
             if len(possibleEnds) == 0:
+                continue
+
+            if len(cls.mapDict) < 4:
                 continue
 
             cls.end = choice(possibleEnds)
@@ -65,8 +70,11 @@ class MapGenerator():
         cls.end = add(cls.end, (-miny, -minx))
         cls.mapArr = [[0 for _ in range(maxx-minx+1)] for _ in range(maxy-miny+1)]
 
+        cls.mapList = []
+
         for pos in cls.mapDict:
             cls.mapArr[pos[0]-miny][pos[1]-minx] = 1
+            cls.mapList.append(pos)
 
         return cls.mapArr
     

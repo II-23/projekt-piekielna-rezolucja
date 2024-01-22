@@ -95,7 +95,7 @@ class UwrManager:
             self.gameStateManager.set_state('map', {})
             
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].has_exit = True
-        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit = Trapdoor((550, 300), (150, 150),
+        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit = Trapdoor((550, 300), (100, 100),
                                                                               new_room, 'trapdoor_open.png', 'trapdoor_closed.png')
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].entities.append(self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit)
         # these are starting coords for character when it goes to a new room

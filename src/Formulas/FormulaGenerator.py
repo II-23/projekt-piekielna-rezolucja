@@ -63,7 +63,6 @@ class Formula:
 class Generator:
     def __init__(self, difficulty):
         satisfiable = (randint(0, 100) <= CHANCE_FOR_SATISFIABLE)
-        print(satisfiable)
         if difficulty == 1:
             max_variable_number = 4
             formulas_number = 4
@@ -193,8 +192,6 @@ class Generator:
                 modified_formula_new = modified_formula.copy()
                 if (modified_formula.length >= 0):
                     initialized = []
-                    for formula in formulas:
-                        print(formula.variables)
                     cnts = [1 for i in range(max_variable_number)]
                     for i in range(max_variable_number):
                         if modified_formula.variables[i] != 0:
@@ -227,12 +224,11 @@ class Generator:
 
 def good_generate(difficulty):
     abc = Generator(difficulty)   
-
-    print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
-    for formula in abc.formulas:
-        print(f"Formula: {formula.variables}, Length: {formula.length}")
     return abc
 
 if __name__ == '__main__':
-    diff = 2
-    good_generate(diff)
+    diff = 3
+    abc = good_generate(diff)
+    print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
+    for formula in abc.formulas:
+        print(f"Formula: {formula.variables}, Length: {formula.length}")

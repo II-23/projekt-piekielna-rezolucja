@@ -12,6 +12,7 @@ from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from soundtrackmanager import SoundtrackManager
 import os
+import time
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255), enemy=0, player=0):
@@ -107,8 +108,11 @@ class GameplayScene(BaseScene):
             self.time_finished = self.clock.time_left
 
         if self.clock.check_time_up() and not self.time_is_up:
+            """ DODAĆ ANIMACJĘ PŁACZU """
+            self.anim.animate("c1", 5)
             self.won[0] = False
             self.time_is_up = True
+
             self.start_screen_button.on_click_event({})
 
         if (self.slider_bar.evalutation_requested):

@@ -58,9 +58,7 @@ class MainMenuScene(BaseScene):
         self.area_credits.on_enter_event = go_to_credits
         self.character.areas.append(self.area_credits)
 
-        self.add_ui_element(self.character)
-
-        self.add_ui_element(Health_and_points(self.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))
+        self.add_ui_element(self.character) 
   
     def on_entry(self, *args, **kwargs):
         self.character.reset()

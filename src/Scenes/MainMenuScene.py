@@ -8,7 +8,7 @@ from Config.definitnios import ASSETS_DIR
 from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
 from Config.graphics import RESOLUTION
 from soundtrackmanager import SoundtrackManager
-
+from Utils.Health_and_points import Health_and_points
 import pygame
 import os
 
@@ -60,6 +60,7 @@ class MainMenuScene(BaseScene):
         self.character.areas.append(self.area_credits)
 
         self.add_ui_element(self.character)
+        self.add_ui_element(Health_and_points(self.character,(230,50),(0,0),(74, 10, 6)))
   
     def on_entry(self, *args, **kwargs):
         self.character.reset()

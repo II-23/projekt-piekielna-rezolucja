@@ -2,7 +2,7 @@ from random import *
 from dataclasses import dataclass
 from enum import Enum
 
-CHANCE_FOR_SATISFIABLE = 30 # as a percentage
+CHANCE_FOR_SATISFIABLE = 100 # as a percentage
 
 """
 USAGE:
@@ -72,6 +72,7 @@ class GeneratorParams:
     max_variable_number : int
     formulas_number : int
     max_len : int
+    lengths_probabilities : list
 
 chance_for_satisfiable = {
     DifficultyLevels.EASY : 65,
@@ -80,15 +81,15 @@ chance_for_satisfiable = {
 }
 
 satisfiable_levels = {
-    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4),
-    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3),
-    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3)
+    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4, lengths_probabilities = [0, 10, 20, 30, 100]),
+    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3, lengths_probabilities = [0, 10, 100, 100]),
+    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3, lengths_probabilities=[0, 10, 20, 100])
 }
 
 not_satisfiable_levels = {
-    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=3),
-    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=5),
-    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=8)
+    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=3, lengths_probabilities=[]),
+    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=5, lengths_probabilities=[]),
+    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=8, lengths_probabilities=[])
 }
 
 class Generator:
@@ -103,11 +104,14 @@ class Generator:
             max_variable_number = satisfiable_levels[difficulty].max_variable_number
             formulas_number = satisfiable_levels[difficulty].formulas_number
             max_len = satisfiable_levels[difficulty].max_len
+            self.lengths_probabilities = satisfiable_levels[difficulty].lengths_probabilities
         else:
             max_variable_number = not_satisfiable_levels[difficulty].max_variable_number
             formulas_number = not_satisfiable_levels[difficulty].formulas_number
             max_len = not_satisfiable_levels[difficulty].max_len
 
+    
+        self.satisfiable = satisfiable
         self.variables_number = max_variable_number
         self.formulas = [] # stores the list of formulas
         self.size = formulas_number # how many formulas are there in the set
@@ -183,7 +187,16 @@ class Generator:
                 var_used[sat_var][1] += self.valuation[sat_var]
                 formula.variables[sat_var] = self.valuation[sat_var]
                 formula.length += 1
-                length = randint(1, max_len) # drawing a length of the current formula
+                length_roll = randint(1, 100) # drawing a length of the current formula
+                length = -1
+                
+                for i in range(1, len(self.lengths_probabilities)):
+                    if length_roll <= self.lengths_probabilities[i]:
+                        length = i
+                        break
+                if length == -1:
+                    length = max_len
+
                 while formula.length < length:
                     var = 0;
                     final_var = True;
@@ -232,7 +245,7 @@ class Generator:
                                 initialized.append(c)
 
                     modified_formulas = [modified_formula_new, modified_formula]
-                    while backlog > 0 or len(initialized) != 0:
+                    while backlog > 0 and len(initialized) != 0:
                         backlog -= 1
                         id = choice(initialized)
                         for i in range(initialized.count(id)):
@@ -254,7 +267,7 @@ def good_generate(difficulty):
     return abc
 
 if __name__ == '__main__':
-    diff = 3
+    diff = DifficultyLevels.MEDIUM
     abc = good_generate(diff)
     print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
     for formula in abc.formulas:

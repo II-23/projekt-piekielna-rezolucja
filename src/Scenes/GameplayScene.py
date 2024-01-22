@@ -21,6 +21,7 @@ class GameplayScene(BaseScene):
         '''
         self.enemy = enemy
         self.player = player
+        self.won = [False]
         paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
         paper_sheet = pygame.image.load(ASSETS_DIR + "/background_gameplay.png")
         #paper_sheet = pygame.transform.rotate(paper_sheet, 90)
@@ -28,16 +29,16 @@ class GameplayScene(BaseScene):
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
         print('generacja')
-        abc = good_generate()
+        abc = good_generate(2)
         #
-        formula_generator = Generator(5, 6)   
-        formula_generator.fill(5, 6)
         formulas=abc.formulas
         #
+        max_variables_number = abc.get_variables_number()
 
 
         #self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
-        self.formula_set=Set_of_formulas((500,500), (200,125), formulas)
+
+        self.formula_set=Set_of_formulas((500,500), (200,125), formulas, self.won, max_variables_number)
 
 
         self.add_ui_element(self.formula_set)
@@ -92,8 +93,12 @@ class GameplayScene(BaseScene):
     
     def on_exit(self, *args, **kwargs):
         super().on_exit(*args)
-        self.enemy.health -= 1
-        self.player.health -= 1
+        print(self.won[0])
+        if self.won[0]:
+            self.enemy.health -= 1
+            self.player.points += 1000
+        else:
+            self.player.health -= 1 
         self.soundtrackmanager.stopMusic()
 
     def update(self, mouse=pygame.mouse):
@@ -101,3 +106,11 @@ class GameplayScene(BaseScene):
         if (self.slider_bar.evalutation_requested):
             self.formula_set.evaluate(self.slider_bar.get_valuation())
             self.slider_bar.evalutation_requested = False
+
+    def process_input(self, events, pressed_keys):
+        super().process_input(events, pressed_keys)
+        KEYS = {pygame.K_q: 'q'} 
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key in KEYS:
+                    self.won[0] = True # CHEATING

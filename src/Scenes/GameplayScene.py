@@ -47,7 +47,7 @@ class GameplayScene(BaseScene):
         self.add_ui_element(self.formula_set.button)
         self.scorescreen=Game_over_window((500,500),(200,200),1, self.formula_set)
         self.add_ui_element(self.scorescreen)
-        self.clock=Clock((100,100), (670,400), 60)
+        self.clock=Clock((200,200), (700,440), 60)
         self.add_ui_element(self.clock)
         #
 

@@ -11,6 +11,8 @@ from Config.graphics import RESOLUTION
 from soundtrackmanager import SoundtrackManager
 from Utils.Health_and_points import Health_and_points
 import pygame
+from Utils.clock import Clock
+
 import os
 
 class MainMenuScene(BaseScene):
@@ -64,7 +66,6 @@ class MainMenuScene(BaseScene):
         self.add_ui_element(self.character)
 
         self.add_ui_element(Health_and_points(self.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))
-
   
     def on_entry(self, *args, **kwargs):
         self.character.reset()

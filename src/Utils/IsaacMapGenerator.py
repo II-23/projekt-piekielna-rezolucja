@@ -74,7 +74,7 @@ class MapGenerator():
 
         for pos in cls.mapDict:
             cls.mapArr[pos[0]-miny][pos[1]-minx] = 1
-            cls.mapList.append(pos)
+            cls.mapList.append((pos[0]-miny, pos[1]-minx))
 
         return cls.mapArr
     
@@ -87,6 +87,7 @@ def demo():
                 print(v, end='')
             print()
         print(f"{MapGenerator.start} {MapGenerator.end}")
+        print(MapGenerator.mapList)
         print()
 
 if __name__ == "__main__":

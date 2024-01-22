@@ -6,11 +6,10 @@ from Formulas.Formula import Formula_State
 from Utils.ResolutionButton import ResolutionButton
 from Config.graphics import RESOLUTION
 from soundtrackmanager import SoundtrackManager
-from Formulas.FormulaGenerator import max_variable_number
 from Config.definitnios import VARIABLES
 
 class Set_of_formulas(pygame.sprite.Sprite):
-    def __init__(self, size, pos, list_of_formulas):
+    def __init__(self, size, pos, list_of_formulas, game_result, max_variable_number):
         #once we start fixing layout of stuff on the screen, line below needs to use variables passed from init.
         #for now it acts as placeholder
         self.selected=[Formula((25,25), (500,100), [], 500, False),Formula((25,25), (800,100), [], 500, True)]
@@ -19,6 +18,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self.surface=pygame.transform.scale(loaded_bar, size).convert_alpha()
         self.set_rect = pygame.Rect(pos[0], pos[1], 500, 500)
+        self.max_variable_number = max_variable_number
 
         self.selected_index=[1,1]
         self.width=size[0]
@@ -33,6 +33,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
            self.formulas.append(Formula((25,25), (self.x, self.y+i*25), list_of_formulas[i].variables, self.width, True))
         for formula in self.formulas:
             self.variables = self.variables.union(formula.get_variable_set())
+        
+        self.game_state = game_result
     
     def get_variable_set(self):
         return self.variables
@@ -85,6 +87,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
                         x.state=Formula_State.HOVER
                 else:
                     print("znaleziono sprzeczność")
+                    self.game_state[0] = True
                     SoundtrackManager.stopMusic()
                     SoundtrackManager.playSound("MarioLevelComplete")
                     self.state=1
@@ -142,7 +145,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.selected[num].content=[]
     def evaluate(self, valuation_dict):
         print(f'[Log][Formula set]: requested evaluation at {valuation_dict}')
-        variable_names = sorted([VARIABLES[i] for i in range(max_variable_number)])
+        variable_names = sorted([VARIABLES[i] for i in range(self.max_variable_number)])
         valuation_katafiasz_normal_form = [0 if x not in valuation_dict else 1 if valuation_dict[x] else -1 for x in variable_names]
         global_satisfied = True
         for formula in self.formulas:
@@ -155,6 +158,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
             global_satisfied = global_satisfied and satisfied
         if (global_satisfied):
             print(f"[Log][Formula set]: valuation is correct")
+            self.game_state[0] = True
+            print(self.game_state)
             SoundtrackManager.stopMusic()
             SoundtrackManager.playSound("MarioLevelComplete")
             self.state = 1

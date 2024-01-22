@@ -147,6 +147,10 @@ class UwrManager:
     def update(self, mouse=pygame.mouse):
         # colissions
         #for entity in self.current_room.entities:
+        for entity in self.current_room.entities:
+            if isinstance(entity, Enemy):
+                entity.update(mouse)
+
         for i in range(len(self.current_room.entities)):
             entity = self.current_room.entities[i]
             if isinstance(entity, Enemy):

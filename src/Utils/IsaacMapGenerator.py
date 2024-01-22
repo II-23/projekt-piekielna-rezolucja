@@ -26,18 +26,18 @@ class MapGenerator():
 
     @classmethod
     def generate(cls, complexity):
-        complexity = clamp(complexity, 1, 10)
+        complexity = clamp(complexity+4, 5, 14)
         while True:
             cls.mapDict = set()
             cls.mapDict.add((0, 0))
             cls.start = (0, 0)
 
-            attempts = 2 + randint(clamp((complexity-2)//3, 0, 2), clamp((complexity+2)//3, 0, 2))
+            attempts = 2 + randint(clamp((complexity-2)//3, 0, 4), clamp((complexity+2)//3, 0, 4))
             for _ in range(attempts):
                 pos = (0, 0)
                 segments = 1 + complexity//3 + floor((2 + complexity//4) * random())
                 for __ in range(segments):
-                    length = randint(1, 1 + min(0, complexity//3))
+                    length = randint(1, 1 + min(2, complexity//3))
                     dir = randint(0, 3)
                     for ___ in range(length):
                         pos = add(pos, OFFSETS[dir])
@@ -79,15 +79,13 @@ class MapGenerator():
         return cls.mapArr
     
 def demo():
-    for i in range(1, 30):
+    for i in range(9, 39):
         print(1 + i//3)
         MapGenerator.generate(1 + i//3)
         for arr in MapGenerator.mapArr:
             for v in arr:
                 print(v, end='')
             print()
-        print(f"{MapGenerator.start} {MapGenerator.end}")
-        print(MapGenerator.mapList)
         print()
 
 if __name__ == "__main__":

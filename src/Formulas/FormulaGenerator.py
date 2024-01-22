@@ -1,4 +1,6 @@
 from random import *
+from dataclasses import dataclass
+from enum import Enum
 
 CHANCE_FOR_SATISFIABLE = 30 # as a percentage
 
@@ -61,6 +63,9 @@ class Formula:
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3cd6825 (Added some difficulty levels)
 class DifficultyLevels(Enum):
     EASY = 0,
     MEDIUM = 1,
@@ -71,7 +76,10 @@ class GeneratorParams:
     max_variable_number : int
     formulas_number : int
     max_len : int
+<<<<<<< HEAD
     lengths_probabilities : list
+=======
+>>>>>>> 3cd6825 (Added some difficulty levels)
 
 chance_for_satisfiable = {
     DifficultyLevels.EASY : 65,
@@ -80,6 +88,7 @@ chance_for_satisfiable = {
 }
 
 satisfiable_levels = {
+<<<<<<< HEAD
     DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=6, max_len=4, lengths_probabilities = [0, 20, 40, 40]),
     DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=8, max_len=4, lengths_probabilities = [0, 20, 50, 30]),
     DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=10, max_len=3, lengths_probabilities=[0, 10, 90])
@@ -93,30 +102,39 @@ not_satisfiable_levels = {
 
 =======
 >>>>>>> main
+=======
+    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4),
+    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3),
+    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3)
+}
+
+not_satisfiable_levels = {
+    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=3),
+    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=5),
+    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=8)
+}
+
+>>>>>>> 3cd6825 (Added some difficulty levels)
 class Generator:
     def __init__(self, difficulty):
-        satisfiable = (randint(0, 100) <= CHANCE_FOR_SATISFIABLE)
-        if difficulty == 1:
-            max_variable_number = 4
-            formulas_number = 4
-            max_len = 3
-        elif difficulty == 2:
-            max_variable_number = 5
-            formulas_number = 6
-            max_len = 4
-        elif difficulty == 3:
-            max_variable_number = 6
-            formulas_number = 7
-            max_len = 5
+        self.chance_for_satisfiable = chance_for_satisfiable[difficulty]
+        satisfiable_roll = randint(0, 100)
+        if (satisfiable_roll < self.chance_for_satisfiable):
+            satisfiable = True
         else:
-            max_variable_number = 7
-            formulas_number = 8
-            max_len = 6
-        
+            satisfiable = False
+        if (satisfiable):
+            max_variable_number = satisfiable_levels[difficulty].max_variable_number
+            formulas_number = satisfiable_levels[difficulty].formulas_number
+            max_len = satisfiable_levels[difficulty].max_len
+        else:
+            max_variable_number = not_satisfiable_levels[difficulty].max_variable_number
+            formulas_number = not_satisfiable_levels[difficulty].formulas_number
+            max_len = not_satisfiable_levels[difficulty].max_len
+
         self.variables_number = max_variable_number
         self.formulas = [] # stores the list of formulas
         self.size = formulas_number # how many formulas are there in the set
-        self.satisfiable = satisfiable # True = the set is satisfiable, False = the set is NOT satisfiable
         self.valuation = [] # every element in the list is linked to a variable; 1 = the variable has to have value true; -1 = the variable has to have value false; 0 = the variable can have any value; if self.satisfiable is False then self.valuation is all 0's
         for i in range(self.size):
             self.formulas.append(Formula(max_variable_number))

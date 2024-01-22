@@ -13,6 +13,7 @@ from Utils.clock import Clock
 from soundtrackmanager import SoundtrackManager
 import os
 from Formulas.FormulaGenerator import DifficultyLevels
+from math import floor
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, difficulty_level = DifficultyLevels.HARD, background_color=(255, 255, 255), enemy=0, player=0):
@@ -104,7 +105,7 @@ class GameplayScene(BaseScene):
         print(self.won[0])
         if self.won[0]:
             self.enemy.health -= 1
-            self.player.points += 1000 + self.time_finished
+            self.player.points += 1000 + floor(1000 * self.time_finished)
         else:
             self.player.health -= 1 
         self.soundtrackmanager.stopMusic()
@@ -113,7 +114,7 @@ class GameplayScene(BaseScene):
         super().update(mouse)
         if self.won[0]:
             self.clock.stop_clock()
-            self.time_finished = self.clock.time_left
+            self.time_finished = self.clock.time_left / self.clock.time_total
 
         if self.clock.check_time_up() and not self.time_is_up:
             """ DODAĆ ANIMACJĘ PŁACZU """

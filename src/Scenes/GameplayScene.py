@@ -11,11 +11,13 @@ from Utils.clock import Clock
 from soundtrackmanager import SoundtrackManager
 
 class GameplayScene(BaseScene):
-    def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
+    def __init__(self, display, gameStateManager, background_color=(255, 255, 255), enemy=0, player=0):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''Here you will learn how to add things to your scene. It's simple. Create the object and set its parameters so it fits your needs.
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
         '''
+        self.enemy = enemy
+        self.player = player
         paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
         paper_sheet = pygame.transform.rotate(paper_sheet, 90)
         paper_height = paper_sheet.get_height()
@@ -72,6 +74,8 @@ class GameplayScene(BaseScene):
     
     def on_exit(self, *args, **kwargs):
         super().on_exit(*args)
+        self.enemy.health -= 1
+        self.player.health -= 1
         self.soundtrackmanager.stopMusic()
 
     def update(self, mouse=pygame.mouse):

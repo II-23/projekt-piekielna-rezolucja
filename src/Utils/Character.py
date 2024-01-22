@@ -29,6 +29,9 @@ class Player:
         self.speed = 6
         self.state = "s"
 
+        self.health = 3
+        self.points = 0
+
         self.animation = False
         self.f = 1
 

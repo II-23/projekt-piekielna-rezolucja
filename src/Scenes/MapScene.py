@@ -69,7 +69,7 @@ class UwrManager:
         # bottom (1), top (0), left (2), right (3)
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
         # position of player in the labirynth
-        self.pos_in_maze = [1, 1]
+        self.pos_in_maze = [1, 0]
         self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
         #self.current_room.add_enemy((200,200), (100,100))
         self.current_room.change_enemy_activity(True)
@@ -109,10 +109,19 @@ class UwrManager:
 
     def update(self, mouse=pygame.mouse):
         # colissions
-        for entity in self.current_room.entities:
+        #for entity in self.current_room.entities:
+        for i in range(len(self.current_room.entities)):
+            entity = self.current_room.entities[i]
             if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
                                               entity.position, entity.size) and entity.active:
-                entity.on_enter_event({})
+                entity.on_enter_event({'e': entity, 'p': self.character}) # event of enemy
+
+            # checking health of enemies
+            if entity.health <= 0:
+                self.current_room.entities.pop(i)
+
+        if self.character.health <= 0:
+            print('DEAD!!!')
 
     def render(self, screen):
         # render entities on a map (enemies)
@@ -128,11 +137,11 @@ class MapScene(BaseScene):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''A scene for map of the game, player will walk around and fight monsters'''
         def go_to_scene(args): # function that goes to level scene
-            gameStateManager.set_state('level', {})
+            gameStateManager.set_state('level', args)
             self.uwu.character.pos_before_collision = (self.uwu.character.pos[0]-self.uwu.character.velocity[0]*self.uwu.character.speed,
                                                        self.uwu.character.pos[1]-self.uwu.character.velocity[1]*self.uwu.character.speed)
             self.uwu.character.pos = self.uwu.character.pos_before_collision
-            level = GameplayScene(self.display, self.gameStateManager, background_color=GRAY_COLOR)
+            level = GameplayScene(self.display, self.gameStateManager, background_color=GRAY_COLOR, enemy=args['e'], player=args['p'])
             gameStateManager.states['level'] = level
             self.pause = True
         

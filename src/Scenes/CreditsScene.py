@@ -138,7 +138,7 @@ class CreditsScene(BaseScene):
 
         self.respects = Credits_Text(respects_dir, 0 * self.width)
         self.respects_section.append(self.respects)
-        self.studentdebil = Credits_Image(os.path.join(ASSETS_DIR, "studentdebil.jpg"), 0, (0.6 * self.width, 0.6*self.height))
+        self.studentdebil = Credits_Image(os.path.join(ASSETS_DIR, "studentdebil.jpg"), 0.15 * self.width, (0.6 * self.width, 0.6*self.height))
         self.respects_section.append(self.studentdebil)
 
         self.sections.append(self.respects_section)

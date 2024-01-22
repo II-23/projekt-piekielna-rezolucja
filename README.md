@@ -41,7 +41,15 @@ pip install -r requirements.txt
 python3 src/main_window.py
 ```
 
+# Requirements
+To run the game smoothly make sure you have the following installed:
 
+* **Python, version: 3.12.+**
+
+* pygame, version: 2.5.2
+* numpy, version: 1.26.1
+* imagesize, version: 1.4.1
+* Pillow, version: 10.1.0
 
 
 # Authors

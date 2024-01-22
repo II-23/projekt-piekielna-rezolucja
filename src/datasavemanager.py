@@ -23,12 +23,18 @@ class DataSaveManager():
 
     @classmethod
     def init(cls):
-        if os.path.exists('playerdata.pkl') and os.path.getsize('playerdata.pkl') > 0:
-            cls.playerData = cls.load()         
+        try:
+            if not os.path.exists('playerdata.pkl'):
+                cls.dump()
 
-        for datasavename, datasavedefaultvalue in DATASAVENAMES.items():
-            if not datasavename in cls.playerData:
-                cls.playerData[datasavename] = datasavedefaultvalue
+            if os.path.exists('playerdata.pkl') and os.path.getsize('playerdata.pkl') > 0:
+                cls.playerData = cls.load()         
+
+            for datasavename, datasavedefaultvalue in DATASAVENAMES.items():
+                if not datasavename in cls.playerData:
+                    cls.playerData[datasavename] = datasavedefaultvalue
+        except Exception as e:
+            print(e)
 
     @classmethod
     def get(cls, data_name):

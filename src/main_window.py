@@ -16,6 +16,7 @@ from Formulas.Formula import *
 from Formulas.FormulaSet import *
 from Config.definitnios import ASSETS_DIR
 from Config.graphics import RESOLUTION
+from datasavemanager import DataSaveManager
 
 GAME_TITLE = "Piekielna rezolucja 3"
 GAME_LOGO = pygame.image.load(ASSETS_DIR + "/placeholder_logo.png")
@@ -24,6 +25,7 @@ SLIDER_SIZE = (220, 70)
 
 class Main_Window:
     def __init__(self, resolution):
+        DataSaveManager.init()
         self.size = self.width, self.height = resolution
         pygame.init()
         self._display_surface = pygame.display.set_mode(self.size)

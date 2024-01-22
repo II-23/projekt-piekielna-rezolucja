@@ -79,15 +79,6 @@ class GameplayScene(BaseScene):
         
     def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''
-        # #
-        # formula_generator = Generator(5, 6)   
-        # formula_generator.fill(5, 6)
-        # formulas=abc.formulas
-        # #
-        # self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
-        # self.scorescreen=Game_over_window((500,500),(200,200),1, self.formula_set)
-        # self.clock=Clock((100,100), (300,300), 60)
-        
         super().on_entry(*args)
         self.soundtrackmanager.playMusic("GameplayMusic")
     

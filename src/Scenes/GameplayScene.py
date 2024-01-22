@@ -11,7 +11,6 @@ import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from soundtrackmanager import SoundtrackManager
-from Formulas.FormulaGenerator import DifficultyLevels
 import os
 
 class GameplayScene(BaseScene):
@@ -31,8 +30,13 @@ class GameplayScene(BaseScene):
         paper_height = paper_sheet.get_height()
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
+<<<<<<< HEAD
         print('generacja')
         abc = good_generate(difficulty_level)
+=======
+
+        abc = good_generate(2)
+>>>>>>> main
         #
         formulas=abc.formulas
         #

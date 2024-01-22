@@ -38,13 +38,10 @@ pip install -r requirements.txt
 4. Run the game:
 
 ```bash
-python3 main_window.py
+python3 src/main_window.py
 ```
 
 
-# Gameplay
-
-// to do
 
 
 # Authors

@@ -1,5 +1,6 @@
 from Scenes.BaseScene import BaseScene, setup_button
 from Utils.Character import Player
+from Utils.CharacterAnimation import CharacterAnimation
 from Utils.Area import Area
 from Utils.volume_slider import Volume_slider
 from Utils.Slider import Slider_Bar
@@ -47,6 +48,7 @@ class MainMenuScene(BaseScene):
         self.area_intro.on_enter_event = go_to_scene
         self.character.areas.append(self.area_intro)
 
+
         def go_to_settings(*args):
             gameStateManager.set_state('settings', {})
         self.area_settings = Area((0, 360),(5,100),None)
@@ -60,6 +62,7 @@ class MainMenuScene(BaseScene):
         self.character.areas.append(self.area_credits)
 
         self.add_ui_element(self.character)
+
   
     def on_entry(self, *args, **kwargs):
         self.character.reset()

@@ -6,6 +6,7 @@ from Formulas.FormulaSet import Set_of_formulas
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 from Utils.ResolutionButton import ResolutionButton
+from Utils.CharacterAnimation import CharacterAnimation
 import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
@@ -70,6 +71,10 @@ class GameplayScene(BaseScene):
         self.start_screen_button = ImageButton((0,0),(100,700),img, img_hover, test2)
         self.add_ui_element(self.start_screen_button)
         self.soundtrackmanager = SoundtrackManager
+
+        # character animation :3
+        self.anim = CharacterAnimation((580, 25), 80)
+        self.add_ui_element(self.anim)
         
     def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''

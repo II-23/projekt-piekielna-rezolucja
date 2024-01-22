@@ -1,14 +1,17 @@
 from Scenes.BaseScene import BaseScene, setup_button
 from Utils.Slider import Slider_Bar
+from Utils.ImageButton import ImageButton
 from Formulas.Formula import Symbol, Formula
 from Formulas.FormulaSet import Set_of_formulas
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 from Utils.ResolutionButton import ResolutionButton
+from Utils.CharacterAnimation import CharacterAnimation
 import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from soundtrackmanager import SoundtrackManager
+import os
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255), enemy=0, player=0):
@@ -20,7 +23,8 @@ class GameplayScene(BaseScene):
         self.player = player
         self.won = [False]
         paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
-        paper_sheet = pygame.transform.rotate(paper_sheet, 90)
+        paper_sheet = pygame.image.load(ASSETS_DIR + "/background_gameplay.png")
+        #paper_sheet = pygame.transform.rotate(paper_sheet, 90)
         paper_height = paper_sheet.get_height()
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
@@ -31,7 +35,11 @@ class GameplayScene(BaseScene):
         #
         max_variables_number = abc.get_variables_number()
 
-        self.formula_set=Set_of_formulas((500,500), (500,150), formulas, self.won, max_variables_number)
+
+        #self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
+
+        self.formula_set=Set_of_formulas((500,500), (200,125), formulas, self.won, max_variables_number)
+
 
         self.add_ui_element(self.formula_set)
         self.add_ui_element(self.formula_set.selected[0])
@@ -39,7 +47,7 @@ class GameplayScene(BaseScene):
         self.add_ui_element(self.formula_set.button)
         self.scorescreen=Game_over_window((500,500),(200,200),1, self.formula_set)
         self.add_ui_element(self.scorescreen)
-        self.clock=Clock((100,100), (300,300), 60)
+        self.clock=Clock((100,100), (670,400), 60)
         self.add_ui_element(self.clock)
         #
 
@@ -53,9 +61,21 @@ class GameplayScene(BaseScene):
         # def test2(args):
         #     gameStateManager.set_state('map', args)
         # button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200), **kwargs)
-        self.start_screen_button = setup_button(self.gameStateManager, 'map', (100, 300))
+        
+        def test2(args):
+            gameStateManager.set_state("map", args)
+
+        self.start_screen_button = setup_button(self.gameStateManager, "map", (100, 300))
+        img = os.path.join(ASSETS_DIR, "back_to_menu.png")
+        img_hover = os.path.join(ASSETS_DIR, "back_to_menu_hover.png")
+
+        self.start_screen_button = ImageButton((0,0),(100,700),img, img_hover, test2)
         self.add_ui_element(self.start_screen_button)
         self.soundtrackmanager = SoundtrackManager
+
+        # character animation :3
+        self.anim = CharacterAnimation((580, 25), 80)
+        self.add_ui_element(self.anim)
         
     def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''

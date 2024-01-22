@@ -10,7 +10,8 @@ class Clock(pygame.sprite.Sprite):
         pygame.time.set_timer(self.timer_event , self.timer_interval)
         self.time_total=time*1000
         self.time_left=time*1000
-        self.surface=pygame.Surface(size)
+        self.pos = pos
+        self.surface=pygame.Surface((2000,2000))
         self.rect=pygame.Rect(size[0],size[1],pos[0],pos[1])
         self.size=size[0]
         
@@ -21,16 +22,16 @@ class Clock(pygame.sprite.Sprite):
             for y in range(self.size):
                 if math.sqrt((x-self.size/2)**2+(y-self.size/2)**2)<=self.size/2:
                     if math.sqrt((x-self.size/2)**2+(y-self.size/2)**2)>=self.size/2*90/100:
-                        self.get_surface().set_at((x, y), (1,1,1))
+                        self.get_surface().set_at((x+self.pos[0], y+self.pos[1]), (1,1,1))
                     else:
                         percentage=max(0, self.time_left/self.time_total*100)
                         color=(255*(1-percentage/100),255*percentage/100,0)
                         angle = math.atan2(y-self.size/2,x-self.size/2) + PI/2
                         if angle < 0 : angle += 2*PI
                         if 2*PI-angle <= 2*PI*percentage/100:
-                            self.get_surface().set_at((x, y), (color))
+                            self.get_surface().set_at((x+self.pos[0], y+self.pos[1]), (color))
                         else:
-                            self.get_surface().set_at((x, y), (1,1,1))
+                            self.get_surface().set_at((x+self.pos[0], y+self.pos[1]), (1,1,1))
                         # if percentage>75:
                         #     #if not -1*PI/2*(percentage-75)/100>math.atan2(y-self.size/2,x-self.size/2)>-1*PI/2:
                         #     if not -1*PI/2<math.atan2(y-self.size/2,x-self.size/2)<-1*PI/2*(percentage-75)/25:

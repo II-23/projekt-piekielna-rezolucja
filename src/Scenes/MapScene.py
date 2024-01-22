@@ -93,14 +93,15 @@ class UwrManager:
         if self.difficulty >= 3: 
             self.add_enemy_to_room(MapGenerator.end, (910,310))
             self.all_enemies_on_level += 1
-
-        def new_room():
-            self.difficulty += 1
-            self.gameStateManager.set_state('map', {})
             
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].has_exit = True
-        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit = Trapdoor((590, 310), (100, 100),
-                                                                              new_room, 'trapdoor_open.png', 'trapdoor_closed.png')
+        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit = Trapdoor((590, 310), (100, 100),    
+                                                                              None, 'trapdoor_open.png', 'trapdoor_closed.png')
+        def new_room():
+            self.difficulty += 1
+            self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit.entered = True
+            self.gameStateManager.set_state('map', {})
+        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit.on_enter_event = new_room
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].entities.append(self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit)
         # these are starting coords for character when it goes to a new room
         # bottom (1), top (0), left (2), right (3)
@@ -168,6 +169,8 @@ class UwrManager:
                                                 entity.position, entity.size) and entity.open and self.current_room.enemies_alive <= 0:
                     #coliision with trapdoor
                     entity.on_enter_event()
+                    print('sod')
+                    entity.open = False
         if self.character.health <= 0 and not self.character.ded:
             self.character.on_death_event(self.character.points)
             self.character.ded = True
@@ -176,7 +179,9 @@ class UwrManager:
         if self.current_room.enemies_alive <= 0:
             self.current_room.door_exists = self.current_room.door_placeholder.copy()
             if self.current_room.has_exit:
-                self.current_room.exit.open = True
+                if not self.current_room.exit.entered:
+                    self.current_room.exit.open = True
+                    self.current_room.exit.entered = True
 
     def render(self, screen):
         # render entities on a map (enemies)

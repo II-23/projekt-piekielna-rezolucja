@@ -2,17 +2,20 @@ from Utils.Character import Player
 import pygame
 
 class Health_and_points:
-    def __init__(self,player,size:tuple,pos:tuple,col_bar,col_text,size_text):
+    def __init__(self,player,size:tuple,pos:tuple,col_bar,col_text,size_text,difficulty=None):
         self.player=player
         self.health=self.player.health
         self.points=self.player.points
+        self.difficulty=difficulty
+
         self.pos=pos
         self.size=size
         self.col_bar=col_bar
         self.col_text=col_text
         self.size_text=size_text
         self.button_rect=pygame.Rect(self.pos[0],self.pos[1],self.size[0],self.size[1])
-        self.text=f'Health:{self.health} Points{self.points}'
+        if difficulty==None :
+            self.text=f'Health:{self.health} Points{self.points}'
 
     def render(self,screen):
         pygame.draw.rect(screen, self.col_bar, self.button_rect)
@@ -28,5 +31,8 @@ class Health_and_points:
     def update(self,screen):
         self.health = self.player.health
         self.points = self.player.points
-        self.text = f'Health: {self.health} Points: {self.points}'
+        if self.difficulty==None :
+            self.text=f'Health:{self.health} Points{self.points}'
+        else:
+            self.text = f'Health: {self.health} Points: {self.points} Difficulty: {self.difficulty}'
 

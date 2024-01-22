@@ -58,6 +58,7 @@ class UwrManager:
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
         self.enemy_action = enemy_action
         self.difficulty = difficulty
+        self.all_enemies_on_level = 0
         self.pos_in_maze = [1, 0]
         self.mapa = []
         self.generate_room()
@@ -87,8 +88,11 @@ class UwrManager:
             while chosenRoom == MapGenerator.start or chosenRoom == MapGenerator.end:
                 chosenRoom = choice(MapGenerator.mapList)
             self.add_enemy_to_room(chosenRoom, (randint(200,980),randint(200,420)))
+            self.all_enemies_on_level += 1
         self.add_enemy_to_room(MapGenerator.end, (270,310))
-        if self.difficulty >= 3: self.add_enemy_to_room(MapGenerator.end, (910,310))
+        if self.difficulty >= 3: 
+            self.add_enemy_to_room(MapGenerator.end, (910,310))
+            self.all_enemies_on_level += 1
 
         def new_room():
             self.difficulty += 1
@@ -153,6 +157,7 @@ class UwrManager:
                 # checking health of enemies
                 if entity.health <= 0 and entity.alive: 
                     self.current_room.enemies_alive -= 1
+                    self.all_enemies_on_level -= 1
                     entity.alive = False
             if isinstance(entity, Trapdoor):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
@@ -184,7 +189,7 @@ class UwrManager:
         MapGenerator.generate(difficulty)
         self.mapa = copy.deepcopy(MapGenerator.mapArr)
         self.pos_in_maze = list(MapGenerator.start)
-        print(self.mapa)
+        #print(self.mapa)
         
 
 class MapScene(BaseScene):

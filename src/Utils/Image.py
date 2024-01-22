@@ -8,7 +8,6 @@ class Image(pygame.sprite.Sprite):
         self.pos_rect = pygame.Rect(position[0], position[1], 0, 0)
 
     def render(self, screen):
-        print(self.pos_rect)
         screen.blit(self.background, self.get_rect())
 
     def get_rect(self):

@@ -156,7 +156,8 @@ class CreditsScene(BaseScene):
                     left_offset = section[text_idx].left_side_offset
                     img_size = section[text_idx].image_size
                     delta_cnt = ceil(img_size[1]/self.interline)
-                    text_cnt += delta_cnt
+                    text_cnt += 1 + (delta_cnt//3)
                     img = Image((self.left_margin + left_offset, self.top_margin + section_idx * self.section_offset + text_cnt * self.interline + self.init_y_offset), img_size, img_path)
                     self.add_ui_element(img)
+                    text_cnt += delta_cnt
         super().on_entry(*args)

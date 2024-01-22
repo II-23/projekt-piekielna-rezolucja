@@ -81,9 +81,9 @@ chance_for_satisfiable = {
 }
 
 satisfiable_levels = {
-    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4, lengths_probabilities = [0, 10, 20, 30, 100]),
-    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3, lengths_probabilities = [0, 10, 100, 100]),
-    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3, lengths_probabilities=[0, 10, 20, 100])
+    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4, lengths_probabilities = [10, 10, 10, 70]),
+    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3, lengths_probabilities = [10, 10, 80]),
+    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3, lengths_probabilities=[70, 15, 15])
 }
 
 not_satisfiable_levels = {
@@ -190,9 +190,11 @@ class Generator:
                 length_roll = randint(1, 100) # drawing a length of the current formula
                 length = -1
                 
-                for i in range(1, len(self.lengths_probabilities)):
-                    if length_roll <= self.lengths_probabilities[i]:
-                        length = i
+                sum = 0;
+                for i in range(0, len(self.lengths_probabilities)):
+                    sum += self.lengths_probabilities[i]
+                    if length_roll <= sum:
+                        length = i + 1
                         break
                 if length == -1:
                     length = max_len

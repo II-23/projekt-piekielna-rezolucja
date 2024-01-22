@@ -164,8 +164,10 @@ class UwrManager:
                                                 entity.position, entity.size) and entity.open and self.current_room.enemies_alive <= 0:
                     #coliision with trapdoor
                     entity.on_enter_event()
-        if self.character.health <= 0:
-            self.character.on_death_event({})
+        if self.character.health <= 0 and not self.character.ded:
+            self.character.on_death_event(self.character.points)
+            self.character.ded = True
+            self.character.points = 0
             
         if self.current_room.enemies_alive <= 0:
             self.current_room.door_exists = self.current_room.door_placeholder.copy()
@@ -205,9 +207,21 @@ class MapScene(BaseScene):
             gameStateManager.states['level'] = level
             self.pause = True
 
-        def on_death(args):
+        def back_to_menu(args):
             gameStateManager.set_state('start', args)
-        
+        path_to_death = image_path = os.path.join(ASSETS_DIR, 'death_screen.png')
+        self.death_message = ImageButton((300,300), (280,170), path_to_death, path_to_death, back_to_menu)
+        self.death_message.active = False
+
+        def on_death(points):
+            mes = f'You died! Your score: {points}'
+            print(points)
+            self.death_message.init_text(color=(0,0,0), text=mes)
+            self.death_message.align_center_h = True
+            self.death_message.align_center_w = True
+            self.death_message.active = True
+            #gameStateManager.set_state('start', {})
+
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene, 5, gameStateManager)
         self.uwu.character.on_death_event = on_death
@@ -250,6 +264,7 @@ class MapScene(BaseScene):
         self.add_ui_element(self.uwu)
         self.add_ui_element(self.uwu.character)
         self.add_ui_element(Health_and_points(self.uwu.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))
+        self.add_ui_element(self.death_message)
         
     def on_entry(self, *args, prev_state):
         '''TODO probalby here will be something to reset player position'''
@@ -257,7 +272,9 @@ class MapScene(BaseScene):
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
         else:
-            self.uwu.character.health = 1000
+            self.uwu.character.health = 1
+            self.death_message.active = False
+            self.uwu.character.ded = False
             self.uwu.character.pos = (550, 300)
             self.uwu.generate_room()
         super().on_entry(*args) 

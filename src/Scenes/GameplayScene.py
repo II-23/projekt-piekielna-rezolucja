@@ -39,6 +39,7 @@ class GameplayScene(BaseScene):
         #self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
 
         self.formula_set=Set_of_formulas((500,500), (200,125), formulas, self.won, max_variables_number)
+        self.formula_set.subscribe(self, "WrongValuation")
 
 
         self.add_ui_element(self.formula_set)
@@ -76,6 +77,9 @@ class GameplayScene(BaseScene):
         # character animation :3
         self.anim = CharacterAnimation((580, 25), 80)
         self.add_ui_element(self.anim)
+
+    def WrongValuationEvent(self): # DODANA PRZEZ KRZYCHA
+        print("Zła waluacja")
         
     def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''

@@ -139,7 +139,6 @@ class UwrManager:
         MapGenerator.generate(difficulty)
         self.mapa = copy.deepcopy(MapGenerator.mapArr)
         self.pos_in_maze = list(MapGenerator.start)
-        print(self.mapa)
 
 class MapScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):

@@ -1,55 +1,42 @@
 Left:
-Cześć, to jest przykładowy dialog!
+Witaj w Piekle! Mam dla ciebie kilka wskazówek. Naciśnij na okienko dialogowe aby, przeczytać długi tekst.
+Nazywam się JMi.
 Right:
-Wooow, wygląda naprawdę dobrze.
+Wooow, ale super, dziękuje ci JMI!!!
 Left:
-Co nie? Wiesz, że możesz też zamieszczać długi tekst?
+Twoim celem jest uratowanie Profesora Marcinkowskiego z głębokich otchłani Piekła, poprzez rozwiązanie logicznego wyzwania stworzonego przez samego diabła.
 Right:
-Naprawdę? Pokaż mi
+O nie, mój ulubiony profesor logiki potrzebuje mojej pomocy! Mów mi, co mam robić, JMI!!
 Left:
-Litwo! Ojczyzno moja! ty jesteś jak zdrowie.
-
-Ile cię trzeba cenić, ten tylko się dowie,
-
-Kto cię stracił. Dziś piękność twą w całej ozdobie
-
-Widzę i opisuję, bo tęsknię po tobie.
-
-
-Panno Święta, co Jasnej bronisz Częstochowy
-
-I w Ostrej świecisz Bramie! Ty, co gród zamkowy
-
-Nowogródzki ochraniasz z jego wiernym ludem!
-
-Jak mnie dziecko do zdrowia powróciłaś cudem
-
-(Gdy od płaczącej matki pod Twoję opiekę
-
-Ofiarowany, martwą podniosłem powiekę
-
-I zaraz mogłem pieszo do Twych świątyń progu
-
-Iść za wrócone życie podziękować Bogu),
-
-Tak nas powrócisz cudem na Ojczyzny łono.
-
-Tymczasem przenoś moję duszę utęsknioną
-
-Do tych pagórków leśnych, do tych łąk zielonych,
-
-Szeroko nad błękitnym Niemnem rozciągnionych;
-
-Do tych pól malowanych zbożem rozmaitem,
-
-Wyzłacanych pszenicą, posrebrzanych żytem;
-
-Gdzie bursztynowy świerzop, gryka jak śnieg biała,
-
-Gdzie panieńskim rumieńcem dzięcielina pała,
-
-A wszystko przepasane, jakby wstęgą, miedzą
-
-Zieloną, na niej z rzadka ciche grusze siedzą.
+Otrzymasz zestaw klauzul proposycyjnych, które musisz przeanalizować.
+Klauzule to zdania lub wyrażenia logiczne, zawierające zmienne logiczne (np. p, q, r) i operatory logiczne (∨, ¬).
+Twoim zadaniem jest zrozumienie, co te klauzule oznaczają i czy można udowodnić ich sprzeczność.
+Wybierz dwie różne klauzule, które chciałbyś połączyć za pomocą rezolucji.
+Zidentyfikuj wspólny literal, czyli zmienną logiczną lub jej negację, która występuje w obu klauzulach.
+Kiedy ZAPALI się PIEKIELNA REZOLUCJA, naciśnij ją, aby zapisać daną klauzulę.
 Right:
-Faktycznie, to jest takie fajne
+Jestem prawie gotów, czy coś jeszcze powinienem wiedzieć, JMI?
+Left:
+Pamiętaj, że jesteś ograniczony w czasie i przestrzeni, więc zachowuj się sprawnie i skoncentrowany.
+Staraj się rozwiązać zadanie jak najszybciej, aby uratować Profesora Marcinkowskiego.
+Jeśli uda ci się udowodnić sprzeczność zestawu klauzul lub przedstawić poprawną waloryzację, 
+Profesor Marcinkowski zostanie uwolniony z piekła, 
+a ty będziesz miał szansę zostać jego uczniem i otrzymać unikalną okazję do rozwoju intelektualnego.
+Twoja inteligencja wzrośnie oraz zostaniesz bohaterem!
+Right:
+..................................................................................................
+..................................................................................................
+..................................................................................................
+.................................................................................................
+..................................................................................................
+..................................................................................................
+..................................................................................................
+..................................................................................................
+..................................................................................................
+..................................................................................................
+..................................................................................................
+DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA 
+DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA 
+DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA 
+DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA 
+DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA DUPA 

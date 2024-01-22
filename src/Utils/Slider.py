@@ -32,10 +32,10 @@ class Slider_Bar(pygame.sprite.Sprite):
         self._surface = pygame.transform.scale(loaded_bar, size)
         self.sliders = []
         self.variable_dict = {}
-        self.LEFT_MARGIN = SLIDER_SIZE[0]/10
-        self.INTERLINE = SLIDER_SIZE[1]/4
+        self.LEFT_MARGIN = SLIDER_SIZE[0]/10 
+        self.INTERLINE = SLIDER_SIZE[1]/4 
         self.TOP_MARGIN = SLIDER_SIZE[1]/2
-        self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2
+        self.SLIDER_OFFSET = SLIDER_SIZE[0]/3.2 
         self.parent_rect = None
         self.variable_font = pygame.font.Font(None, round(55 * RESOLUTION[0]/1280))
         if (max(indicies_of_variables) >= len(VARIABLES)):
@@ -43,9 +43,9 @@ class Slider_Bar(pygame.sprite.Sprite):
         for index in sorted(indicies_of_variables):
             self.add_slider(VARIABLES[index])
         evaluate_button_position = (self.LEFT_MARGIN, (SLIDER_SIZE[1] + self.INTERLINE) * len(self.sliders) + self.TOP_MARGIN)
-        evaluate_button_size = (self.width - 2*self.LEFT_MARGIN, 60)
+        evaluate_button_size = (self.width - 2*self.LEFT_MARGIN, 130)
         self.evaluate_button = ImageButton(evaluate_button_position, evaluate_button_size, os.path.join(ASSETS_DIR, "evaluate_button.png"), os.path.join(ASSETS_DIR, "evaluate_button_hover.png"), self.request_evaluation, sound_on_click='MinecraftClick')
-        self.evaluate_button.init_text(text="SPRAWDŹ")
+        self.evaluate_button.init_text(text=" ")
         self.evalutation_requested = False
         
     def request_evaluation(self, *args):

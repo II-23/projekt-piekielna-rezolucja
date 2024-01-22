@@ -2,7 +2,9 @@ from Scenes.BaseScene import BaseScene, setup_button, Button
 from Utils.Slider import Slider_Bar
 from Config.graphics import RESOLUTION
 from Config.definitnios import SRC_DIR
+from Config.definitnios import ASSETS_DIR
 from enum import Enum
+from Utils.Image import Image
 import pygame
 import os
 
@@ -51,7 +53,7 @@ class DialogManager():
 
     def load_dialog(self, filename, dialog_name):
         path = os.path.join(SRC_DIR, "Scenes", filename)
-        with open(path,'r') as file:
+        with open(path,'r',encoding='UTF-8') as file:
             dialog = file.read()
         text = split_dialog(dialog, 'Left:', 'Right:')
         dialog = []
@@ -78,7 +80,6 @@ class DialogManager():
 class DialogScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
-        
         '''Initalizing dialog manager'''
         self.DIALOG_NUMBER = 0
         self.talking_side = Side.LEFT # to remember which side is currently talking
@@ -87,19 +88,30 @@ class DialogScene(BaseScene):
         self.dialog_manager.load_dialog('dialog_intro.txt', intro_name)
         
         '''This is a "button" used for displaying the text of the dialog'''
-        col = (255, 135, 135)
+        col = (31, 29, 28)
         tw_size = (750, 250)
-        self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2 + 25, 460), tw_size, None, col, col, (255,160,160))
-        self.text_window.init_text(font=None, text_size=32, color=(42, 62, 115), text=self.dialog_manager.next_line())
-        
+        color_text_win=(150, 0, 0)
+        color_on_click=(99, 90, 90)
+        self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2 + 25, 460), tw_size, None, col, col, color_on_click)
+        self.text_window.init_text(font=None, text_size=32, color=color_text_win, text=self.dialog_manager.next_line())
+        bg_path = os.path.join(ASSETS_DIR, 'dialog_scene_bg.png')
+        player1_path = os.path.join(ASSETS_DIR, 'player', 'player_dialog.png')
+        player2_path = os.path.join(ASSETS_DIR, 'chad_jmi.png')
+        bg=Image((0,0), (1280, 720), bg_path)
+        player1=Image((300,200),(300,300), player1_path)
+        player2=Image((700,50),(300,500), player2_path)
+        self.add_ui_element(bg)
+        self.add_ui_element(player1)
+        self.add_ui_element(player2)
+
         def next_page_but(args):
             self.text_window.text_next_page()
         self.text_window.on_click_event = next_page_but
         self.add_ui_element(self.text_window)
 
         '''This is a button that skips to the next line of the dialog, displayed in the text_window'''
-        self.next_dialog_line_button = Button((RESOLUTION[0]/2-tw_size[0]/2+750-125+25, 460-50), (125, 50), None, (200, 150, 150), (255, 135, 135), (255,180,180))
-        self.next_dialog_line_button.init_text(font=None, color=(255, 77, 131), text='Next', align_center_h=True, align_center_w=True)
+        self.next_dialog_line_button = Button((RESOLUTION[0]/2-tw_size[0]/2+750-125+25, 460-50), (125, 50), None, (61, 54, 50), (0,0,0), color_on_click)
+        self.next_dialog_line_button.init_text(font=None, color=(color_text_win), text='Next', align_center_h=True, align_center_w=True)
         def next_line_dialog_but(args):
             '''function for next_dialog_line_button that sends a new line of dialog to be displayed to the text_window'''
             self.text_window.update_text(new_text=self.dialog_manager.next_line())
@@ -110,7 +122,7 @@ class DialogScene(BaseScene):
         #TODO better way to create buttons that go to the next scenes
 
         self.gp_scene_button = setup_button(gameStateManager, 'map', (1050, 610), sound_on_click="ReverbFart")
-        self.gp_scene_button.init_text(font=None, color=(255, 77, 131), text='Play!', align_center_h=True, align_center_w=True)
+        self.gp_scene_button.init_text(font=None, color=(color_text_win), text='Play!', align_center_h=True, align_center_w=True)
         self.add_ui_element(self.gp_scene_button)
         
     def on_entry(self, *args, **kwargs):

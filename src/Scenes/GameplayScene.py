@@ -11,17 +11,20 @@ from Utils.clock import Clock
 from soundtrackmanager import SoundtrackManager
 
 class GameplayScene(BaseScene):
-    def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
+    def __init__(self, display, gameStateManager, background_color=(255, 255, 255), enemy=0, player=0):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''Here you will learn how to add things to your scene. It's simple. Create the object and set its parameters so it fits your needs.
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
         '''
+        self.enemy = enemy
+        self.player = player
         paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
         paper_sheet = pygame.transform.rotate(paper_sheet, 90)
         paper_height = paper_sheet.get_height()
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
-        
+        print('generacja')
+        abc = good_generate()
         #
         formula_generator = Generator(5, 6)   
         formula_generator.fill(5, 6)
@@ -35,10 +38,10 @@ class GameplayScene(BaseScene):
         self.add_ui_element(self.formula_set.selected[0])
         self.add_ui_element(self.formula_set.selected[1])
         self.add_ui_element(self.formula_set.button)
-        scorescreen=Game_over_window((500,500),(200,200),1, self.formula_set)
-        self.add_ui_element(scorescreen)
-        clock=Clock((100,100), (300,300), 60)
-        self.add_ui_element(clock)
+        self.scorescreen=Game_over_window((500,500),(200,200),1, self.formula_set)
+        self.add_ui_element(self.scorescreen)
+        self.clock=Clock((100,100), (300,300), 60)
+        self.add_ui_element(self.clock)
         #
 
         # creating the slider_bar
@@ -48,17 +51,31 @@ class GameplayScene(BaseScene):
         self.slider_bar.set_parent_rect(self.slider_bar_rect)
         self.add_ui_element(self.slider_bar)
         # creating button to go to start scene
-        self.start_screen_button = setup_button(self.gameStateManager, 'start', (100, 300))
+        # def test2(args):
+        #     gameStateManager.set_state('map', args)
+        # button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200), **kwargs)
+        self.start_screen_button = setup_button(self.gameStateManager, 'map', (100, 300))
         self.add_ui_element(self.start_screen_button)
         self.soundtrackmanager = SoundtrackManager
         
     def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''
+        # #
+        # formula_generator = Generator(5, 6)   
+        # formula_generator.fill(5, 6)
+        # formulas=abc.formulas
+        # #
+        # self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
+        # self.scorescreen=Game_over_window((500,500),(200,200),1, self.formula_set)
+        # self.clock=Clock((100,100), (300,300), 60)
+        
         super().on_entry(*args)
         self.soundtrackmanager.playMusic("GameplayMusic")
     
     def on_exit(self, *args, **kwargs):
         super().on_exit(*args)
+        self.enemy.health -= 1
+        self.player.health -= 1
         self.soundtrackmanager.stopMusic()
 
     def update(self, mouse=pygame.mouse):

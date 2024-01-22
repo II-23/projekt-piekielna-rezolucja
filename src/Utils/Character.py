@@ -5,6 +5,7 @@ import numpy as np
 from PIL import Image, ImageOps
 import os
 from Config.definitnios import ASSETS_DIR
+from Utils.Area import Area
 
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
@@ -19,13 +20,18 @@ def save_as(dict, image, path, name):
     dict[name] = new_path
 
 class Player:
-    def __init__(self, pos:tuple, size, sprite_path):
-
+    def __init__(self, pos, size, sprite_path):
         self.pos = np.array(pos)
+        self.starting_pos = pos
+        self.pos_before_collision = pos
         self.size = size
         self.velocity = np.array([0,0])
         self.speed = 6
         self.state = "s"
+
+        #STATYSTYKI
+        self.health = 3
+        self.points = 0
 
         self.animation = False
         self.f = 1
@@ -44,11 +50,12 @@ class Player:
         self.obstacles.append(((1230,470), (50, 200)))
 
         # top border
-        self.obstacles.append(((0,0), (2000, 30)))
+        self.obstacles.append(((0,0), (520, 30)))
+        self.obstacles.append(((735,0), (2000, 30)))
 
         # bottom border
-        self.obstacles.append(((0,670), (540, 30)))
-        self.obstacles.append(((740,670), (2000, 30)))
+        self.obstacles.append(((0,670), (530, 30)))
+        self.obstacles.append(((752,670), (2000, 30)))
 
         self.frames = {}
         self.pressed = {v : False for k, v in KEYS.items()}
@@ -113,6 +120,7 @@ class Player:
         return False
 
     def reset(self):
+        self.pos = self.starting_pos
         self.velocity[0] = 0
         self.velocity[1] = 0
         self.active = False
@@ -120,7 +128,6 @@ class Player:
             self.pressed[k] = False
 
     def process_input(self, events,mouse, *args):
-
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key in KEYS and KEYS[event.key] in self.pressed:
@@ -174,25 +181,34 @@ class Player:
         collision = False
         dummy_pos = (self.pos[0] + self.velocity[0] * self.speed, self.pos[1])
 
-        for pos2, size2 in self.obstacles:
-            if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
+        for x in self.areas:
+            if self.check_collision(dummy_pos, (self.size, self.size), x.pos, x.size):
+                if self.active:
+                    x.process_input(events,mouse, *args)
+                    self.velocity[0] = 0
+                    self.velocity[1] = 0
+                    self.active = False
                 collision = True
 
+        for obstacle in self.obstacles:
+            if isinstance(obstacle, tuple):
+                pos2, size2 = obstacle
+                if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
+                    collision = True
+            elif isinstance(obstacle, Area):
+                if self.check_collision(dummy_pos, (self.size, self.size), obstacle.pos, obstacle.size):
+                    collision = True
+                    
         if not collision:
+            self.pos = list(self.pos)
             self.pos[0] += self.velocity[0] * self.speed
+            self.pos = tuple(self.pos)
+
+            #self.pos[0] += self.velocity[0] * self.speed
 
         # Move Y
         collision = False
         dummy_pos = (self.pos[0], self.pos[1] + self.velocity[1] * self.speed)
-
-        for pos2, size2 in self.obstacles:
-            if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
-                collision = True
-            
-        if not collision:
-            self.pos[1] += self.velocity[1] * self.speed
-
-        collision = False
 
         for x in self.areas:
             if self.check_collision(dummy_pos, (self.size, self.size), x.pos, x.size):
@@ -202,6 +218,26 @@ class Player:
                     self.velocity[1] = 0
                     self.active = False
                 collision = True
+
+        for obstacle in self.obstacles:
+            if isinstance(obstacle, tuple):
+                pos2, size2 = obstacle
+                if self.check_collision(dummy_pos, (self.size, self.size), pos2, size2):
+                    collision = True
+            elif isinstance(obstacle, Area):
+                if self.check_collision(dummy_pos, (self.size, self.size), obstacle.pos, obstacle.size):
+                    collision = True
+            
+        if not collision:
+            self.pos = list(self.pos)
+            self.pos[1] += self.velocity[1] * self.speed
+            self.pos = tuple(self.pos)
+
+            #self.pos[1] += self.velocity[1] * self.speed
+
+        collision = False
+
+        
 
         if not collision:
             self.active = True

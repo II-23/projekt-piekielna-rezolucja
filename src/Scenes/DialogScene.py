@@ -91,10 +91,12 @@ class DialogScene(BaseScene):
         tw_size = (750, 250)
         self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2 + 25, 460), tw_size, None, col, col, (255,160,160))
         self.text_window.init_text(font=None, text_size=32, color=(42, 62, 115), text=self.dialog_manager.next_line())
+        
         def next_page_but(args):
             self.text_window.text_next_page()
         self.text_window.on_click_event = next_page_but
         self.add_ui_element(self.text_window)
+
         '''This is a button that skips to the next line of the dialog, displayed in the text_window'''
         self.next_dialog_line_button = Button((RESOLUTION[0]/2-tw_size[0]/2+750-125+25, 460-50), (125, 50), None, (200, 150, 150), (255, 135, 135), (255,180,180))
         self.next_dialog_line_button.init_text(font=None, color=(255, 77, 131), text='Next', align_center_h=True, align_center_w=True)
@@ -106,7 +108,8 @@ class DialogScene(BaseScene):
         
         '''This is a button that redirects to the GameplayScene'''
         #TODO better way to create buttons that go to the next scenes
-        self.gp_scene_button = setup_button(gameStateManager, 'level', (1050, 610), sound_on_click="ReverbFart")
+
+        self.gp_scene_button = setup_button(gameStateManager, 'map', (1050, 610), sound_on_click="ReverbFart")
         self.gp_scene_button.init_text(font=None, color=(255, 77, 131), text='Play!', align_center_h=True, align_center_w=True)
         self.add_ui_element(self.gp_scene_button)
         

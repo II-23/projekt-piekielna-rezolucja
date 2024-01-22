@@ -1,16 +1,18 @@
 # Piekielna Rezolucja 3
 
-In the enchanting city of Wroclaw, within the hallowed halls of the Institute of Computer Science, a brilliant logician was known to his colleagues as Jerzy and to his students as Professor Marcinkowski. Despite his wealth of knowledge, only a select few could truly grasp the intricacies of his teachings.
+In the mystical city of Wroclaw, where the cobblestone streets echoed with the whispers of academia, the Institute of Computer Science stood as a beacon of intellectual prowess. Among the esteemed scholars, one figure shone brightly - Jerzy, known to his peers and students alike as the revered Professor Marcinkowski. His classes were a realm of profound insights, yet only a privileged few could fathom the depths of his teachings.
 
-One frosty Monday, Professor Marcinkowski, affectionately called JMa, embarked on his journey to deliver a lecture on Advanced Logic for Computer Scientists—a course that inspired both fear and admiration. Lost in contemplation, he crafted a plan for the imminent lecture as he drove, unaware of the extraordinary event about to unfold.
+On a crisp Monday morning, Professor Marcinkowski, affectionately addressed as JMa, embarked on his routine journey to deliver a lecture on Advanced Logic for Computer Scientists. This course, revered by some and feared by many, was a crucible of intellectual challenge. Immersed in contemplation, JMa delved into the intricacies of his upcoming lecture, oblivious to the extraordinary turn his day was about to take.
 
-Suddenly, the road before him ruptured, resembling the aftermath of an immense earthquake. Unable to halt his car in time, Professor Marcinkowski plunged into an immeasurably deep hole—an abyss that could only be described as Hell itself.
+Suddenly, the very fabric of reality seemed to rupture before him. The road, as if responding to an unseen force, opened up with seismic force, leaving JMa with no recourse but to tumble into an abyss of unfathomable depth—an otherworldly descent into what could only be described as Hell itself.
 
-To rescue Marcinkowski and safeguard the future of logic, you, an inexperienced logician, must confront a challenge forged in the depths of Hell. Your mission: prove the contradiction of a set of propositional clauses using the resolution rule or demonstrate a valuation that satisfies the set.
+To rescue Professor Marcinkowski and ensure the continuity of logical wisdom, you, an inexperienced logician, find yourself tasked with confronting a challenge forged in the deepest recesses of Hell. Your mission is clear: prove the contradiction of a set of propositional clauses using the resolution rule or present a valuation that harmoniously satisfies the set.
 
-Time is of the essence, for the Devil is an impatient creature. His bloodthirsty demons, guardians of Marcinkowski in the heart of Hell, leave you with limited time and space on your piece of paper to succeed. Failure means the professor remains trapped, and his students are left without their logic master.
+The urgency is palpable, for the Devil is an impatient adversary. His malevolent demons, serving as custodians in the heart of Hell, set a daunting constraint—limited time and space on your paper to achieve success. The consequences of failure are dire; Professor Marcinkowski will be consigned to eternal damnation, and his students left bereft of their guiding logician.
 
-Should you succeed, the Devil will free Professor Marcinkowski. As a gesture of thanks, Proffessor offers a unique opportunity to become the professor's pupil and boost in his genius. The fate of Marcinkowski and the realm of logic rests in your hands.
+A successful resolution, however, holds the promise of liberation. The Devil, recognizing your triumph, will release Professor Marcinkowski from the clutches of Hell. In gratitude, Proffessor extends a unique opportunity—a chance to become the esteemed logician's pupil and receive a transformative boost in intellectual prowess.
+
+The fate of Marcinkowski, the sanctity of logic, and the coveted opportunity to become a prodigy's pupil now rest squarely on your shoulders. The journey into the abyss of logic and the supernatural awaits your determined intellect.
 
 
 # Installation
@@ -38,4 +40,14 @@ pip install -r requirements.txt
 ```bash
 python3 main_window.py
 ```
+
+
+# Gameplay
+
+// to do
+
+
+# Credits
+
+// music authors
 

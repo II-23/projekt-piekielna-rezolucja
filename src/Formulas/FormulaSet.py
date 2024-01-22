@@ -58,11 +58,16 @@ class Set_of_formulas(pygame.sprite.Sprite):
         for obj in self.subscribers["Writing"]:
             obj.WritingEvent()
     
+    def ShakingEventTrigger(self):
+        for obj in self.subscribers["Shaking"]:
+            obj.ShakingEvent()
+
     def get_variable_set(self):
         return self.variables
     def button_clicked(self, *args):
         #if player selected less than 2 formulas
         if self.selected[0].symbols==[] or self.selected[1].symbols==[]:
+            self.ShakingEventTrigger()
             print("głupota")
         else:
             q1=self.selected[0].content.copy()
@@ -83,6 +88,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
 
             if check==-1:
                 #if there is no variable to resolve by
+                self.ShakingEventTrigger()
                 print("głupota")
             elif tautology_safeguard==0:
                 #proceeds to make a new list according to rules.

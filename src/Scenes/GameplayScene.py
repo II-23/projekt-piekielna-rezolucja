@@ -45,6 +45,7 @@ class GameplayScene(BaseScene):
         self.formula_set.subscribe(self, "WrongValuation")
         self.formula_set.subscribe(self, "Happy")
         self.formula_set.subscribe(self, "Writing")
+        self.formula_set.subscribe(self, "Shaking")
 
 
         self.add_ui_element(self.formula_set)
@@ -87,6 +88,9 @@ class GameplayScene(BaseScene):
         print("Zła waluacja")
         self.anim.animate("a1", 5)
         self.clock.substract_time(self.clock.time_total//10)
+
+    def ShakingEvent(self): # Skopiowana przez Olę
+        self.anim.animate("a1", 5)
 
     def HappyEvent(self): # Skopiowana przez Olę
         self.anim.animate("d1", 1000)

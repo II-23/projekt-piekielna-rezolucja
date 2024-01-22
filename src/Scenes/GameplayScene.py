@@ -22,13 +22,14 @@ class GameplayScene(BaseScene):
         self.enemy = enemy
         self.player = player
         self.won = [False]
+        self.time_finished = None
         paper_sheet = pygame.image.load(ASSETS_DIR + "/papersheet.jpg")
         paper_sheet = pygame.image.load(ASSETS_DIR + "/background_gameplay.png")
         #paper_sheet = pygame.transform.rotate(paper_sheet, 90)
         paper_height = paper_sheet.get_height()
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
-        print('generacja')
+
         abc = good_generate(2)
         #
         formulas=abc.formulas
@@ -80,6 +81,7 @@ class GameplayScene(BaseScene):
 
     def WrongValuationEvent(self): # DODANA PRZEZ KRZYCHA
         print("Zła waluacja")
+        self.clock.substract_time(self.clock.time_total//10)
         
     def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''
@@ -100,13 +102,20 @@ class GameplayScene(BaseScene):
         print(self.won[0])
         if self.won[0]:
             self.enemy.health -= 1
-            self.player.points += 1000
+            self.player.points += 1000 + self.time_finished*100
         else:
             self.player.health -= 1 
         self.soundtrackmanager.stopMusic()
 
     def update(self, mouse=pygame.mouse):
         super().update(mouse)
+        if self.won[0]:
+            self.clock.stop_clock()
+            self.time_finished = self.clock.time_left
+
+        if self.clock.check_time_up():
+            self.won[0] = False
+
         if (self.slider_bar.evalutation_requested):
             self.formula_set.evaluate(self.slider_bar.get_valuation())
             self.slider_bar.evalutation_requested = False

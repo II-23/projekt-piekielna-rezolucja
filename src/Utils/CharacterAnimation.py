@@ -63,7 +63,7 @@ class CharacterAnimation:
             else:
                 self.frame = "f"
     
-    def animate(name, it):
+    def animate(self, name, it):
         self.frame = name
         self.it = it
 

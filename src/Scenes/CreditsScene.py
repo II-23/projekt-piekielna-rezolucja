@@ -14,6 +14,7 @@ import os
 class Credits_Text:
     path_to_frames : str
     left_side_offset : int
+    ends_credits : bool = False
 
 @dataclass
 class Credits_Image:
@@ -32,11 +33,12 @@ class CreditsScene(BaseScene):
         self.init_y_offset = 0.6*self.height
         self.animation_speed = 0.001*self.height
         self.paused = False
+        self.pause_lock = False
 
     def process_input(self, events, pressed_keys):
         for event in events:
             if (event.type == pygame.KEYDOWN): 
-                if event.key == pygame.K_p:
+                if event.key == pygame.K_p and not self.pause_lock:
                     self.paused = not self.paused
                 if event.key == pygame.K_SPACE:
                     self.animation_speed = 0.001 * 20 * self.height
@@ -46,11 +48,17 @@ class CreditsScene(BaseScene):
         super().process_input(events, pressed_keys)
 
 
+    def check_pause_lock(self, element):
+        if (isinstance(element, FlameText) and element.get_rect()[1] <= -10 and element.ends_credits):
+            self.paused = True
+            self.pause_lock = True
+
     def update(self, mouse=pygame.mouse):
         if (not self.paused):
             self.cnt += 1
             if (self.cnt % 2 == 0):
                 for element in self.ui_elements:
+                    self.check_pause_lock(element)
                     if isinstance(element, FlameText) or isinstance(element, Image):
                         element.pos_rect[1] -= self.animation_speed
                         if (element.pos_rect[1] <= 0):
@@ -150,7 +158,7 @@ class CreditsScene(BaseScene):
         self.respects_section = []
         respects_dir = os.path.join(credits_dir, "respects")
 
-        self.respects = Credits_Text(respects_dir, 0 * self.width)
+        self.respects = Credits_Text(respects_dir, 0 * self.width, True)
         self.respects_section.append(self.respects)
         self.studentdebil = Credits_Image(os.path.join(ASSETS_DIR, "studentdebil.jpg"), 0.15 * self.width, (0.6 * self.width, 0.6*self.height))
         self.respects_section.append(self.studentdebil)
@@ -164,7 +172,8 @@ class CreditsScene(BaseScene):
                     text_cnt += 1
                     text_frames = section[text_idx].path_to_frames
                     left_offset = section[text_idx].left_side_offset
-                    self.add_ui_element(FlameText((self.left_margin + left_offset, self.top_margin + section_idx * self.section_offset + text_cnt * self.interline + self.init_y_offset), text_frames))
+                    ends_credits = section[text_idx].ends_credits
+                    self.add_ui_element(FlameText((self.left_margin + left_offset, self.top_margin + section_idx * self.section_offset + text_cnt * self.interline + self.init_y_offset), text_frames, ends_credits=ends_credits))
                 elif isinstance(section[text_idx], Credits_Image):
                     img_path = section[text_idx].path_to_image
                     left_offset = section[text_idx].left_side_offset

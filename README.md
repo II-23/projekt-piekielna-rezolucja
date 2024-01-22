@@ -50,7 +50,7 @@ To run the game smoothly make sure you have the following installed:
 * pygame, version: 2.5.2
 * numpy, version: 1.26.1
 * imagesize, version: 1.4.1
-* Pillow, version: 10.1.0
+* Pillow, version: 10.2.0
 
 
 # Gameplay

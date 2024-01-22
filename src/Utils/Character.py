@@ -32,6 +32,7 @@ class Player:
         #STATYSTYKI
         self.health = 3
         self.points = 0
+        self.on_death_event = None
 
         self.animation = False
         self.f = 1

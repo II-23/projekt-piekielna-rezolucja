@@ -164,7 +164,7 @@ class MapScene(BaseScene):
             door.on_enter_event = enter_room
             i += 1
             self.uwu.character.areas.append(door) 
-            door.size = (door.size[0]-5, door.size[1]-5)
+            #door.size = (door.size[0]-5, door.size[1])
             self.uwu.character.obstacles.append(door)
         self.add_ui_element(self.uwu.character)
         self.add_ui_element(self.uwu)
@@ -174,4 +174,3 @@ class MapScene(BaseScene):
         self.uwu.character.reset()
         self.uwu.character.pos = (550, 300)
         super().on_entry(*args)
-        

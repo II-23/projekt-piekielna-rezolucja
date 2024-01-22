@@ -25,15 +25,13 @@ class GameplayScene(BaseScene):
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
         print('generacja')
-        abc = good_generate()
+        abc = good_generate(2)
         #
-        formula_generator = Generator(5, 6)   
-        formula_generator.fill(5, 6)
         formulas=abc.formulas
         #
+        max_variables_number = abc.get_variables_number()
 
-
-        self.formula_set=Set_of_formulas((500,500), (500,150), formulas, self.won)
+        self.formula_set=Set_of_formulas((500,500), (500,150), formulas, self.won, max_variables_number)
 
         self.add_ui_element(self.formula_set)
         self.add_ui_element(self.formula_set.selected[0])
@@ -78,6 +76,7 @@ class GameplayScene(BaseScene):
         print(self.won[0])
         if self.won[0]:
             self.enemy.health -= 1
+            self.player.points += 1000
         else:
             self.player.health -= 1 
         self.soundtrackmanager.stopMusic()

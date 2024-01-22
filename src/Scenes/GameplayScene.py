@@ -82,6 +82,7 @@ class GameplayScene(BaseScene):
 
     def WrongValuationEvent(self): # DODANA PRZEZ KRZYCHA
         print("Zła waluacja")
+        self.anim.animate("a1", 5)
         self.clock.substract_time(self.clock.time_total//10)
         
     def on_entry(self, *args, **kwargs):

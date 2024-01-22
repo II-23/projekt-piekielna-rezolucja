@@ -23,6 +23,7 @@ class Player:
     def __init__(self, pos, size, sprite_path):
         self.pos = np.array(pos)
         self.starting_pos = pos
+        self.pos_before_collision = pos
         self.size = size
         self.velocity = np.array([0,0])
         self.speed = 6

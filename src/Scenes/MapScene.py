@@ -5,12 +5,15 @@ from Utils.ImageButton import ImageButton
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 from Utils.ResolutionButton import ResolutionButton
+from Scenes.GameplayScene import GameplayScene
 import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from Utils.Enemy import Enemy
 import copy
 import os
+
+GRAY_COLOR = (65, 65, 67)
 
 class Room():
     def __init__(self, pos: tuple, enemy_action) -> None:
@@ -91,6 +94,7 @@ class UwrManager:
 
         if 0 <= new_pos[1] < self.map_h and 0 <= new_pos[0] < self.map_w: #checks if we didn't go outside of map
             if self.game_map[new_pos[1]][new_pos[0]] == 1:
+                self.current_room.change_enemy_activity(False)
                 self.pos_in_maze = new_pos
                 self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
                 self.current_room.change_enemy_activity(True)
@@ -125,6 +129,12 @@ class MapScene(BaseScene):
         '''A scene for map of the game, player will walk around and fight monsters'''
         def go_to_scene(args): # function that goes to level scene
             gameStateManager.set_state('level', {})
+            self.uwu.character.pos_before_collision = (self.uwu.character.pos[0]-self.uwu.character.velocity[0]*self.uwu.character.speed,
+                                                       self.uwu.character.pos[1]-self.uwu.character.velocity[1]*self.uwu.character.speed)
+            self.uwu.character.pos = self.uwu.character.pos_before_collision
+            level = GameplayScene(self.display, self.gameStateManager, background_color=GRAY_COLOR)
+            gameStateManager.states['level'] = level
+            self.pause = True
         
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene)
@@ -172,5 +182,8 @@ class MapScene(BaseScene):
     def on_entry(self, *args, prev_state):
         '''TODO probalby here will be something to reset player position'''
         self.uwu.character.reset()
-        self.uwu.character.pos = (550, 300)
+        if prev_state == 'level':
+            self.uwu.character.pos = self.uwu.character.pos_before_collision
+        else:
+            self.uwu.character.pos = (550, 300)
         super().on_entry(*args)

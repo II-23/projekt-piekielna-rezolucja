@@ -170,9 +170,11 @@ def generate(max_variable_number, formulas_number, max_len):
     formulas.fill(max_len, max_variable_number)
     return formulas.get_list_of_lists()
 
-abc = Generator(formulas_number, max_variable_number)   
-abc.fill(max_len, max_variable_number)        
-        
-print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
-for formula in abc.formulas:
-    print(f"Formula: {formula.variables}, Length: {formula.length}")
+def good_generate():
+    abc = Generator(formulas_number, max_variable_number)   
+    abc.fill(max_len, max_variable_number)        
+            
+    print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
+    for formula in abc.formulas:
+        print(f"Formula: {formula.variables}, Length: {formula.length}")
+    return abc

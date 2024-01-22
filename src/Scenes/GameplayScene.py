@@ -21,7 +21,8 @@ class GameplayScene(BaseScene):
         paper_height = paper_sheet.get_height()
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
-        
+        print('generacja')
+        abc = good_generate()
         #
         formula_generator = Generator(5, 6)   
         formula_generator.fill(5, 6)
@@ -48,7 +49,10 @@ class GameplayScene(BaseScene):
         self.slider_bar.set_parent_rect(self.slider_bar_rect)
         self.add_ui_element(self.slider_bar)
         # creating button to go to start scene
-        self.start_screen_button = setup_button(self.gameStateManager, 'start', (100, 300))
+        # def test2(args):
+        #     gameStateManager.set_state('map', args)
+        # button2 = Button(position, (200, 100), test2, (0, 0, 0), (70, 70, 70), (200, 200, 200), **kwargs)
+        self.start_screen_button = setup_button(self.gameStateManager, 'map', (100, 300))
         self.add_ui_element(self.start_screen_button)
         self.soundtrackmanager = SoundtrackManager
         

@@ -7,6 +7,7 @@ import os
 class Trapdoor:
     def __init__(self, position, size, on_enter_event, open_dir, closed_dir) -> None:
         self.open = False
+        self.entered = False
         self.position = position
         self.size = size
         self.on_enter_event = on_enter_event

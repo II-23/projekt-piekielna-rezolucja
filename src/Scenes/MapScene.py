@@ -4,13 +4,11 @@ from Utils.Area import Area
 from Utils.ImageButton import ImageButton
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
-from Utils.ResolutionButton import ResolutionButton
 from Scenes.GameplayScene import GameplayScene
 from Utils.Health_and_points import Health_and_points
 import pygame
-from Utils.game_over import Game_over_window
-from Utils.clock import Clock
 from Utils.Enemy import Enemy
+from Utils.Trapdoor import Trapdoor
 from Utils.IsaacMapGenerator import MapGenerator
 from random import randint, choice
 import copy
@@ -39,6 +37,9 @@ class Room():
         # right door 
         self.doors.append(ImageButton((1252, 188), (200, 475-188+4), image_path, image_path, None))
         self.entities = []
+        # exit to the next room
+        self.has_exit = False
+        self.exit = None
 
     def add_enemy(self, position, size):
         self.entities.append(Enemy(position, size, self.enemy_action, image_dir='ghost.png', dead_dir='ghost_dead.png'))
@@ -49,9 +50,10 @@ class Room():
             enemy.active = active
 
 class UwrManager:
-    def __init__(self, enemy_action, difficulty) -> None:
+    def __init__(self, enemy_action, difficulty, gameStateManager) -> None:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         # setting up a character and things they can interact with
+        self.gameStateManager = gameStateManager
         self.character = Player([550, 300]  , 150, "player/player.png")
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
         self.enemy_action = enemy_action
@@ -85,9 +87,17 @@ class UwrManager:
             while chosenRoom == MapGenerator.start or chosenRoom == MapGenerator.end:
                 chosenRoom = choice(MapGenerator.mapList)
             self.add_enemy_to_room(chosenRoom, (randint(200,980),randint(200,420)))
-        for _ in range(1 + (self.difficulty >= 3)):
-            self.add_enemy_to_room(MapGenerator.end, (randint(200,980),randint(200,420)))
+        self.add_enemy_to_room(MapGenerator.end, (270,310))
+        if self.difficulty >= 3: self.add_enemy_to_room(MapGenerator.end, (910,310))
 
+        def new_room():
+            self.difficulty += 1
+            self.gameStateManager.set_state('map', {})
+            
+        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].has_exit = True
+        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit = Trapdoor((590, 310), (100, 100),
+                                                                              new_room, 'trapdoor_open.png', 'trapdoor_closed.png')
+        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].entities.append(self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit)
         # these are starting coords for character when it goes to a new room
         # bottom (1), top (0), left (2), right (3)
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
@@ -135,25 +145,36 @@ class UwrManager:
         #for entity in self.current_room.entities:
         for i in range(len(self.current_room.entities)):
             entity = self.current_room.entities[i]
-            if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
-                                              entity.position, entity.size) and entity.active and entity.health > 0:
-                entity.on_enter_event({'e': entity, 'p': self.character}) # event of enemy
+            if isinstance(entity, Enemy):
+                if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
+                                                entity.position, entity.size) and entity.active and entity.health > 0:
+                    entity.on_enter_event({'e': entity, 'p': self.character}) # event of enemy
 
-            # checking health of enemies
-            if entity.health <= 0:
-                #self.current_room.entities.pop(i)
-                self.current_room.enemies_alive -= 1
-
+                # checking health of enemies
+                if entity.health <= 0 and entity.alive: 
+                    self.current_room.enemies_alive -= 1
+                    entity.alive = False
+            if isinstance(entity, Trapdoor):
+                if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
+                                                entity.position, entity.size) and entity.open and self.current_room.enemies_alive <= 0:
+                    #coliision with trapdoor
+                    entity.on_enter_event()
         if self.character.health <= 0:
             self.character.on_death_event({})
-
+            
         if self.current_room.enemies_alive <= 0:
             self.current_room.door_exists = self.current_room.door_placeholder.copy()
+            if self.current_room.has_exit:
+                self.current_room.exit.open = True
 
     def render(self, screen):
         # render entities on a map (enemies)
         for entity in self.current_room.entities:
-            entity.render(screen)
+            if isinstance(entity, Enemy):
+                entity.render(screen)
+        # render trapdoor
+        if self.current_room.has_exit:
+            self.current_room.exit.render(screen)
         # render doors
         for i in range(4):
             if not self.current_room.door_exists[i]:
@@ -183,7 +204,7 @@ class MapScene(BaseScene):
             gameStateManager.set_state('start', args)
         
         # a class to manage the map of the game
-        self.uwu = UwrManager(go_to_scene, 5)
+        self.uwu = UwrManager(go_to_scene, 5, gameStateManager)
         self.uwu.character.on_death_event = on_death
         self.uwu.current_room.change_enemy_activity(True) # set activity of current room to True
         if self.uwu.current_room.enemies_alive > 0:
@@ -231,8 +252,7 @@ class MapScene(BaseScene):
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
         else:
-            self.uwu.character.health = 1
-            #TODO create impostors
+            self.uwu.character.health = 1000
             self.uwu.character.pos = (550, 300)
             self.uwu.generate_room()
         super().on_entry(*args) 

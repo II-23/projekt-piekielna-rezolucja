@@ -10,6 +10,7 @@ class Enemy:
         self.position = position
         self.size = size
         self.health = 1
+        self.alive = True
         self.on_enter_event = on_enter_event
         image_path = os.path.join(ASSETS_DIR, image_dir)
         dead_image_path = os.path.join(ASSETS_DIR, dead_dir)

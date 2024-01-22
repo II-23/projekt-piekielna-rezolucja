@@ -1,25 +1,25 @@
 Left:
-Witaj w Piekle! Mam dla ciebie kilka Naciśnij na okienko dialogowe aby przeczytać długi tekst.
-Nazywam sie JMi
+Witaj w Piekle! Mam dla ciebie kilka wskazówek. Naciśnij na okienko dialogowe aby, przeczytać długi tekst.
+Nazywam się JMi.
 Right:
-Wooow ale super dziękuje ci JMI!!!
+Wooow, ale super, dziękuje ci JMI!!!
 Left:
-Twoim celem jest uratowanie Profesora Marcinkowskiego z głębokich otchłani logiki, poprzez rozwiązanie logicznego wyzwania stworzonego przez samego diabła.
+Twoim celem jest uratowanie Profesora Marcinkowskiego z głębokich otchłani Piekła, poprzez rozwiązanie logicznego wyzwania stworzonego przez samego diabła.
 Right:
-O nie mój ulubiony profesor logiki potrzebuje moją pomoc! Mów mi co mam robic JMI!!
+O nie, mój ulubiony profesor logiki potrzebuje mojej pomocy! Mów mi, co mam robić, JMI!!
 Left:
-Otrzymasz zestaw klauzul proposycyjnych, które musisz przenalizować.
+Otrzymasz zestaw klauzul proposycyjnych, które musisz przeanalizować.
 Klauzule to zdania lub wyrażenia logiczne, zawierające zmienne logiczne (np. p, q, r) i operatory logiczne (∨, ¬).
 Twoim zadaniem jest zrozumienie, co te klauzule oznaczają i czy można udowodnić ich sprzeczność.
 Wybierz dwie różne klauzule, które chciałbyś połączyć za pomocą rezolucji.
 Zidentyfikuj wspólny literal, czyli zmienną logiczną lub jej negację, która występuje w obu klauzulach.
-Kiedy ZAPALI się PIEKIELNA REZOLUCJA naciśnij ją aby zapisać zapisać daną klazulę
+Kiedy ZAPALI się PIEKIELNA REZOLUCJA, naciśnij ją, aby zapisać daną klauzulę.
 Right:
-Jestem prawie gotów czy coś jescze powinieniem wiedzieć JMI?
+Jestem prawie gotów, czy coś jeszcze powinienem wiedzieć, JMI?
 Left:
-Pamiętaj, że jesteś ograniczony w czasie i przestrzeni, więc zachowuj się sprawnie i skoncentrowanie.
+Pamiętaj, że jesteś ograniczony w czasie i przestrzeni, więc zachowuj się sprawnie i skoncentrowany.
 Staraj się rozwiązać zadanie jak najszybciej, aby uratować Profesora Marcinkowskiego.
 Jeśli uda ci się udowodnić sprzeczność zestawu klauzul lub przedstawić poprawną waloryzację, 
 Profesor Marcinkowski zostanie uwolniony z piekła, 
 a ty będziesz miał szansę zostać jego uczniem i otrzymać unikalną okazję do rozwoju intelektualnego.
-Twoja inteligencja wzrośnie oraz zostaniesz bohaterem !
+Twoja inteligencja wzrośnie oraz zostaniesz bohaterem!

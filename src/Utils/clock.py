@@ -14,6 +14,7 @@ class Clock(pygame.sprite.Sprite):
         self.surface=pygame.Surface((2000,2000))
         self.rect=pygame.Rect(size[0],size[1],pos[0],pos[1])
         self.size=size[0]
+        self.runnning = True
         
     def render(self, screen):
         current_color=(int(self.time_left/self.time_total*255), int(self.time_left/self.time_total*255), int(self.time_left/self.time_total*255))
@@ -55,11 +56,22 @@ class Clock(pygame.sprite.Sprite):
     def update(self, mouse=pygame.mouse):
         pass
     def process_input(self, events, mouse, *args):
-        for event in events:
-            if event.type == self.timer_event:
-                self.time_left-=self.timer_interval
-                #print(self.time_left)
+        if self.runnning:
+            for event in events:
+                if event.type == self.timer_event:
+                    self.time_left-=self.timer_interval
+            self.time_left = max(0, self.time_left)
+                    #print(self.time_left)
     def get_surface(self):
         return self.surface
     def get_rect(self):
         return self.rect
+    
+    def stop_clock(self):
+        self.runnning = False
+    
+    def substract_time(self, value):
+        self.time_left -= value
+
+    def check_time_up(self):
+        return self.time_left == 0

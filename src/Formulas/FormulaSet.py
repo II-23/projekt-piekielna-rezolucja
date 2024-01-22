@@ -39,6 +39,16 @@ class Set_of_formulas(pygame.sprite.Sprite):
             self.variables = self.variables.union(formula.get_variable_set())
         
         self.game_state = game_result
+        self.subscribers = {} # GAMEPLAYSCENE ONLY
+
+    def subscribe(self, obj, event):
+        if not event in self.subscribers:
+            self.subscribers[event] = []
+        self.subscribers[event].append(obj) # GAMEPLAYSCENE ONLY
+
+    def WrongValuationEventTrigger(self):
+        for obj in self.subscribers["WrongValuation"]:
+            obj.WrongValuationEvent()
     
     def get_variable_set(self):
         return self.variables
@@ -170,4 +180,5 @@ class Set_of_formulas(pygame.sprite.Sprite):
             SoundtrackManager.playSound("MarioLevelComplete")
             self.state = 1
         else:
+            self.WrongValuationEventTrigger()
             print(f"[Log][Formula set]: valuation is incorrect")

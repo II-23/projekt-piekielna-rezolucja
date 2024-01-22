@@ -13,7 +13,8 @@ KEYS = {pygame.K_w : 'w',
         pygame.K_s : 's',
         pygame.K_a : 'a',
         pygame.K_d : 'd',
-        pygame.K_LSHIFT : 'shift'}
+        pygame.K_LSHIFT : 'shift',
+        pygame.K_LCTRL : 'ctrl'}
 
 def save_as(dict, image, path, name):
     new_path = os.path.join(os.path.dirname(path), name + ".png")
@@ -166,7 +167,7 @@ class Player:
 
         self.velocity = np.array([0,0])     
         multiplyer = 1
-        if self.pressed['shift']: multiplyer = 2
+        if self.pressed['shift'] or self.pressed['ctrl']: multiplyer = 2
         if self.pressed['w']: self.velocity[1] += -1 * multiplyer
         if self.pressed['s']: self.velocity[1] += 1 * multiplyer
         if self.pressed['a']: self.velocity[0] += -1 * multiplyer

@@ -39,7 +39,7 @@ class Room():
         self.entities = []
 
     def add_enemy(self, position, size):
-        self.entities.append(Enemy(position, size, self.enemy_action, 'ghost.png'))
+        self.entities.append(Enemy(position, size, self.enemy_action, image_dir='ghost.png', dead_dir='ghost_dead.png'))
         self.enemies_alive += 1
 
     def change_enemy_activity(self, active):
@@ -121,7 +121,7 @@ class UwrManager:
         for i in range(len(self.current_room.entities)):
             entity = self.current_room.entities[i]
             if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
-                                              entity.position, entity.size) and entity.active:
+                                              entity.position, entity.size) and entity.active and entity.health > 0:
                 entity.on_enter_event({'e': entity, 'p': self.character}) # event of enemy
 
             # checking health of enemies
@@ -203,8 +203,8 @@ class MapScene(BaseScene):
             self.uwu.character.areas.append(door) 
             #door.size = (door.size[0]-5, door.size[1])
             self.uwu.character.obstacles.append(door)
-        self.add_ui_element(self.uwu.character)
         self.add_ui_element(self.uwu)
+        self.add_ui_element(self.uwu.character)
         self.add_ui_element(Health_and_points(self.uwu.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))
         
     def on_entry(self, *args, prev_state):
@@ -213,7 +213,7 @@ class MapScene(BaseScene):
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
         else:
-            self.uwu.character.health = 100
+            self.uwu.character.health = 200
             #TODO create impostors
             self.uwu.character.pos = (550, 300)
         super().on_entry(*args)#

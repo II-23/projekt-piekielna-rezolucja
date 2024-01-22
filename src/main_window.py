@@ -9,6 +9,7 @@ from Scenes.GameplayScene import GameplayScene
 from Scenes.MainMenuScene import MainMenuScene
 from Scenes.DialogScene import DialogScene
 from Scenes.SettingsScene import SettingsScene
+from Scenes.CreditsScene import CreditsScene
 from Utils.Slider import *
 from Formulas.Formula import *
 from Formulas.FormulaSet import *
@@ -38,8 +39,9 @@ class Main_Window:
         self.level = GameplayScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.gameplay_intro = DialogScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
         self.settings = SettingsScene(self._display_surface, self.gameStateManager, background_color=GRAY_COLOR)
+        self.credits = CreditsScene(self._display_surface, self.gameStateManager)
         self.gameStateManager.states = {'start':self.start, 'level':self.level, 'dialog':self.gameplay_intro, 
-                                        'settings': self.settings}
+                                        'settings': self.settings, 'credits' : self.credits}
         self.gameStateManager.set_state('start', {})
 
         try:

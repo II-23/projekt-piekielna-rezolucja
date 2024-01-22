@@ -81,6 +81,7 @@ class Generator:
             formulas_number = 8
             max_len = 6
         
+        self.variables_number = max_variable_number
         self.formulas = [] # stores the list of formulas
         self.size = formulas_number # how many formulas are there in the set
         self.satisfiable = satisfiable # True = the set is satisfiable, False = the set is NOT satisfiable
@@ -221,7 +222,6 @@ class Generator:
             self.formulas = formulas
 
 
-
 def good_generate(difficulty):
     abc = Generator(difficulty)   
 
@@ -229,3 +229,7 @@ def good_generate(difficulty):
     for formula in abc.formulas:
         print(f"Formula: {formula.variables}, Length: {formula.length}")
     return abc
+
+if __name__ == '__main__':
+    diff = 2
+    good_generate(diff)

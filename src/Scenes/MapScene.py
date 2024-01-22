@@ -4,13 +4,11 @@ from Utils.Area import Area
 from Utils.ImageButton import ImageButton
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
-from Utils.ResolutionButton import ResolutionButton
 from Scenes.GameplayScene import GameplayScene
 from Utils.Health_and_points import Health_and_points
 import pygame
-from Utils.game_over import Game_over_window
-from Utils.clock import Clock
 from Utils.Enemy import Enemy
+from Utils.Trapdoor import Trapdoor
 from Utils.IsaacMapGenerator import MapGenerator
 from random import randint, choice
 import copy

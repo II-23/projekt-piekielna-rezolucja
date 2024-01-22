@@ -20,7 +20,7 @@ The fate of Marcinkowski, the safety of logic, and the coveted opportunity to be
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/logic-resolution-game.git
+git clone https://github.com/II-23/projekt-piekielna-rezolucja.git
 ```
 
 2. Navigate to the project directory:
@@ -50,12 +50,19 @@ python3 main_window.py
 # Authors
 
 Adam Dziwiszek
+
 Igor Hańczaruk
+
 Krzysztof Olejnik
+
 Mateusz Katafiasz
+
 Aleksandra Ponikowska
+
 Michał Szwejda
+
 Justyna Adamczyk
+
 Dominika Gwarda
 
 

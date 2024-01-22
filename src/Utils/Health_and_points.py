@@ -26,7 +26,7 @@ class Health_and_points:
         if self.difficulty is None and self.enemies_alive is None:
             self.text = f'Health: {self.health} Points: {self.points}'
         else:
-            self.text = f'Health: {self.health} Points: {self.points} Difficulty: {self.difficulty} Enemis left:{self.enemies_alive}'
+            self.text = f'Health: {self.health} Difficulty: {self.difficulty} Enemis left: {self.enemies_alive} Points: {self.points}'
 
     def render(self,screen):
         pygame.draw.rect(screen, self.col_bar, self.button_rect)

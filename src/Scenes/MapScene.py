@@ -121,7 +121,7 @@ class UwrManager:
                 self.current_room.entities.pop(i)
 
         if self.character.health <= 0:
-            print('DEAD!!!')
+            self.character.on_death_event({})
 
     def render(self, screen):
         # render entities on a map (enemies)
@@ -144,9 +144,13 @@ class MapScene(BaseScene):
             level = GameplayScene(self.display, self.gameStateManager, background_color=GRAY_COLOR, enemy=args['e'], player=args['p'])
             gameStateManager.states['level'] = level
             self.pause = True
+
+        def on_death(args):
+            gameStateManager.set_state('start', args)
         
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene)
+        self.uwu.character.on_death_event = on_death
         #adding enemies to the map
         self.uwu.add_enemy_to_room((1, 1), (200, 200))
         self.uwu.add_enemy_to_room((1, 0), (500, 200))
@@ -194,5 +198,7 @@ class MapScene(BaseScene):
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
         else:
+            self.uwu.character.health = 1
+            #TODO create impostors
             self.uwu.character.pos = (550, 300)
-        super().on_entry(*args)
+        super().on_entry(*args)#

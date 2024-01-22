@@ -30,9 +30,9 @@ class GameplayScene(BaseScene):
         formula_generator = Generator(difficulty)   
         formulas=abc.formulas
         #
+        max_variables_number = abc.get_variables_number()
 
-
-        self.formula_set=Set_of_formulas((500,500), (500,150), formulas, self.won)
+        self.formula_set=Set_of_formulas((500,500), (500,150), formulas, self.won, max_variables_number)
 
         self.add_ui_element(self.formula_set)
         self.add_ui_element(self.formula_set.selected[0])

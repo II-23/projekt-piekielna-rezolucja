@@ -94,6 +94,9 @@ class Generator:
             self.fill_simple(satisfiable, max_len, max_variable_number)
         else:
             self.fill(satisfiable, max_len, max_variable_number)
+        
+    def get_variables_number(self):
+        return self.variables_number
 
     def clear(self):
         for formula in self.formulas:

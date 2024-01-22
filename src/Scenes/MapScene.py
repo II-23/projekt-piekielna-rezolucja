@@ -87,15 +87,15 @@ class UwrManager:
             while chosenRoom == MapGenerator.start or chosenRoom == MapGenerator.end:
                 chosenRoom = choice(MapGenerator.mapList)
             self.add_enemy_to_room(chosenRoom, (randint(200,980),randint(200,420)))
-        for _ in range(1 + (self.difficulty >= 3)):
-            self.add_enemy_to_room(MapGenerator.end, (randint(200,980),randint(200,420)))
+        self.add_enemy_to_room(MapGenerator.end, (270,310))
+        if self.difficulty >= 3: self.add_enemy_to_room(MapGenerator.end, (910,310))
 
         def new_room():
             self.difficulty += 1
             self.gameStateManager.set_state('map', {})
             
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].has_exit = True
-        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit = Trapdoor((550, 300), (100, 100),
+        self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit = Trapdoor((590, 310), (100, 100),
                                                                               new_room, 'trapdoor_open.png', 'trapdoor_closed.png')
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].entities.append(self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit)
         # these are starting coords for character when it goes to a new room

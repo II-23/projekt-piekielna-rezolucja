@@ -47,12 +47,42 @@ class UwrManager:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         # setting up a character and things they can interact with
         self.character = Player([550, 300]  , 150, "player/player.png")
+        self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
+        self.enemy_action = enemy_action
+        self.difficulty = difficulty
         self.pos_in_maze = [1, 0]
         self.mapa = []
-        self.generate_map(difficulty)
-        # mapa = [[0, 1, 0],
-        #         [0, 1, 1],
-        #         [0, 1, 1]]
+        self.generate_room()
+        # self.generate_map(difficulty)
+        # # mapa = [[0, 1, 0],
+        # #         [0, 1, 1],
+        # #         [0, 1, 1]]
+        # self.game_map = copy.deepcopy(self.mapa) # map with numbers
+        # self.map_w = len(self.game_map[0])
+        # self.map_h = len(self.game_map)
+        # self.rooms = copy.deepcopy(self.mapa) # map with references to rooms
+        # # i = y, j = x
+        # for i in range(self.map_h):
+        #     for j in range(self.map_w):
+        #         if self.game_map[i][j] == 1:
+        #             room = Room((j, i), enemy_action)
+        #             # bottom (0), top (1), left (2), right (3)
+        #             room.door_exists[0] = False if i + 1 >= self.map_h else False if self.game_map[i + 1][j] == 0 else True 
+        #             room.door_exists[1] = False if i - 1 < 0 else False if self.game_map[i - 1][j] == 0  else True 
+        #             room.door_exists[2] = False if j - 1 < 0 else False if self.game_map[i][j - 1] == 0 else True 
+        #             room.door_exists[3] = False if j + 1 >= self.map_w else False if self.game_map[i][j + 1] == 0 else True 
+        #             self.rooms[i][j] = room
+
+        # # these are starting coords for character when it goes to a new room
+        # # bottom (1), top (0), left (2), right (3)
+        # self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
+        # # position of player in the labirynth
+        # self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
+        # #self.current_room.add_enemy((200,200), (100,100))
+        # self.current_room.change_enemy_activity(True)
+
+    def generate_room(self):
+        self.generate_map(self.difficulty)
         self.game_map = copy.deepcopy(self.mapa) # map with numbers
         self.map_w = len(self.game_map[0])
         self.map_h = len(self.game_map)
@@ -61,7 +91,7 @@ class UwrManager:
         for i in range(self.map_h):
             for j in range(self.map_w):
                 if self.game_map[i][j] == 1:
-                    room = Room((j, i), enemy_action)
+                    room = Room((j, i), self.enemy_action)
                     # bottom (0), top (1), left (2), right (3)
                     room.door_exists[0] = False if i + 1 >= self.map_h else False if self.game_map[i + 1][j] == 0 else True 
                     room.door_exists[1] = False if i - 1 < 0 else False if self.game_map[i - 1][j] == 0  else True 
@@ -69,12 +99,7 @@ class UwrManager:
                     room.door_exists[3] = False if j + 1 >= self.map_w else False if self.game_map[i][j + 1] == 0 else True 
                     self.rooms[i][j] = room
 
-        # these are starting coords for character when it goes to a new room
-        # bottom (1), top (0), left (2), right (3)
-        self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
-        # position of player in the labirynth
         self.current_room = self.rooms[self.pos_in_maze[1]][self.pos_in_maze[0]]
-        #self.current_room.add_enemy((200,200), (100,100))
         self.current_room.change_enemy_activity(True)
 
     def set_character_position(self, direction):
@@ -139,6 +164,7 @@ class UwrManager:
         MapGenerator.generate(difficulty)
         self.mapa = copy.deepcopy(MapGenerator.mapArr)
         self.pos_in_maze = list(MapGenerator.start)
+        print(self.mapa)
 
 class MapScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
@@ -203,4 +229,5 @@ class MapScene(BaseScene):
             self.uwu.character.pos = self.uwu.character.pos_before_collision
         else:
             self.uwu.character.pos = (550, 300)
-        super().on_entry(*args)
+            self.uwu.generate_room()
+        super().on_entry(*args) 

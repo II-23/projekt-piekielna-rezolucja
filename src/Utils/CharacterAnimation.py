@@ -45,7 +45,7 @@ class CharacterAnimation:
         image = frame(self.frame, self.size)
         (193, 181, 179)
         screen.blit(image, rect)
-        pygame.draw.rect(screen, (193, 181, 179), (self.pos[0]+20, self.pos[1]+340, self.size*5, self.size))
+        pygame.draw.rect(screen, (193, 181, 179), (self.pos[0]+20, self.pos[1]+340, self.size*5, self.size*0.5))
 
     def process_input(self, events, mouse, *args):
         pass

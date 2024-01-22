@@ -11,6 +11,8 @@ from Config.graphics import RESOLUTION
 from soundtrackmanager import SoundtrackManager
 from Utils.Health_and_points import Health_and_points
 import pygame
+from Utils.clock import Clock
+
 import os
 
 class MainMenuScene(BaseScene):
@@ -18,7 +20,6 @@ class MainMenuScene(BaseScene):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         # backgorund for main menu
         logo = PiekielnaRezolucjaLogo((RESOLUTION[0]*0.3, 0))
-        piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
         background_img = pygame.image.load(ASSETS_DIR + "/background.png")
         background_img = pygame.transform.scale(background_img, (1300,730))
         
@@ -29,15 +30,11 @@ class MainMenuScene(BaseScene):
         def go_to_scene(args):
             gameStateManager.set_state('dialog', {'scene':'test_dialog'})
             #gameStateManager.states[gameStateManager.get_state()].on_entry({'scene':'test_dialog'})
-        self.gameplay_screen_button.on_click_event = go_to_scene
-        self.gameplay_screen_button.init_text(text='Start Button')
+        # self.gameplay_screen_button.on_click_event = go_to_scene
+        # self.gameplay_screen_button.init_text(text='Start Button')
         # adding elements to start scene
-        self.add_ui_element(self.gameplay_screen_button)
-        self.add_background_image(piwo_img)
+        # self.add_ui_element(self.gameplay_screen_button)
         
-        self.slider = Volume_slider((200, 250), (200, 12), 0.5,0,100,'red','grey',50)
-        self.add_ui_element(self.slider)
-
         self.add_ui_element(logo)
         self.add_background_image(background_img)
 
@@ -64,7 +61,6 @@ class MainMenuScene(BaseScene):
         self.add_ui_element(self.character)
 
         self.add_ui_element(Health_and_points(self.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))
-
   
     def on_entry(self, *args, **kwargs):
         self.character.reset()

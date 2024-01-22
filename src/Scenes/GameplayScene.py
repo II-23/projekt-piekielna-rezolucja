@@ -9,6 +9,7 @@ import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from soundtrackmanager import SoundtrackManager
+from Formulas.FormulaGenerator import DifficultyLevels
 
 class GameplayScene(BaseScene):
     def __init__(self, display, gameStateManager, background_color=(255, 255, 255), enemy=0, player=0):
@@ -25,7 +26,7 @@ class GameplayScene(BaseScene):
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
         print('generacja')
-        abc = good_generate(2)
+        abc = good_generate(DifficultyLevels.MEDIUM)
         #
         formulas=abc.formulas
         #

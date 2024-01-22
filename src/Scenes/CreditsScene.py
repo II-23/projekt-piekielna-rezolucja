@@ -5,6 +5,7 @@ from soundtrackmanager import SoundtrackManager
 from Utils.FlameText import FlameText
 from Config.definitnios import ASSETS_DIR
 from dataclasses import dataclass
+import time
 import os
  
 @dataclass
@@ -22,6 +23,7 @@ class CreditsScene(BaseScene):
         self.left_margin = 0.05 * self.width
         self.init_y_offset = self.height
         self.animation_speed = 0.001*self.height
+        self.cnt = 0
         self.start_screen_button = setup_button(self.gameStateManager, 'start', (-0.1*self.width, 0.9*self.height))
         self.add_ui_element(self.start_screen_button)
 
@@ -35,6 +37,20 @@ class CreditsScene(BaseScene):
         self.authors_section.append(self.authors_title)
         self.igor_hanczaruk = Credits_Text(os.path.join(authors_dir, "igorhanczaruk"), 0.18 * self.width)
         self.authors_section.append(self.igor_hanczaruk)
+        self.adam_dziwiszek = Credits_Text(os.path.join(authors_dir, "adamdziwiszek"), 0.18 * self.width)
+        self.authors_section.append(self.adam_dziwiszek)
+        self.krzysztofolejnik = Credits_Text(os.path.join(authors_dir, "krzysztofolejnik"), 0.13 * self.width)
+        self.authors_section.append(self.krzysztofolejnik)
+        self.mateuszkatafiasz = Credits_Text(os.path.join(authors_dir, "mateuszkatafiasz"), 0.12 * self.width)
+        self.authors_section.append(self.mateuszkatafiasz)
+        self.olaponikowska = Credits_Text(os.path.join(authors_dir, "olaponikowska"), 0.18 * self.width)
+        self.authors_section.append(self.olaponikowska)
+        self.michalszwejda = Credits_Text(os.path.join(authors_dir, "michalszwejda"), 0.18 * self.width)
+        self.authors_section.append(self.michalszwejda)
+        self.justynaadamczyk = Credits_Text(os.path.join(authors_dir, "justynaadamczyk"), 0.13 * self.width)
+        self.authors_section.append(self.justynaadamczyk)
+        self.dominikagwarda = Credits_Text(os.path.join(authors_dir, "dominikagwarda"), 0.14 * self.width)
+        self.authors_section.append(self.dominikagwarda)
 
         self.sections.append(self.authors_section)
 
@@ -46,11 +62,13 @@ class CreditsScene(BaseScene):
                 self.add_ui_element(FlameText((self.left_margin + left_offset, self.top_margin + section_idx * self.section_offset + text_idx * self.interline + self.init_y_offset), text_frames))
 
     def update(self, mouse=pygame.mouse):
-        for element in self.ui_elements:
-            if isinstance(element, FlameText) or isinstance(element, PiekielnaRezolucjaLogo):
-                element.pos_rect[1] -= self.animation_speed
-                if (element.pos_rect[1] <= 0):
-                    element.pos_rect[1] -= 2*self.animation_speed
+        self.cnt += 1
+        if (self.cnt % 2 == 0):
+            for element in self.ui_elements:
+                if isinstance(element, FlameText) or isinstance(element, PiekielnaRezolucjaLogo):
+                    element.pos_rect[1] -= self.animation_speed
+                    if (element.pos_rect[1] <= 0):
+                        element.pos_rect[1] -= 2*self.animation_speed
         super().update(mouse)
 
     def on_entry(self, *args, **kwargs):

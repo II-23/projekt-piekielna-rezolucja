@@ -41,6 +41,7 @@ pip install -r requirements.txt
 python3 src/main_window.py
 ```
 
+
 # Requirements
 To run the game smoothly make sure you have the following installed:
 
@@ -52,25 +53,29 @@ To run the game smoothly make sure you have the following installed:
 * Pillow, version: 10.1.0
 
 
+# Gameplay
+To discover what the game has to offer, please try it out for yourself. Everything you need to know is included in the tutorial dialogs.
+
+
 # Authors
 
-Adam Dziwiszek
+[Adam Dziwiszek](https://github.com/Adziwiszek)
 
-Igor Hańczaruk
+[Igor Hańczaruk](https://github.com/szaranczuk)
 
-Krzysztof Olejnik
+[Krzysztof Olejnik](https://github.com/Krzychuo)
 
-Mateusz Katafiasz
+[Aleksandra Ponikowska](https://github.com/AleksandraPonikowska)
 
-Aleksandra Ponikowska
+[Michał Szwejda](https://github.com/MichalSzwejda)
 
-Michał Szwejda
+[Mateusz Katafiasz](https://github.com/matkat1)
 
-Justyna Adamczyk
+[Justyna Adamczyk](https://github.com/o0something)
 
-Dominika Gwarda
+[Dominika Gwarda](https://github.com/domgwarda)
 
 
 # Credits
 
-Soundtrack *Father of the booze cruise* by High-Doosh'O'Bosh-Low
+Soundtrack: *Father of the booze cruise* by High-Doosh'O'Bosh-Low

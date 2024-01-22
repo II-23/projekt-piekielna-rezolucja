@@ -49,6 +49,14 @@ class Set_of_formulas(pygame.sprite.Sprite):
     def WrongValuationEventTrigger(self):
         for obj in self.subscribers["WrongValuation"]:
             obj.WrongValuationEvent()
+
+    def HappyEventTrigger(self):
+        for obj in self.subscribers["Happy"]:
+            obj.HappyEvent()
+
+    def WritingEventTrigger(self):
+        for obj in self.subscribers["Writing"]:
+            obj.WritingEvent()
     
     def get_variable_set(self):
         return self.variables
@@ -93,6 +101,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
                     if x!=0:
                         check=1
                 if check==1:
+                    """ DODAĆ ANIMACJE PISANIA """
+                    self.WritingEventTrigger()
                     SoundtrackManager.playSound("WritingEffect")
                     self.formulas.append(Formula((25,25), (self.x, self.y+len(self.formulas)*LINE_HEIGHT), q3, self.width, True))
                     self.clear_selected(0)
@@ -100,6 +110,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
                     for x in self.formulas:
                         x.state=Formula_State.HOVER
                 else:
+                    """ DODAĆ ANIMACJĘ RADOŚCI """
+                    self.HappyEventTrigger()
                     print("znaleziono sprzeczność")
                     self.game_state[0] = True
                     SoundtrackManager.stopMusic()
@@ -173,6 +185,8 @@ class Set_of_formulas(pygame.sprite.Sprite):
                     break
             global_satisfied = global_satisfied and satisfied
         if (global_satisfied):
+            """ DODAĆ ANIMACJĘ RADOŚCI """
+            self.HappyEventTrigger()
             print(f"[Log][Formula set]: valuation is correct")
             self.game_state[0] = True
             print(self.game_state)

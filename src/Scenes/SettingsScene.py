@@ -13,13 +13,12 @@ import pygame
 import os
 
 class SettingsScene(BaseScene):
-    def __init__(self, display, gameStateManager, background_color=(255, 255, 255)):
+    def __init__(self, display, gameStateManager, background_color=(0, 0, 0)):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         # backgorund for settings
         
-        # piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
-        # self.add_background_image(piwo_img)
-        
+        piwo_img = pygame.image.load(ASSETS_DIR + "/piwo.png")
+        self.add_background_image(piwo_img)
         # positions for easy placing of new things
         #settings_pos = [i]
         help_text_color = (166, 54, 54)

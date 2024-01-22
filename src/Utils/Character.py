@@ -28,6 +28,7 @@ class Player:
         self.velocity = np.array([0,0])
         self.speed = 6
         self.state = "s"
+        self.ded = False
 
         #STATYSTYKI
         self.health = 3
@@ -128,7 +129,12 @@ class Player:
         for k, v in self.pressed.items():
             self.pressed[k] = False
 
-    def process_input(self, events,mouse, *args):
+    def process_input(self, events, mouse, *args):
+        if not self.ded:
+            self.fake_process_input(events, mouse, args)
+
+    def fake_process_input(self, events, mouse, *args):
+        '''This is run only if the character is still alive'''
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key in KEYS and KEYS[event.key] in self.pressed:

@@ -11,11 +11,11 @@ import pygame
 from Utils.game_over import Game_over_window
 from Utils.clock import Clock
 from soundtrackmanager import SoundtrackManager
-from Formulas.FormulaGenerator import DifficultyLevels
 import os
+from Formulas.FormulaGenerator import DifficultyLevels
 
 class GameplayScene(BaseScene):
-    def __init__(self, display, gameStateManager, background_color=(255, 255, 255), enemy=0, player=0):
+    def __init__(self, display, gameStateManager, difficulty_level = DifficultyLevels.HARD, background_color=(255, 255, 255), enemy=0, player=0):
         BaseScene.__init__(self, display=display, gameStateManager=gameStateManager, background_color=background_color)
         '''Here you will learn how to add things to your scene. It's simple. Create the object and set its parameters so it fits your needs.
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
@@ -32,7 +32,7 @@ class GameplayScene(BaseScene):
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
         print('generacja')
-        abc = good_generate(DifficultyLevels.MEDIUM)
+        abc = good_generate(difficulty_level)
         #
         formulas=abc.formulas
         #
@@ -43,6 +43,8 @@ class GameplayScene(BaseScene):
 
         self.formula_set=Set_of_formulas((500,500), (200,125), formulas, self.won, max_variables_number)
         self.formula_set.subscribe(self, "WrongValuation")
+        self.formula_set.subscribe(self, "Happy")
+        self.formula_set.subscribe(self, "Writing")
 
 
         self.add_ui_element(self.formula_set)
@@ -83,8 +85,15 @@ class GameplayScene(BaseScene):
 
     def WrongValuationEvent(self): # DODANA PRZEZ KRZYCHA
         print("Zła waluacja")
+        self.anim.animate("a1", 5)
         self.clock.substract_time(self.clock.time_total//10)
-        
+
+    def HappyEvent(self): # Skopiowana przez Olę
+        self.anim.animate("d1", 1000)
+
+    def WritingEvent(self): # Skopiowana przez Olę
+        self.anim.animate("e1", 5)
+
     def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''
         super().on_entry(*args)
@@ -107,8 +116,11 @@ class GameplayScene(BaseScene):
             self.time_finished = self.clock.time_left
 
         if self.clock.check_time_up() and not self.time_is_up:
+            """ DODAĆ ANIMACJĘ PŁACZU """
+            self.anim.animate("c1", 5)
             self.won[0] = False
             self.time_is_up = True
+
             self.start_screen_button.on_click_event({})
 
         if (self.slider_bar.evalutation_requested):

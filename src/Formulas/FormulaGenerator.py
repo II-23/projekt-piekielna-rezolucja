@@ -81,9 +81,9 @@ chance_for_satisfiable = {
 }
 
 satisfiable_levels = {
-    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4, lengths_probabilities = [10, 15, 30, 40]),
-    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3, lengths_probabilities = [10, 30, 60]),
-    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3, lengths_probabilities=[15, 25, 60])
+    DifficultyLevels.EASY : GeneratorParams(max_variable_number=4, formulas_number=4, max_len=4, lengths_probabilities = [0, 20, 40, 40]),
+    DifficultyLevels.MEDIUM : GeneratorParams(max_variable_number=6, formulas_number=6, max_len=3, lengths_probabilities = [0, 20, 80]),
+    DifficultyLevels.HARD : GeneratorParams(max_variable_number=8, formulas_number=8, max_len=3, lengths_probabilities=[0, 10, 90])
 }
 
 not_satisfiable_levels = {

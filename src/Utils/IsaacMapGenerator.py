@@ -76,6 +76,8 @@ class MapGenerator():
             cls.mapArr[pos[0]-miny][pos[1]-minx] = 1
             cls.mapList.append((pos[0]-miny, pos[1]-minx))
 
+        cls.number_of_rooms = sum([sum(cls.mapArr[floor]) for floor in range(len(cls.mapArr))])
+
         return cls.mapArr
     
 def demo():

@@ -10,6 +10,8 @@ import pygame
 from Utils.Enemy import Enemy
 from Utils.Trapdoor import Trapdoor
 from Utils.IsaacMapGenerator import MapGenerator
+from Utils.Loot import Loot
+from Utils.Loot import loot_spirtes_path
 from random import randint, choice
 import copy
 import os
@@ -17,9 +19,10 @@ import os
 GRAY_COLOR = (65, 65, 67)
 
 class Room():
-    def __init__(self, pos: tuple, enemy_action) -> None:
+    def __init__(self, pos: tuple, enemy_action, pickup_loot) -> None:
         self.position_on_map = pos
         self.enemy_action = enemy_action
+        self.pickup_loot = pickup_loot
         p = 'closed_door.png'
         image_path = os.path.join(ASSETS_DIR, p)
         self.enemies_alive = 0
@@ -40,6 +43,11 @@ class Room():
         # exit to the next room
         self.has_exit = False
         self.exit = None
+
+
+    def add_loot(self, position, size):
+        sprite_index = randint(0, len(loot_spirtes_path)-1)
+        self.entities.append(Loot(position, size, self.pickup_loot, loot_spirtes_path[sprite_index]))
 
     def add_enemy(self, position, size):
         self.entities.append(Enemy(position, size, self.enemy_action, image_dir='ghost.png', dead_dir='ghost_dead.png'))
@@ -73,7 +81,7 @@ class UwrManager:
         for i in range(self.map_h):
             for j in range(self.map_w):
                 if self.game_map[i][j] == 1:
-                    room = Room((i, j), self.enemy_action)
+                    room = Room((i, j), self.enemy_action, self.character.pickup_loot)
                     # bottom (0), top (1), left (2), right (3)
                     room.door_exists[0] = False if i + 1 >= self.map_h else False if self.game_map[i + 1][j] == 0 else True 
                     room.door_exists[1] = False if i - 1 < 0 else False if self.game_map[i - 1][j] == 0  else True 
@@ -83,6 +91,11 @@ class UwrManager:
                     self.rooms[i][j] = room
 
         self.enemiesNum = (self.difficulty+1)//2
+        print(MapGenerator.number_of_rooms)
+        self.lootNum = MapGenerator.number_of_rooms//2
+        for _ in range(self.lootNum):
+            chosenRoom = choice(MapGenerator.mapList)
+            self.add_loot_to_room(chosenRoom, (randint(200,980),randint(200,420)))
         for _ in range(self.enemiesNum):
             chosenRoom = choice(MapGenerator.mapList)
             while chosenRoom == MapGenerator.start or chosenRoom == MapGenerator.end:
@@ -114,6 +127,8 @@ class UwrManager:
     
     def add_enemy_to_room(self, room_pos, enemy_pos):
         self.rooms[room_pos[0]][room_pos[1]].add_enemy(enemy_pos, (100,100))
+    def add_loot_to_room(self, room_pos, loot_pos):
+        self.rooms[room_pos[0]][room_pos[1]].add_loot(loot_pos, (100,100))
 
     def move_on_map(self, direction):
         '''Used to move character to a new room'''
@@ -147,31 +162,30 @@ class UwrManager:
     def update(self, mouse=pygame.mouse):
         # colissions
         #for entity in self.current_room.entities:
-        for entity in self.current_room.entities:
-            if isinstance(entity, Enemy):
-                entity.update(mouse)
-
         for i in range(len(self.current_room.entities)):
             entity = self.current_room.entities[i]
             if isinstance(entity, Enemy):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
                                                 entity.position, entity.size) and entity.active and entity.health > 0:
                     entity.on_enter_event({'e': entity, 'p': self.character}) # event of enemy
-
                 # checking health of enemies
                 if entity.health <= 0 and entity.alive: 
                     self.current_room.enemies_alive -= 1
                     self.all_enemies_on_level -= 1
                     entity.alive = False
+            if isinstance(entity, Loot):
+                if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
+                                                entity.position, entity.size) and entity.active:
+                    entity.on_enter_event()
+                    entity.set_active(False)
+
             if isinstance(entity, Trapdoor):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
                                                 entity.position, entity.size) and entity.open and self.current_room.enemies_alive <= 0:
                     #coliision with trapdoor
                     entity.on_enter_event()
-        if self.character.health <= 0 and not self.character.ded:
-            self.character.on_death_event(self.character.points)
-            self.character.ded = True
-            self.character.points = 0
+        if self.character.health <= 0:
+            self.character.on_death_event({})
             
         if self.current_room.enemies_alive <= 0:
             self.current_room.door_exists = self.current_room.door_placeholder.copy()
@@ -182,6 +196,8 @@ class UwrManager:
         # render entities on a map (enemies)
         for entity in self.current_room.entities:
             if isinstance(entity, Enemy):
+                entity.render(screen)
+            if isinstance(entity, Loot):
                 entity.render(screen)
         # render trapdoor
         if self.current_room.has_exit:
@@ -211,21 +227,9 @@ class MapScene(BaseScene):
             gameStateManager.states['level'] = level
             self.pause = True
 
-        def back_to_menu(args):
+        def on_death(args):
             gameStateManager.set_state('start', args)
-        path_to_death = image_path = os.path.join(ASSETS_DIR, 'death_screen.png')
-        self.death_message = ImageButton((300,300), (280,170), path_to_death, path_to_death, back_to_menu)
-        self.death_message.active = False
-
-        def on_death(points):
-            mes = f'You died! Your score: {points}'
-            print(points)
-            self.death_message.init_text(color=(0,0,0), text=mes)
-            self.death_message.align_center_h = True
-            self.death_message.align_center_w = True
-            self.death_message.active = True
-            #gameStateManager.set_state('start', {})
-
+        
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene, 5, gameStateManager)
         self.uwu.character.on_death_event = on_death
@@ -268,7 +272,6 @@ class MapScene(BaseScene):
         self.add_ui_element(self.uwu)
         self.add_ui_element(self.uwu.character)
         self.add_ui_element(Health_and_points(self.uwu.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))
-        self.add_ui_element(self.death_message)
         
     def on_entry(self, *args, prev_state):
         '''TODO probalby here will be something to reset player position'''
@@ -276,9 +279,7 @@ class MapScene(BaseScene):
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
         else:
-            self.uwu.character.health = 1
-            self.death_message.active = False
-            self.uwu.character.ded = False
+            self.uwu.character.health = 1000
             self.uwu.character.pos = (550, 300)
             self.uwu.generate_room()
         super().on_entry(*args) 

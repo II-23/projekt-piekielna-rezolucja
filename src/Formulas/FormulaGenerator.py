@@ -269,7 +269,7 @@ def good_generate(difficulty):
     return abc
 
 if __name__ == '__main__':
-    diff = DifficultyLevels.MEDIUM
+    diff = DifficultyLevels.EASY
     abc = good_generate(diff)
     print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
     for formula in abc.formulas:

@@ -163,8 +163,7 @@ class UwrManager:
     def update(self, mouse=pygame.mouse):
         # colissions
         #for entity in self.current_room.entities:
-        for i in range(len(self.current_room.entities)):
-            entity = self.current_room.entities[i]
+        for entity in self.current_room.entities:
             if isinstance(entity, Enemy):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
                                                 entity.position, entity.size) and entity.active and entity.health > 0:
@@ -233,9 +232,22 @@ class MapScene(BaseScene):
             gameStateManager.states['level'] = level
             self.pause = True
 
-        def on_death(args):
+        def back_to_menu(args):
             gameStateManager.set_state('start', args)
-        
+
+        path_to_death = os.path.join(ASSETS_DIR, 'death_screen.png')
+        self.death_message = ImageButton((300,300), (280,170), path_to_death, path_to_death, back_to_menu)
+        self.death_message.active = False
+
+        def on_death(points):
+            mes = f'You died! Your score: {points}'
+            print(points)
+            self.death_message.init_text(color=(0,0,0), text=mes)
+            self.death_message.align_center_h = True
+            self.death_message.align_center_w = True
+            self.death_message.active = True
+            #gameStateManager.set_state('start', {})
+
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene, 1, gameStateManager)
         self.uwu.character.on_death_event = on_death
@@ -294,7 +306,9 @@ class MapScene(BaseScene):
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
         else:
-            self.uwu.character.health = 1000
+            self.uwu.character.health = 1
+            self.death_message.active = False
+            self.uwu.character.ded = False
             self.uwu.character.pos = (550, 300)
             self.uwu.generate_room()
         super().on_entry(*args) 

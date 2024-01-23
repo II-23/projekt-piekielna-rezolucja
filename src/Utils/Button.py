@@ -16,6 +16,7 @@ class Button():
         self.hower_color = hower_color
         self.click_color = click_color
         self.on_click_event = on_click_event
+        self.invisible = False
         self.status = Status.IDLE
         self.sound_on_click = None
         if ('sound_on_click' in kwargs):
@@ -73,7 +74,8 @@ class Button():
             color = self.hower_color
         elif self.status == Status.CLICKED:
             color = self.click_color
-        pygame.draw.rect(screen, color, pygame.Rect(*self.position, *self.size))
+        if not self.invisible:
+            pygame.draw.rect(screen, color, pygame.Rect(*self.position, *self.size))
         self.render_text(screen)
 
     def process_input(self, events, mouse, *args):

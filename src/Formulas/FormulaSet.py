@@ -17,7 +17,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         #self.selected=[Formula((25,25), (500,100), [], 500, False),Formula((25,25), (800,100), [], 500, True)]
         self.selected=[Formula((25,25), (4000,0), [], 500, False),Formula((25,25), (4000,0), [], 500, True)]
 
-        self.button=Button((500,120), (100,20), self.button_clicked, "red", "green", "blue")
+        self.button = Button((500,120), (100,20), self.button_clicked, "red", "green", "blue")
         self.button = ResolutionButton((0.133* RESOLUTION[0],0), self.button_clicked)
         loaded_bar = pygame.image.load(ASSETS_DIR + "/slider_bar.png").convert_alpha()
         self.surface=pygame.transform.scale(loaded_bar, size).convert_alpha()
@@ -62,6 +62,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         return self.variables
     def button_clicked(self, *args):
         if self.state: return
+        print('ads')
         #if player selected less than 2 formulas
         if self.selected[0].symbols==[] or self.selected[1].symbols==[]:
             print("głupota")
@@ -173,7 +174,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.selected[num].symbols=[]
         self.selected[num].content=[]
     def evaluate(self, valuation_dict):
-        if self.state: return
+        #if self.state: return
         print(f'[Log][Formula set]: requested evaluation at {valuation_dict}')
         variable_names = sorted([VARIABLES[i] for i in range(self.max_variable_number)])
         valuation_katafiasz_normal_form = [0 if x not in valuation_dict else 1 if valuation_dict[x] else -1 for x in variable_names]

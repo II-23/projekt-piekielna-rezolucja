@@ -105,7 +105,7 @@ class GameplayScene(BaseScene):
     def on_entry(self, *args, **kwargs):
         '''TODO probalby here will be something to reset the score/formulas'''
         super().on_entry(*args)
-        self.soundtrackmanager.playMusic("GameplayMusic", loops=-1)
+        self.soundtrackmanager.playMusic("GameplayMusic")
     
     def on_exit(self, *args, **kwargs):
         super().on_exit(*args)
@@ -118,7 +118,7 @@ class GameplayScene(BaseScene):
             self.player.health -= 1 
             if self.player.health > 0:
                 pass
-                #SoundtrackManager.playMusic("MainMenuTheme", loops=-1)
+                #SoundtrackManager.playMusic("MainMenuTheme")
 
     def update(self, mouse=pygame.mouse):
         super().update(mouse)

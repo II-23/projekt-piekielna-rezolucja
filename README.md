@@ -55,7 +55,7 @@ To run the game smoothly make sure you have the following installed:
 
 # Gameplay
 To discover what the game has to offer, please try it out for yourself.
-If you have a few spare minutes, you might find it interesting to watch this [short youtube video](https://youtu.be/FoHpxbok6GE?si=kHxEL3ZojgqqVBVW) created by one of our developers, who shares interesting facts about the game and present the main features of the gameplay.
+If you have a few spare minutes, you might find it interesting to watch this [short youtube video](https://youtu.be/FoHpxbok6GE?si=kHxEL3ZojgqqVBVW) created by one of our developers, who shares interesting facts about the game and presents the main features of the gameplay.
 
 
 # Authors

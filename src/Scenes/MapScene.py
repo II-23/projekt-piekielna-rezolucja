@@ -91,7 +91,7 @@ class UwrManager:
 
         self.enemiesNum = (self.difficulty+1)//2
         print(MapGenerator.number_of_rooms)
-        self.lootNum = MapGenerator.number_of_rooms//2
+        self.lootNum = MapGenerator.number_of_rooms//3
         for _ in range(self.lootNum):
             chosenRoom = choice(MapGenerator.mapList)
             self.add_loot_to_room(chosenRoom, (randint(200,980),randint(200,420)))
@@ -175,9 +175,9 @@ class UwrManager:
                     entity.alive = False
             if isinstance(entity, Loot):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
-                                                entity.position, entity.size) and entity.active:
+                                                entity.position, entity.size) and entity.active and not entity.is_looted:
                     entity.on_enter_event()
-                    entity.set_active(False)
+                    entity.loot()
 
             if isinstance(entity, Trapdoor):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),

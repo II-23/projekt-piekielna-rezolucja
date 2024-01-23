@@ -15,6 +15,7 @@ from Utils.Loot import loot_spirtes_path
 from random import randint, choice
 import copy
 import os
+from soundtrackmanager import SoundtrackManager
 
 GRAY_COLOR = (65, 65, 67)
 
@@ -305,6 +306,8 @@ class MapScene(BaseScene):
         self.uwu.character.reset()
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
+            if self.uwu.character.health > 0:
+                SoundtrackManager.playMusic("MainMenuTheme")
         else:
             self.uwu.character.health = 1
             self.death_message.active = False

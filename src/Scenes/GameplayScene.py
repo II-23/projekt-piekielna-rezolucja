@@ -76,6 +76,8 @@ class GameplayScene(BaseScene):
         
         def test2(args):
             gameStateManager.set_state("map", args)
+            SoundtrackManager.stopMusic()
+            SoundtrackManager.stopSound("MarioLevelComplete")
 
         self.start_screen_button = setup_button(self.gameStateManager, "map", (100, 300))
         img = os.path.join(ASSETS_DIR, "back_to_menu.png")
@@ -108,12 +110,15 @@ class GameplayScene(BaseScene):
     def on_exit(self, *args, **kwargs):
         super().on_exit(*args)
         print(self.won[0])
+        self.soundtrackmanager.stopMusic()
         if self.won[0]:
             self.enemy.health -= 1
             self.player.points += 1000 + floor(1000 * self.time_finished)
         else:
             self.player.health -= 1 
-        self.soundtrackmanager.stopMusic()
+            if self.player.health > 0:
+                pass
+                #SoundtrackManager.playMusic("MainMenuTheme")
 
     def update(self, mouse=pygame.mouse):
         super().update(mouse)

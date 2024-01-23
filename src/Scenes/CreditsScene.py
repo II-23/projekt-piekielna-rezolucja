@@ -80,10 +80,10 @@ class CreditsScene(BaseScene):
         self.authors_section = []
         self.authors_title = Credits_Text(os.path.join(authors_dir, "author_title"), 0.05 * self.width)
         self.authors_section.append(self.authors_title)
-        self.igor_hanczaruk = Credits_Text(os.path.join(authors_dir, "igorhanczaruk"), 0.18 * self.width)
-        self.authors_section.append(self.igor_hanczaruk)
         self.adam_dziwiszek = Credits_Text(os.path.join(authors_dir, "adamdziwiszek"), 0.18 * self.width)
         self.authors_section.append(self.adam_dziwiszek)
+        self.igor_hanczaruk = Credits_Text(os.path.join(authors_dir, "igorhanczaruk"), 0.18 * self.width)
+        self.authors_section.append(self.igor_hanczaruk)
         self.krzysztofolejnik = Credits_Text(os.path.join(authors_dir, "krzysztofolejnik"), 0.13 * self.width)
         self.authors_section.append(self.krzysztofolejnik)
         self.mateuszkatafiasz = Credits_Text(os.path.join(authors_dir, "mateuszkatafiasz"), 0.12 * self.width)

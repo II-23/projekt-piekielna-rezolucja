@@ -22,6 +22,11 @@ class GameplayScene(BaseScene):
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
         '''
         self.enemy = enemy
+        '''setting difficulty level based on the enemy level'''
+        if self.enemy.level == 1:
+            difficulty_level = DifficultyLevels.EASY
+        elif self.enemy.level == 2:
+            difficulty_level = DifficultyLevels.MEDIUM
         self.player = player
         self.won = [False]
         self.time_finished = None
@@ -32,7 +37,7 @@ class GameplayScene(BaseScene):
         paper_height = paper_sheet.get_height()
         paper_sheet = pygame.transform.scale_by(paper_sheet, self.display.get_height()/paper_height)
         self.add_background_image(paper_sheet)
-        print('generacja')
+
         abc = good_generate(difficulty_level)
         #
         formulas=abc.formulas

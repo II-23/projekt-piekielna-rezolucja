@@ -7,12 +7,13 @@ from random import randint
 from Utils.GifPlayer import GifPlayer
 
 class Enemy:
-    def __init__(self, position, size, on_enter_event, image_dir, dead_dir) -> None:
+    def __init__(self, position, size, on_enter_event, level, image_dir, dead_dir) -> None:
         self.active = False
         self.position = position
         self.size = size
         self.health = 1
         self.alive = True
+        self.level = level
         self.on_enter_event = on_enter_event
         if image_dir == 'ghost.png':
             roll = randint(1, 1000)

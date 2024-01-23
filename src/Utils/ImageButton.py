@@ -19,6 +19,10 @@ class ImageButton(Button, pygame.sprite.Sprite):
     def update(self, mouse, offset = (0,0)):
         Button.update(self, mouse, offset)
 
+    def process_input(self, events, mouse, *args):
+        if self.active:
+            super().process_input(events, mouse, args)
+
     def render(self, screen):
         if self.active:
             if (self.status == Status.HOWER):

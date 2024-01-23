@@ -9,7 +9,7 @@ Right:
 O nie, mój ulubiony profesor logiki potrzebuje mojej pomocy! Mów mi, co mam robić, JMI!!
 Left:
 Otrzymasz zestaw klauzul proposycyjnych, które musisz przeanalizować.
-Klauzule to zdania lub wyrażenia logiczne, zawierające zmienne logiczne (np. p, q, r) i operatory logiczne (∨, ¬).
+Klauzule to zdania lub wyrażenia logiczne, zawierające zmienne logiczne (np. p, q, r) i operatory logiczne (v, ¬).
 Twoim zadaniem jest zrozumienie, co te klauzule oznaczają i czy można udowodnić ich sprzeczność.
 Wybierz dwie różne klauzule, które chciałbyś połączyć za pomocą rezolucji.
 Zidentyfikuj wspólny literal, czyli zmienną logiczną lub jej negację, która występuje w obu klauzulach.

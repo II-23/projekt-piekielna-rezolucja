@@ -21,7 +21,7 @@ class ImageButton(Button, pygame.sprite.Sprite):
 
     def process_input(self, events, mouse, *args):
         if self.active:
-            super().process_input(events, mouse, args)
+            super().process_input(events, mouse, *args)
 
     def render(self, screen):
         if self.active:

@@ -250,7 +250,7 @@ class MapScene(BaseScene):
             self.death_message.active = True
 
         # a class to manage the map of the game
-        self.uwu = UwrManager(go_to_scene, 1, gameStateManager)
+        self.uwu = UwrManager(go_to_scene, 3, gameStateManager)
         self.uwu.character.on_death_event = on_death
         self.uwu.current_room.change_enemy_activity(True) # set activity of current room to True
         if self.uwu.current_room.enemies_alive > 0:

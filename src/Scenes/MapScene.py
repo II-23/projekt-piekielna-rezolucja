@@ -291,7 +291,7 @@ class MapScene(BaseScene):
         self.add_ui_element(self.uwu)
         self.add_ui_element(self.uwu.character)
 
-        self.status_bar=Health_and_points(self.uwu.character,(390,35),(0,0),(133, 12, 36),(0, 0, 0),21)
+        self.status_bar=Health_and_points(self.uwu.character,(550, 35),(0,0),(133, 12, 36),(0, 0, 0),21)
         self.status_bar.update_stats(self.uwu.difficulty,self.uwu.all_enemies_on_level)
         self.add_ui_element(self.status_bar)
         #self.add_ui_element(Health_and_points(self.uwu.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))

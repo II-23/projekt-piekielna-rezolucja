@@ -2,7 +2,7 @@ import pygame
 
 class Image(pygame.sprite.Sprite):
     def __init__(self, position, size, image_dir):
-        self.background = pygame.transform.scale(pygame.image.load(image_dir),size)
+        self.background = pygame.transform.scale(pygame.image.load(image_dir).convert(),size)
         self.size = size
         self.position = position
         self.pos_rect = pygame.Rect(position[0], position[1], 0, 0)

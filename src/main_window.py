@@ -19,7 +19,7 @@ from Config.graphics import RESOLUTION
 from datasavemanager import DataSaveManager
 
 GAME_TITLE = "Piekielna rezolucja 3"
-GAME_LOGO = pygame.image.load(ASSETS_DIR + "/placeholder_logo.png")
+#GAME_LOGO = pygame.image.load(ASSETS_DIR + "/placeholder_logo.png").convert()
 GRAY_COLOR = (65, 65, 67)
 SLIDER_SIZE = (220, 70)
 
@@ -88,8 +88,7 @@ class Main_Window:
         self.on_cleanup()
 
 if __name__ == "__main__":
-    
     pygame.display.set_caption(GAME_TITLE)
-    pygame.display.set_icon(GAME_LOGO)
+    #pygame.display.set_icon(GAME_LOGO)
     app = Main_Window(RESOLUTION)
     app.on_execute()

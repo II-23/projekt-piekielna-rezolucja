@@ -23,9 +23,9 @@ class GameplayScene(BaseScene):
         '''
         self.enemy = enemy
         '''setting difficulty level based on the enemy level'''
-        if self.enemy.level == 1:
+        if self.enemy.level == 3:
             difficulty_level = DifficultyLevels.EASY
-        elif self.enemy.level == 2:
+        elif self.enemy.level == 4:
             difficulty_level = DifficultyLevels.MEDIUM
         self.player = player
         self.won = [False]

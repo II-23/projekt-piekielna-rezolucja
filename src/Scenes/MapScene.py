@@ -4,7 +4,6 @@ from Utils.Area import Area
 from Utils.ImageButton import ImageButton
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
-from Config.graphics import RESOLUTION
 from Scenes.GameplayScene import GameplayScene
 from Utils.Health_and_points import Health_and_points
 import pygame
@@ -17,7 +16,6 @@ from random import randint, choice
 import copy
 import os
 from soundtrackmanager import SoundtrackManager
-from datasavemanager import DataSaveManager
 
 GRAY_COLOR = (65, 65, 67)
 
@@ -94,11 +92,9 @@ class UwrManager:
 
         self.enemiesNum = (self.difficulty+1)//2
         print(MapGenerator.number_of_rooms)
-        self.lootNum = MapGenerator.number_of_rooms//3
+        self.lootNum = MapGenerator.number_of_rooms//2
         for _ in range(self.lootNum):
             chosenRoom = choice(MapGenerator.mapList)
-            while chosenRoom == MapGenerator.start:
-                chosenRoom = choice(MapGenerator.mapList)
             self.add_loot_to_room(chosenRoom, (randint(200,980),randint(200,420)))
         for _ in range(self.enemiesNum):
             chosenRoom = choice(MapGenerator.mapList)
@@ -107,6 +103,7 @@ class UwrManager:
             self.add_enemy_to_room(chosenRoom, (randint(200,980),randint(200,420)))
             self.all_enemies_on_level += 1
         self.add_enemy_to_room(MapGenerator.end, (270,310))
+        self.all_enemies_on_level += 1
         if self.difficulty >= 3: 
             self.add_enemy_to_room(MapGenerator.end, (910,310))
             self.all_enemies_on_level += 1
@@ -180,9 +177,9 @@ class UwrManager:
                     entity.alive = False
             if isinstance(entity, Loot):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
-                                                entity.position, entity.size) and entity.active and not entity.is_looted:
+                                                entity.position, entity.size) and entity.active:
                     entity.on_enter_event()
-                    entity.loot()
+                    entity.set_active(False)
 
             if isinstance(entity, Trapdoor):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
@@ -239,23 +236,22 @@ class MapScene(BaseScene):
 
         def back_to_menu(args):
             gameStateManager.set_state('start', args)
+
         path_to_death = os.path.join(ASSETS_DIR, 'death_screen.png')
-        self.death_message = ImageButton((0, 0), RESOLUTION, path_to_death, path_to_death, back_to_menu)
+        self.death_message = ImageButton((300,300), (280,170), path_to_death, path_to_death, back_to_menu)
         self.death_message.active = False
 
         def on_death(points):
             mes = f'You died! Your score: {points}'
+            print(points)
             self.death_message.init_text(color=(0,0,0), text=mes)
             self.death_message.align_center_h = True
             self.death_message.align_center_w = True
             self.death_message.active = True
-            # high score
-            current_hs = DataSaveManager.get('Highscore')
-            if points > int(current_hs):
-                DataSaveManager.update('Highscore', points)
+            #gameStateManager.set_state('start', {})
 
         # a class to manage the map of the game
-        self.uwu = UwrManager(go_to_scene, 3, gameStateManager)
+        self.uwu = UwrManager(go_to_scene, 1, gameStateManager)
         self.uwu.character.on_death_event = on_death
         self.uwu.current_room.change_enemy_activity(True) # set activity of current room to True
         if self.uwu.current_room.enemies_alive > 0:
@@ -296,7 +292,7 @@ class MapScene(BaseScene):
         self.add_ui_element(self.uwu)
         self.add_ui_element(self.uwu.character)
 
-        self.status_bar=Health_and_points(self.uwu.character,(550, 35),(0,0),(133, 12, 36),(0, 0, 0),21)
+        self.status_bar=Health_and_points(self.uwu.character,(390,35),(0,0),(133, 12, 36),(0, 0, 0),21)
         self.status_bar.update_stats(self.uwu.difficulty,self.uwu.all_enemies_on_level)
         self.add_ui_element(self.status_bar)
         #self.add_ui_element(Health_and_points(self.uwu.character,(230,40),(0,0),(133, 12, 36),(238, 0, 255),25))
@@ -311,8 +307,6 @@ class MapScene(BaseScene):
         self.uwu.character.reset()
         if prev_state == 'level':
             self.uwu.character.pos = self.uwu.character.pos_before_collision
-            if self.uwu.character.health > 0:
-                SoundtrackManager.playMusic("MainMenuTheme")
         else:
             self.uwu.character.health = 1
             self.death_message.active = False

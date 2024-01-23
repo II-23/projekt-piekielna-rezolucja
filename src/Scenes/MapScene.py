@@ -4,6 +4,7 @@ from Utils.Area import Area
 from Utils.ImageButton import ImageButton
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
+from Config.graphics import RESOLUTION
 from Scenes.GameplayScene import GameplayScene
 from Utils.Health_and_points import Health_and_points
 import pygame
@@ -234,19 +235,16 @@ class MapScene(BaseScene):
 
         def back_to_menu(args):
             gameStateManager.set_state('start', args)
-
         path_to_death = os.path.join(ASSETS_DIR, 'death_screen.png')
-        self.death_message = ImageButton((300,300), (280,170), path_to_death, path_to_death, back_to_menu)
+        self.death_message = ImageButton((0, 0), RESOLUTION, path_to_death, path_to_death, back_to_menu)
         self.death_message.active = False
 
         def on_death(points):
             mes = f'You died! Your score: {points}'
-            print(points)
             self.death_message.init_text(color=(0,0,0), text=mes)
             self.death_message.align_center_h = True
             self.death_message.align_center_w = True
             self.death_message.active = True
-            #gameStateManager.set_state('start', {})
 
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene, 1, gameStateManager)

@@ -93,7 +93,7 @@ class UwrManager:
                     self.rooms[i][j] = room
 
         self.enemiesNum = (self.difficulty+1)//2
-        print(MapGenerator.number_of_rooms)
+        #print(MapGenerator.number_of_rooms)
         self.lootNum = MapGenerator.number_of_rooms//3
         for _ in range(self.lootNum):
             chosenRoom = choice(MapGenerator.mapList)
@@ -105,12 +105,13 @@ class UwrManager:
             while chosenRoom == MapGenerator.start or chosenRoom == MapGenerator.end:
                 chosenRoom = choice(MapGenerator.mapList)
             self.add_enemy_to_room(chosenRoom, (randint(200,980),randint(200,420)))
-            self.all_enemies_on_level += 1
+        self.all_enemies_on_level = self.enemiesNum 
         self.add_enemy_to_room(MapGenerator.end, (270,310))
         self.all_enemies_on_level += 1
-        if self.difficulty >= 3: 
+        if self.difficulty >= 4: 
             self.add_enemy_to_room(MapGenerator.end, (910,310))
             self.all_enemies_on_level += 1
+        
             
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].has_exit = True
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit = Trapdoor((590, 310), (100, 100),    
@@ -168,7 +169,7 @@ class UwrManager:
 
     def update(self, mouse=pygame.mouse):
         # colissions
-        #for entity in self.current_room.entities:
+
         for entity in self.current_room.entities:
             if isinstance(entity, Enemy):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
@@ -179,6 +180,7 @@ class UwrManager:
                     self.current_room.enemies_alive -= 1
                     self.all_enemies_on_level -= 1
                     entity.alive = False
+
             if isinstance(entity, Loot):
                 if self.character.check_collision(self.character.pos, (self.character.size, self.character.size),
                                                 entity.position, entity.size) and entity.active and not entity.is_looted:
@@ -191,6 +193,16 @@ class UwrManager:
                     #coliision with trapdoor
                     entity.on_enter_event()
                     entity.open = False
+        '''This is to count all enemies in all rooms for testing the game'''
+        # alives = 0
+        # for i in range(self.map_h):
+        #     for j in range(self.map_w):
+        #         if self.game_map[i][j] == 1:
+        #             for entity in self.rooms[i][j].entities:
+        #                 if isinstance(entity, Enemy):
+        #                     if entity.health > 0:
+        #                         alives += 1
+        # print(f'enemies alive: {alives}')
         if self.character.health <= 0 and not self.character.ded:
             self.character.on_death_event(self.character.points)
             self.character.ded = True
@@ -202,6 +214,8 @@ class UwrManager:
                 if not self.current_room.exit.entered:
                     self.current_room.exit.open = True
                     self.current_room.exit.entered = True
+
+        
 
     def render(self, screen):
         # render entities on a map (enemies)

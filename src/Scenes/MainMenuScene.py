@@ -76,4 +76,3 @@ class MainMenuScene(BaseScene):
     def on_exity(self, *args, **kwargs):
         SoundtrackManager.stopMusic()
         super().on_exit(*args)
-

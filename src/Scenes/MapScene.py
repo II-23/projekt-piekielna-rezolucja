@@ -95,6 +95,8 @@ class UwrManager:
         self.lootNum = MapGenerator.number_of_rooms//3
         for _ in range(self.lootNum):
             chosenRoom = choice(MapGenerator.mapList)
+            while chosenRoom == MapGenerator.start:
+                chosenRoom = choice(MapGenerator.mapList)
             self.add_loot_to_room(chosenRoom, (randint(200,980),randint(200,420)))
         for _ in range(self.enemiesNum):
             chosenRoom = choice(MapGenerator.mapList)

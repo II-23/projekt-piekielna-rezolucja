@@ -8,7 +8,7 @@ import time
 #get_surface() method returns surface with current frame
 class GifPlayer(pygame.sprite.Sprite):
     def __init__(self, frames_path, frame_update_rate):
-        self.frames = [pygame.image.load(os.path.join(frames_path, frame)).convert() for frame in sorted(os.listdir(frames_path))]
+        self.frames = [pygame.image.load(os.path.join(frames_path, frame)) for frame in sorted(os.listdir(frames_path))]
         self.previous_step_time = time.time()
         self.FRAME_UPDATE_RATE = frame_update_rate
         self.current_frame = 0

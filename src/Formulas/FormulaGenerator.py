@@ -230,7 +230,7 @@ class Generator:
                     continue
                 var = choice(vars)
                 vars.remove(var)
-                backlog = randint(0, max(0, modified_formula.length // 2 - max_variable_number // 2))
+                backlog = randint(0, max(0, modified_formula.length - 3))
                 modified_formula_new = modified_formula.copy()
                 if (modified_formula.length >= 0):
                     initialized = []
@@ -269,7 +269,7 @@ def good_generate(difficulty):
     return abc
 
 if __name__ == '__main__':
-    diff = DifficultyLevels.EASY
+    diff = DifficultyLevels.MEDIUM
     abc = good_generate(diff)
     print(f"Size of set:{abc.size}\nSatisfiable?: {abc.satisfiable}\nExample of correct valuation:\n{abc.valuation}\nFormulas:")
     for formula in abc.formulas:

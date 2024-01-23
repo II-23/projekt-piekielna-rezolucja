@@ -61,6 +61,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
     def get_variable_set(self):
         return self.variables
     def button_clicked(self, *args):
+        if self.state: return
         #if player selected less than 2 formulas
         if self.selected[0].symbols==[] or self.selected[1].symbols==[]:
             print("głupota")
@@ -172,6 +173,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.selected[num].symbols=[]
         self.selected[num].content=[]
     def evaluate(self, valuation_dict):
+        if self.state: return
         print(f'[Log][Formula set]: requested evaluation at {valuation_dict}')
         variable_names = sorted([VARIABLES[i] for i in range(self.max_variable_number)])
         valuation_katafiasz_normal_form = [0 if x not in valuation_dict else 1 if valuation_dict[x] else -1 for x in variable_names]

@@ -10,6 +10,7 @@ from Utils.PiekielnaRezolucjaLogo import PiekielnaRezolucjaLogo
 from Config.graphics import RESOLUTION
 from soundtrackmanager import SoundtrackManager
 from Utils.Health_and_points import Health_and_points
+from datasavemanager import DataSaveManager
 import pygame
 from Utils.clock import Clock
 
@@ -58,10 +59,16 @@ class MainMenuScene(BaseScene):
         self.area_credits.on_enter_event = go_to_credits
         self.character.areas.append(self.area_credits)
 
+        high_score_color = (0,0,0)
+        self.high_score_text = Button((400, 140), (400,30), None, high_score_color, high_score_color, high_score_color)
+        self.high_score_text.init_text(text_size=42, color=(75, 46, 223), text=f"Highscore: {DataSaveManager.get('Highscore')}")
+        self.high_score_text.invisible = True
+        self.add_ui_element(self.high_score_text)
         self.add_ui_element(self.character) 
   
     def on_entry(self, *args, **kwargs):
         self.character.reset()
+        self.high_score_text.init_text(text_size=42, color=(75, 46, 223), text=f"Highscore: {DataSaveManager.get('Highscore')}")
         if (kwargs['prev_state'] != 'settings'):
             SoundtrackManager.playMusic("MainMenuTheme", loops=-1)
         super().on_entry(*args)

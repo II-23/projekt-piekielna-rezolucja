@@ -17,6 +17,7 @@ from random import randint, choice
 import copy
 import os
 from soundtrackmanager import SoundtrackManager
+from datasavemanager import DataSaveManager
 
 GRAY_COLOR = (65, 65, 67)
 
@@ -248,6 +249,10 @@ class MapScene(BaseScene):
             self.death_message.align_center_h = True
             self.death_message.align_center_w = True
             self.death_message.active = True
+            # high score
+            current_hs = DataSaveManager.get('Highscore')
+            if points > int(current_hs):
+                DataSaveManager.update('Highscore', points)
 
         # a class to manage the map of the game
         self.uwu = UwrManager(go_to_scene, 3, gameStateManager)

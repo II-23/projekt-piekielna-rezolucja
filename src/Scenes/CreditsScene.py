@@ -67,7 +67,7 @@ class CreditsScene(BaseScene):
 
     def on_entry(self, *args, **kwargs):
         SoundtrackManager.stopMusic()
-        SoundtrackManager.playMusic("CreditsMusic")
+        SoundtrackManager.playMusic("CreditsMusic", loops=-1)
         self.ui_elements = []
         self.start_screen_button = setup_button(self.gameStateManager, 'start', (-0.1*self.width, 0.9*self.height))
         self.add_ui_element(self.start_screen_button)

@@ -47,7 +47,7 @@ class GameplayScene(BaseScene):
 
         #self.formula_set=Set_of_formulas((500,500), (500,150), formulas)
 
-        self.formula_set=Set_of_formulas((500,500), (200,125), formulas, self.won, max_variables_number)
+        self.formula_set=Set_of_formulas((500,550), (200,100), formulas, self.won, max_variables_number)
         self.formula_set.subscribe(self, "WrongValuation")
         self.formula_set.subscribe(self, "Happy")
         self.formula_set.subscribe(self, "Writing")

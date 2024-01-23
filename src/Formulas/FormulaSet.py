@@ -162,6 +162,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
             x.update(mouse)
 
     def process_input(self, events, mouse, *args):
+        if self.state: return
         for x in self.formulas:
             x.process_input(events, mouse, *args)
         pass
@@ -174,7 +175,7 @@ class Set_of_formulas(pygame.sprite.Sprite):
         self.selected[num].symbols=[]
         self.selected[num].content=[]
     def evaluate(self, valuation_dict):
-        #if self.state: return
+        if self.state: return
         print(f'[Log][Formula set]: requested evaluation at {valuation_dict}')
         variable_names = sorted([VARIABLES[i] for i in range(self.max_variable_number)])
         valuation_katafiasz_normal_form = [0 if x not in valuation_dict else 1 if valuation_dict[x] else -1 for x in variable_names]

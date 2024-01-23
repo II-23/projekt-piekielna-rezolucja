@@ -13,7 +13,7 @@ class ResolutionButton(Button, pygame.sprite.Sprite):
         self.gif_player = GifPlayer(FRAME_PATH, FRAME_UPDATE_RATE)
         self.is_flamed = False
         self.size = self.gif_player.get_surface().get_size()
-        self.not_flamed_surface = pygame.image.load(os.path.join(ASSETS_DIR, "resolution_button_without_flames.gif")).convert()
+        self.not_flamed_surface = pygame.image.load(os.path.join(ASSETS_DIR, "resolution_button_without_flames.gif"))
         self.flames_alpha = 0
         Button.__init__(self, position, self.size, on_click_event, COLOR_PLACEHOLDER, COLOR_PLACEHOLDER, COLOR_PLACEHOLDER)
     

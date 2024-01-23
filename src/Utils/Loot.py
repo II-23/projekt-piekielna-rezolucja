@@ -14,6 +14,7 @@ class Loot:
         self.position = position
         self.size = size
         self.active = True
+        self.is_looted = False
         self.on_enter_event = on_enter_event
         self.image_dir = image_dir
         self.sprite = Image(position, size, self.image_dir)
@@ -25,7 +26,7 @@ class Loot:
         pass
 
     def render(self, screen):
-        if self.active:
+        if self.active and not self.is_looted:
               self.sprite.render(screen)
-    def set_active(self, value):
-        self.active = value
+    def loot(self):
+        self.is_looted = True

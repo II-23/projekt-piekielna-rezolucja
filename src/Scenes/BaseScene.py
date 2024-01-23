@@ -86,8 +86,8 @@ class BaseScene:
                 screen.blit(element.get_surface(), element.get_rect())   
             if isinstance(element, PiekielnaRezolucjaLogo):
                 screen.blit(element.get_surface(), element.get_rect())   
-            if isinstance(element, Game_over_window):
-                screen.blit(element.get_surface(), element.get_rect())   
+            # if isinstance(element, Game_over_window):
+            #     screen.blit(element.get_surface(), element.get_rect())   
             #if isinstance(element, Clock):
             #    screen.blit(element.get_surface(), element.get_rect())   
                 

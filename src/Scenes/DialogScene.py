@@ -94,12 +94,14 @@ class DialogScene(BaseScene):
         color_on_click=(99, 90, 90)
         self.text_window = Button((RESOLUTION[0]/2-tw_size[0]/2 + 25, 460), tw_size, None, col, col, color_on_click)
         self.text_window.init_text(font=None, text_size=32, color=color_text_win, text=self.dialog_manager.next_line())
+
         bg_path = os.path.join(ASSETS_DIR, 'dialog_scene_bg.png')
         player1_path = os.path.join(ASSETS_DIR, 'player', 'player_dialog.png')
         player2_path = os.path.join(ASSETS_DIR, 'chad_jmi.png')
         bg=Image((0,0), (1280, 720), bg_path)
         player1=Image((300,200),(300,300), player1_path)
         player2=Image((700,50),(300,500), player2_path)
+
         self.add_ui_element(bg)
         self.add_ui_element(player1)
         self.add_ui_element(player2)

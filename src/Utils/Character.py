@@ -6,6 +6,8 @@ from PIL import Image, ImageOps
 import os
 from Config.definitnios import ASSETS_DIR
 from Utils.Area import Area
+from Utils.Loot import LOOT_POINTS
+from soundtrackmanager import SoundtrackManager
 
 RESOLUTION = (1280, 720)
 GRAY_COLOR = (65, 65, 67)
@@ -89,7 +91,9 @@ class Player:
             save_as(self.frames, im2, image_path, name + "2")
 
 
-
+    def pickup_loot(self):
+        self.points += LOOT_POINTS
+        SoundtrackManager.playSound("PickupSound")
 
     def render(self,screen):
 

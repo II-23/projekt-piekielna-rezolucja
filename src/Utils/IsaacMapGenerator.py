@@ -26,19 +26,22 @@ class MapGenerator():
 
     @classmethod
     def generate(cls, complexity):
-        complexity = clamp(complexity+4, 5, 14)
+        complexity = clamp(complexity, 1, 8)
         while True:
             cls.mapDict = set()
             cls.mapDict.add((0, 0))
             cls.start = (0, 0)
 
-            attempts = 2 + randint(clamp((complexity-2)//3, 0, 4), clamp((complexity+2)//3, 0, 4))
+            attempts = 2 + randint(clamp((complexity-2)//3, 0, 2), clamp((complexity+2)//3, 0, 2))
             for _ in range(attempts):
                 pos = (0, 0)
-                segments = 1 + complexity//3 + floor((2 + complexity//4) * random())
+                segments = 2 + complexity//3 + floor((2 + complexity//5) * random())
+                lstdir = -1
                 for __ in range(segments):
-                    length = randint(1, 1 + min(2, complexity//3))
+                    length = randint(2, 5)//2
                     dir = randint(0, 3)
+                    while dir == lstdir: dir = randint(0, 3)
+                    lstdir = dir
                     for ___ in range(length):
                         pos = add(pos, OFFSETS[dir])
                         cls.mapDict.add((pos[0], pos[1]))
@@ -55,21 +58,28 @@ class MapGenerator():
             if len(cls.mapDict) < 4:
                 continue
 
+            if not (5 + round(complexity*1.5) <= len(cls.mapDict) <= 5 + round(complexity*2.5)):
+                continue
+
             cls.end = choice(possibleEnds)
+
+            miny, minx, maxy, maxx = 100, 100, -100, -100
+
+            for pos in cls.mapDict:
+                miny = min(miny, pos[0])
+                maxy = max(maxy, pos[0])
+                minx = min(minx, pos[1])
+                maxx = max(maxx, pos[1])
+
+            cls.start = (-miny, -minx)
+            cls.end = add(cls.end, (-miny, -minx))
+            cls.mapArr = [[0 for _ in range(maxx-minx+1)] for _ in range(maxy-miny+1)]
+
+            if len(cls.mapArr)*2 < len(cls.mapArr[0]): continue
+            if len(cls.mapArr[0])*2 < len(cls.mapArr): continue
+
             break
-
-        miny, minx, maxy, maxx = 100, 100, -100, -100
-
-        for pos in cls.mapDict:
-            miny = min(miny, pos[0])
-            maxy = max(maxy, pos[0])
-            minx = min(minx, pos[1])
-            maxx = max(maxx, pos[1])
-
-        cls.start = (-miny, -minx)
-        cls.end = add(cls.end, (-miny, -minx))
-        cls.mapArr = [[0 for _ in range(maxx-minx+1)] for _ in range(maxy-miny+1)]
-
+        
         cls.mapList = []
 
         for pos in cls.mapDict:
@@ -79,7 +89,7 @@ class MapGenerator():
         return cls.mapArr
     
 def demo():
-    for i in range(9, 39):
+    for i in range(0, 30):
         print(1 + i//3)
         MapGenerator.generate(1 + i//3)
         for arr in MapGenerator.mapArr:

@@ -8,9 +8,9 @@ COLOR_PLACEHOLDER = (0,0,0) #Used bcs I wanted to inherit from Button class, but
 
 class ImageButton(Button, pygame.sprite.Sprite):
     def __init__(self, position, size, image_dir, image_dir_hover, on_click_event, **kwargs):
-        self.background = pygame.image.load(image_dir)
+        self.background = pygame.image.load(image_dir).convert()
         self.background = pygame.transform.scale(self.background, size)
-        self.hover_background = pygame.image.load(image_dir_hover)
+        self.hover_background = pygame.image.load(image_dir_hover).convert()
         self.hover_background = pygame.transform.scale(self.hover_background, size)
         self.size = size
         self.active = True

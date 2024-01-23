@@ -230,7 +230,7 @@ class Generator:
                     continue
                 var = choice(vars)
                 vars.remove(var)
-                backlog = randint(0, max(0, modified_formula.length - 3))
+                backlog = randint(0, max(0, modified_formula.length - 1))
                 modified_formula_new = modified_formula.copy()
                 if (modified_formula.length >= 0):
                     initialized = []

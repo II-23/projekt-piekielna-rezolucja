@@ -27,6 +27,10 @@ class Main_Window:
     def __init__(self, resolution):
         DataSaveManager.init()
         self.size = self.width, self.height = resolution
+        try:
+            pygame.mixer.pre_init(44100, -16, 1, 512)
+        except:
+            print("Unable to pre_initialize pygame.mixer")
         pygame.init()
         self._display_surface = pygame.display.set_mode(self.size)
         self.running = True

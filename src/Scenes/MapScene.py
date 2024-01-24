@@ -5,6 +5,7 @@ from Utils.ImageButton import ImageButton
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
 from Config.graphics import RESOLUTION
+from main_window import GAMEPLAY_SETTINGS
 from Scenes.GameplayScene import GameplayScene
 from Utils.Health_and_points import Health_and_points
 import pygame
@@ -60,14 +61,15 @@ class Room():
             enemy.active = active
 
 class UwrManager:
-    def __init__(self, enemy_action, difficulty, gameStateManager) -> None:
+    def __init__(self, enemy_action, room_difficulty, enemy_level, gameStateManager) -> None:
         '''This is map of the game, 1 means that there is a room, 0 that there is no room'''
         # setting up a character and things they can interact with
         self.gameStateManager = gameStateManager
         self.character = Player([550, 300]  , 150, "player/player.png")
         self.starting_positions = ((556, 570), (544, 18), (1132, 312), (-8, 300))
         self.enemy_action = enemy_action
-        self.difficulty = difficulty
+        self.difficulty = room_difficulty
+        self.enemy_level = enemy_level
         self.all_enemies_on_level = 0
         self.pos_in_maze = [1, 0]
         self.mapa = []
@@ -118,6 +120,7 @@ class UwrManager:
                                                                               None, 'trapdoor_open.png', 'trapdoor_closed.png')
         def new_room():
             self.difficulty += 1
+            self.enemy_level += 1
             self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit.entered = True
             self.gameStateManager.set_state('map', {})
         self.rooms[MapGenerator.end[0]][MapGenerator.end[1]].exit.on_enter_event = new_room
@@ -133,7 +136,7 @@ class UwrManager:
         return self.starting_positions[direction]
     
     def add_enemy_to_room(self, room_pos, enemy_pos):
-        self.rooms[room_pos[0]][room_pos[1]].add_enemy(enemy_pos, (100,100), self.difficulty)
+        self.rooms[room_pos[0]][room_pos[1]].add_enemy(enemy_pos, (100,100), self.enemy_level)
 
     def add_loot_to_room(self, room_pos, loot_pos):
         self.rooms[room_pos[0]][room_pos[1]].add_loot(loot_pos, (100,100))
@@ -213,9 +216,7 @@ class UwrManager:
             if self.current_room.has_exit:
                 if not self.current_room.exit.entered:
                     self.current_room.exit.open = True
-                    self.current_room.exit.entered = True
-
-        
+                    self.current_room.exit.entered = True  
 
     def render(self, screen):
         # render entities on a map (enemies)
@@ -270,7 +271,7 @@ class MapScene(BaseScene):
                 DataSaveManager.update('Highscore', points)
 
         # a class to manage the map of the game
-        self.uwu = UwrManager(go_to_scene, 5, gameStateManager)
+        self.uwu = UwrManager(go_to_scene, GAMEPLAY_SETTINGS['starting room difficulty'], GAMEPLAY_SETTINGS['starting level'], gameStateManager)
         self.uwu.character.on_death_event = on_death
         self.uwu.current_room.change_enemy_activity(True) # set activity of current room to True
         if self.uwu.current_room.enemies_alive > 0:

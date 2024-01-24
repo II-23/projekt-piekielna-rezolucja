@@ -5,6 +5,7 @@ from Formulas.Formula import Symbol, Formula
 from Formulas.FormulaSet import Set_of_formulas
 from Formulas.FormulaGenerator import *
 from Config.definitnios import ASSETS_DIR
+from main_window import GAMEPLAY_SETTINGS
 from Utils.ResolutionButton import ResolutionButton
 from Utils.CharacterAnimation import CharacterAnimation
 import pygame
@@ -21,12 +22,17 @@ class GameplayScene(BaseScene):
         '''Here you will learn how to add things to your scene. It's simple. Create the object and set its parameters so it fits your needs.
         Then add it to the scene using add_ui_element(). Make sure it has 3 required methods: render(), update(), process_input().
         '''
+        easy_lvl = GAMEPLAY_SETTINGS['starting level']
+        medium_lvl = GAMEPLAY_SETTINGS['levels until medium']
+        hard_lvl = GAMEPLAY_SETTINGS['levels until hard']
         self.enemy = enemy
         '''setting difficulty level based on the enemy level'''
-        if self.enemy.level == 5:
+        if  easy_lvl <= self.enemy.level < medium_lvl:
             difficulty_level = DifficultyLevels.EASY
-        elif self.enemy.level == 6:
+        elif medium_lvl <= self.enemy.level < hard_lvl:
             difficulty_level = DifficultyLevels.MEDIUM
+        elif hard_lvl <= self.enemy.level:
+            difficulty_level = DifficultyLevels.HARD
         self.player = player
         self.won = [False]
         self.time_finished = None

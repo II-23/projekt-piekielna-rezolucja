@@ -22,6 +22,27 @@ GAME_TITLE = "Piekielna rezolucja 3"
 GAME_LOGO = pygame.image.load(ASSETS_DIR + "/placeholder_logo.png")
 GRAY_COLOR = (65, 65, 67)
 SLIDER_SIZE = (220, 70)
+GAMEPLAY_SETTINGS = {
+    # this parameter determines starting difficulty of the rooms, that is
+    # how many rooms and enemies are on a given level. This number is different 
+    # from the 'levels' because of how formulas and rooms are generated in different ways
+    'starting room difficulty': 5,
+    # these determine how many levels player must complete before enemies will become stronger
+    # for example: 'levels until medium': 3 means that starting on level 3 enemies will have medium difficulty etc.
+    'starting level': 1,
+    'levels until medium': 3,
+    'levels until hard': 7,
+    'enemy kill points': 1000,
+    'points for pickups': 1000,
+    # how many bonus points will the player recive for finishig REZOLUCJA early, faster = more points
+    # this number determines the maximum nubmer of points the player can get
+    'bonus time points': 1000,
+    'base clock time': 60000, # in ms, base time for solving REZOLUCJA
+    # Modifiers for clock time on different difficulties (in ms). These can be negative and positive
+    'bonus time easy': 60000,
+    'bonus time medium': 10000,
+    'bonus time hard': -10000
+}
 
 class Main_Window:
     def __init__(self, resolution):
